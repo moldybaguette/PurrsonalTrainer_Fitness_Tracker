@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="login_orange">#FF562F</color>
+    <color name="login_yellow_gradient">#FED070</color>
+    <color name="register_purple">#8A7DC0</color>
+    <color name="register_purple_gradient">#B6ABE3</color>
+
+    <!-- Color Palette Start -->
+    <color name="deep_cyan_blue">#1E97BA</color>
+    <color name="olive_green">#60851C</color>
+    <color name="bright_teal">#65CBD0</color>
+    <color name="soft_lime_green">#ACCE82</color>
+    <color name="pale_sky_blue">#B2F0FF</color>
+    <color name="soft_lavender">#B6ABE3</color>
+    <color name="golden_yellow">#F2A815</color>
+    <color name="vivid_orange">#F78D37</color>
+    <color name="bright_red_orange">#FB6A0F</color>
+    <color name="pale_golden_yellow">#FED070</color>
+    <color name="bright_coral">#FF562F</color>
+    <color name="light_peach_pink">#FFC1C6</color>
+    <!-- Color Palette End -->
+</resources>
