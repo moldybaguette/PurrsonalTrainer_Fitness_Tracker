@@ -17,23 +17,29 @@ import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Item
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.User
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserAchievement
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserBackground
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserWorkout
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutExercise
 
 object UserManager {
     private val _userFlow = MutableStateFlow<User?>(null)
     val userFlow: StateFlow<User?> = _userFlow.asStateFlow()
 
+    // Expose the current user as a read-only property
+    val user: User?
+        get() = _userFlow.value
+
     private var userSyncJob: Job? = null
 
-    fun setUser(user: User) {
-        _userFlow.value = user
-        println(user.userID)
-        startUserSync()
-    }
+    //-----------------------------------------------------------//
+    //                          METHODS                          //
+    //-----------------------------------------------------------//
 
-    fun clearUser() {
-        _userFlow.value = null
-    }
+
+    // Authentication Methods
+    //-----------------------------------------------------------//
 
     fun loginUser(userId: String) {
         val databaseRef = FirebaseDatabase.getInstance().getReference("users").child(userId)
@@ -58,6 +64,192 @@ object UserManager {
             }
         })
     }
+
+    // not sure if this needs extra functionality
+    fun logoutUser() {
+        clearUser()
+    }
+
+    fun isUserLoggedIn(): Boolean {
+        return _userFlow.value != null
+    }
+
+    fun setUser(user: User) {
+        _userFlow.value = user
+        println(user.userID)
+        startUserSync()
+    }
+
+    fun clearUser() {
+        _userFlow.value = null
+    }
+
+    //-----------------------------------------------------------//
+    // User Property Updates
+    //-----------------------------------------------------------//
+    fun updateUserName(newName: String) {
+        _userFlow.value = _userFlow.value?.copy(name = newName)
+    }
+
+    fun updateCatName(newCatName: String) {
+        _userFlow.value = _userFlow.value?.copy(catName = newCatName)
+    }
+
+    fun updateExperiencePoints(newPoints: String) {
+        _userFlow.value = _userFlow.value?.copy(experiencePoints = newPoints)
+    }
+
+    fun updateBackgroundURI(newURI: String) {
+        _userFlow.value = _userFlow.value?.copy(backgroundURI = newURI)
+    }
+
+    fun updateCatURI(newURI: String) {
+        _userFlow.value = _userFlow.value?.copy(catURI = newURI)
+    }
+
+    fun updateMilkCoins(newCoins: String) {
+        _userFlow.value = _userFlow.value?.copy(milkCoins = newCoins)
+    }
+
+    //-----------------------------------------------------------//
+    // UserRoutine Management
+    //-----------------------------------------------------------//
+
+    fun addUserRoutine(newRoutine: UserRoutine) {
+        _userFlow.value?.let { user ->
+            val updatedRoutines = user.userRoutines + (newRoutine.routineID to newRoutine)
+            _userFlow.value = user.copy(userRoutines = updatedRoutines)
+        }
+    }
+
+    fun removeUserRoutine(routineID: String) {
+        _userFlow.value?.let { user ->
+            val updatedRoutines = user.userRoutines - routineID
+            _userFlow.value = user.copy(userRoutines = updatedRoutines)
+        }
+    }
+
+    //-----------------------------------------------------------//
+    // UserWorkout Management
+    //-----------------------------------------------------------//
+
+    fun addUserWorkout(newWorkout: UserWorkout) {
+        _userFlow.value?.let { user ->
+            val updatedWorkouts = user.userWorkouts + (newWorkout.userWorkoutID to newWorkout)
+            _userFlow.value = user.copy(userWorkouts = updatedWorkouts)
+        }
+    }
+
+    fun removeUserWorkout(workoutID: String) {
+        _userFlow.value?.let { user ->
+            val updatedWorkouts = user.userWorkouts - workoutID
+            _userFlow.value = user.copy(userWorkouts = updatedWorkouts)
+        }
+    }
+
+    //-----------------------------------------------------------//
+    // WorkoutExercise Management
+    //-----------------------------------------------------------//
+    fun addWorkoutExerciseToWorkout(workoutID: String, exercise: WorkoutExercise) {
+        _userFlow.value?.let { user ->
+            val updatedWorkout =
+                user.userWorkouts[workoutID]?.workoutExercises?.plus(exercise.exerciseID to exercise)
+            updatedWorkout?.let {
+                _userFlow.value = user.copy(
+                    userWorkouts = user.userWorkouts + (workoutID to user.userWorkouts[workoutID]!!.copy(
+                        workoutExercises = it
+                    ))
+                )
+            }
+        }
+    }
+
+    fun removeWorkoutExerciseFromWorkout(workoutID: String, exerciseID: String) {
+        _userFlow.value?.let { user ->
+            val updatedWorkout = user.userWorkouts[workoutID]?.workoutExercises?.minus(exerciseID)
+            updatedWorkout?.let {
+                _userFlow.value = user.copy(
+                    userWorkouts = user.userWorkouts + (workoutID to user.userWorkouts[workoutID]!!.copy(
+                        workoutExercises = it
+                    ))
+                )
+            }
+        }
+    }
+
+    //-----------------------------------------------------------//
+    // UserExercise Management
+    //-----------------------------------------------------------//
+    fun addUserExercise(newExercise: Exercise) {
+        _userFlow.value?.let { user ->
+            val updatedExercises = user.userExercises + (newExercise.exerciseID to newExercise)
+            _userFlow.value = user.copy(userExercises = updatedExercises)
+        }
+    }
+
+    fun removeUserExercise(exerciseID: String) {
+        _userFlow.value?.let { user ->
+            val updatedExercises = user.userExercises - exerciseID
+            _userFlow.value = user.copy(userExercises = updatedExercises)
+        }
+    }
+
+    //-----------------------------------------------------------//
+    // UserAchievement Management
+    //-----------------------------------------------------------//
+    fun addUserAchievement(newAchievement: UserAchievement) {
+        _userFlow.value?.let { user ->
+            val updatedAchievements =
+                user.userAchievements + (newAchievement.achievementID to newAchievement)
+            _userFlow.value = user.copy(userAchievements = updatedAchievements)
+        }
+    }
+
+    fun removeUserAchievement(achievementID: String) {
+        _userFlow.value?.let { user ->
+            val updatedAchievements = user.userAchievements - achievementID
+            _userFlow.value = user.copy(userAchievements = updatedAchievements)
+        }
+    }
+
+    //-----------------------------------------------------------//
+    // UserInventory Management
+    //-----------------------------------------------------------//
+    fun addItemToInventory(newItem: Item) {
+        _userFlow.value?.let { user ->
+            val updatedInventory = user.userInventory + (newItem.itemID to newItem)
+            _userFlow.value = user.copy(userInventory = updatedInventory)
+        }
+    }
+
+    fun removeItemFromInventory(itemID: String) {
+        _userFlow.value?.let { user ->
+            val updatedInventory = user.userInventory - itemID
+            _userFlow.value = user.copy(userInventory = updatedInventory)
+        }
+    }
+
+    //-----------------------------------------------------------//
+    // UserBackground Management
+    //-----------------------------------------------------------//
+    fun addUserBackground(newBackground: UserBackground) {
+        _userFlow.value?.let { user ->
+            val updatedBackgrounds =
+                user.userBackgrounds + (newBackground.backgroundID to newBackground)
+            _userFlow.value = user.copy(userBackgrounds = updatedBackgrounds)
+        }
+    }
+
+    fun removeUserBackground(backgroundID: String) {
+        _userFlow.value?.let { user ->
+            val updatedBackgrounds = user.userBackgrounds - backgroundID
+            _userFlow.value = user.copy(userBackgrounds = updatedBackgrounds)
+        }
+    }
+
+    //-----------------------------------------------------------//
+    // Synchronization Methods
+    //-----------------------------------------------------------//
 
     private fun startUserSync() {
         userSyncJob?.cancel()
@@ -90,54 +282,5 @@ object UserManager {
         }
     }
 
-// Update User Properties
-
-    fun updateUserName(newName: String) {
-        _userFlow.value = _userFlow.value?.copy(name = newName)
-    }
-
-    fun updateExperiencePoints(newPoints: String) {
-        _userFlow.value = _userFlow.value?.copy(experiencePoints = newPoints)
-    }
-
-    fun updateCatName(newCatName: String) {
-        _userFlow.value = _userFlow.value?.copy(catName = newCatName)
-    }
-
-    // adding & removing routines
-    fun addUserRoutine(newRoutine: UserRoutine) {
-        _userFlow.value?.let { user ->
-            val updatedRoutines = user.userRoutines + (newRoutine.routineID to newRoutine)
-            _userFlow.value = user.copy(userRoutines = updatedRoutines)
-        }
-    }
-
-    fun removeUserRoutine(routineID: String) {
-        _userFlow.value?.let { user ->
-            val updatedRoutines = user.userRoutines - routineID
-            _userFlow.value = user.copy(userRoutines = updatedRoutines)
-        }
-    }
-    // adding & removing exercises
-
-    fun addUserExercise(newExercise: Exercise) {
-        _userFlow.value?.let { user ->
-            val updatedExercises = user.userExercises + (newExercise.exerciseID to newExercise)
-            _userFlow.value = user.copy(userExercises = updatedExercises)
-        }
-    }
-
-    fun removeUserExercise(exerciseID: String) {
-        _userFlow.value?.let { user ->
-            val updatedExercises = user.userExercises - exerciseID
-            _userFlow.value = user.copy(userExercises = updatedExercises)
-        }
-    }
-
-    fun addItemToInventory(item: Item) {
-        _userFlow.value?.let { user ->
-            val updatedInventory = user.userInventory + (item.itemID to item)
-            _userFlow.value = user.copy(userInventory = updatedInventory)
-        }
-    }
 }
+//------------------------***EOF***-----------------------------//
