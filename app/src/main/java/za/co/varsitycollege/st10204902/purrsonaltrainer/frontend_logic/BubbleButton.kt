@@ -8,6 +8,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 
+//This class is the class that will be used to customize the bubble button component for the different views.
 class BubbleButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
