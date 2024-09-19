@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.BubbleButton
+        android:id="@+id/ssoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bblbtn_combined"
+        android:fontFamily="@font/knicknack_medium"
+        android:paddingVertical="22dp"
+        android:paddingStart="85dp"
+        android:paddingEnd="65dp"
+        android:text="@string/google_sso"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textAllCaps="false"
+        android:elevation="-1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+    android:id="@+id/googleIcon"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:src="@drawable/ic_google"
+    android:contentDescription="Google icon"
+    app:layout_constraintStart_toStartOf="@+id/ssoButton"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="35dp"
+    android:adjustViewBounds="true"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
