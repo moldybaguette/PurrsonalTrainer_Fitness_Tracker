@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "859936099389",
+    "firebase_url": "https://purrsonal-trainer-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "purrsonal-trainer",
+    "storage_bucket": "purrsonal-trainer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:859936099389:android:75d934fe4ae0b8210eee54",
+        "android_client_info": {
+          "package_name": "za.co.varsitycollege.st10204902.purrsonaltrainer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "859936099389-19fcm5qa1m50jqb04hot8jqbjl12oc9m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUXmngOigbibt5zi7jJTCkNCQ2nsL3Dkk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "859936099389-19fcm5qa1m50jqb04hot8jqbjl12oc9m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
