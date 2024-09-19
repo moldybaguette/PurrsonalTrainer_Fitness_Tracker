@@ -3,9 +3,6 @@ package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.shop
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityShopDoorItemsBinding
 
 class ShopDoorItemsActivity : AppCompatActivity() {
