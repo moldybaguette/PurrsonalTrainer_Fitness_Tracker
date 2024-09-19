@@ -13,6 +13,39 @@
         android:theme="@style/Theme.PurrsonalTrainer"
         tools:targetApi="31">
         <activity
+            android:name=".screens.workout_activities.StartWorkoutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.workout_activities.StartEmptyWorkoutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.workout_activities.MadeRoutineActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.workout_activities.CreateRoutineActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.workout_activities.PastWorkoutDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.workout_activities.BusyWorkingOutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.shop.ShopInsideItemsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.shop.ShopDoorItemsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.shop.ShopInsideBackgroundActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.shop.ShopDoorBackgroundActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.login_register.RegisterActivity"
+            android:exported="false" />
+        <activity
             android:name=".screens.settings_activities.BreakdownActivity"
             android:exported="false" />
         <activity
@@ -28,16 +61,10 @@
             android:name=".screens.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".screens.login_register_activities.ProfileSetupActivity"
+            android:name=".screens.login_register.ProfileSetupActivity"
             android:exported="false" />
         <activity
-            android:name=".screens.login_register_activities.RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".screens.login_register_activities.LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".screens.login_register_activities.HomeLoginRegisterActivity"
+            android:name=".screens.login_register.HomeLoginRegisterActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

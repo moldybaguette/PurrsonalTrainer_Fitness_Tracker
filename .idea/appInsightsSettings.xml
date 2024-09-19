@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="za.co.varsitycollege.st10204902.purrsonaltrainer" />
+                  <option name="mobileSdkAppId" value="1:859936099389:android:75d934fe4ae0b8210eee54" />
+                  <option name="projectId" value="purrsonal-trainer" />
+                  <option name="projectNumber" value="859936099389" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

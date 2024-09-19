@@ -1,4 +1,4 @@
-package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.login_register_activities
+package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.login_register
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

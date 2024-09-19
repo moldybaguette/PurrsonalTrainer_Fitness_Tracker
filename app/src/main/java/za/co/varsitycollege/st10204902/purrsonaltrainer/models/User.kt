@@ -1,6 +1,12 @@
 package com.example.example
 
 import com.google.gson.annotations.SerializedName
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Item
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserAchievement
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserBackground
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserWorkout
 
 data class User(
     @SerializedName("user_id") var userID: String = "",

@@ -1,6 +1,7 @@
 package com.example.example
 
 import com.google.gson.annotations.SerializedName
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutExercise
 
 //VITALLY IMPORTANT: The Date field is stored as a string in the format "yyyy-MM-dd'T'HH:mm:ss.SSSSX"
 data class UserWorkout(
