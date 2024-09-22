@@ -1,29 +1,25 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.databaseAPI
 
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
+import android.util.Log
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Item
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.User
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserAchievement
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserBackground
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserWorkout
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutExercise
+import kotlinx.coroutines.tasks.await
+import za.co.valsitycollege.st10204902.purrsonaltrainer.models.*
+
 
 object UserManager {
+    private const val USERS_PATH = "users"
     private val _userFlow = MutableStateFlow<User?>(null)
     val userFlow: StateFlow<User?> = _userFlow.asStateFlow()
 
@@ -32,6 +28,7 @@ object UserManager {
         get() = _userFlow.value
 
     private var userSyncJob: Job? = null
+    val userManagerScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     //-----------------------------------------------------------//
     //                          METHODS                          //
@@ -41,42 +38,40 @@ object UserManager {
     // Authentication Methods
     //-----------------------------------------------------------//
 
-    fun loginUser(userId: String) {
-        val databaseRef = FirebaseDatabase.getInstance().getReference("users").child(userId)
-        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val user = dataSnapshot.getValue(User::class.java)
-                if (user != null) {
-                    setUser(user)
-                    println("User loaded from Firebase and set in UserManager")
-                    println("THE USERS NAME IS: ${user.name}")
-                    println("THE USERS CAT NAME IS: ${user.catName}")
-                    println("THE USERS ID IS: ${user.userID}")
-                } else {
-                    // Handle user not found
-                    println("User not found in Firebase")
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Handle error
-                println("Database error: ${databaseError.message}")
-            }
-        })
+    suspend fun loginUser(userId: String): Result<User> {
+        return try {
+            val databaseRef = FirebaseDatabase.getInstance().getReference(USERS_PATH).child(userId)
+            val dataSnapshot = databaseRef.get().await()
+            val user = dataSnapshot.getValue(User::class.java)
+                ?: throw Exception("User not found in Firebase")
+            setUser(user)
+            Log.d("UserManager", "User set with ID: ${user.userID}")
+            Result.success(user)
+        } catch (e: Exception) {
+            Log.e("UserManager", "Failed to load user: ${e.message}")
+            Result.failure(e)
+        }
     }
 
     // not sure if this needs extra functionality
     fun logoutUser() {
         clearUser()
+        userSyncJob?.cancel()
+        Log.i("UserManager", "User logged out")
     }
 
-    fun isUserLoggedIn(): Boolean {
+    fun userIsLoggedIn(): Boolean {
+        if (_userFlow.value == null) {
+            Log.e("UserManager", "User is not logged in")
+            return false
+        }
         return _userFlow.value != null
+
     }
 
-    fun setUser(user: User) {
-        _userFlow.value = user
+    private fun setUser(user: User) {
         println(user.userID)
+        _userFlow.value = user
         startUserSync()
     }
 
@@ -88,27 +83,59 @@ object UserManager {
     // User Property Updates
     //-----------------------------------------------------------//
     fun updateUserName(newName: String) {
-        _userFlow.value = _userFlow.value?.copy(name = newName)
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                user?.copy(name = newName)
+            }
+            Log.d("UserManager", "User name updated to $newName")
+        }
+        else {
+            Log.e("UserManager", "User is not logged in")
+        }
     }
 
+
     fun updateCatName(newCatName: String) {
-        _userFlow.value = _userFlow.value?.copy(catName = newCatName)
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                user?.copy(catName = newCatName)
+            }
+        }
     }
 
     fun updateExperiencePoints(newPoints: String) {
-        _userFlow.value = _userFlow.value?.copy(experiencePoints = newPoints)
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                user?.copy(experiencePoints = newPoints)
+            }
+        }
     }
+
 
     fun updateBackgroundURI(newURI: String) {
-        _userFlow.value = _userFlow.value?.copy(backgroundURI = newURI)
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                user?.copy(backgroundURI = newURI)
+            }
+        }
     }
+
 
     fun updateCatURI(newURI: String) {
-        _userFlow.value = _userFlow.value?.copy(catURI = newURI)
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                user?.copy(catURI = newURI)
+            }
+        }
     }
 
+
     fun updateMilkCoins(newCoins: String) {
-        _userFlow.value = _userFlow.value?.copy(milkCoins = newCoins)
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                user?.copy(milkCoins = newCoins)
+            }
+        }
     }
 
     //-----------------------------------------------------------//
@@ -116,16 +143,23 @@ object UserManager {
     //-----------------------------------------------------------//
 
     fun addUserRoutine(newRoutine: UserRoutine) {
-        _userFlow.value?.let { user ->
-            val updatedRoutines = user.userRoutines + (newRoutine.routineID to newRoutine)
-            _userFlow.value = user.copy(userRoutines = updatedRoutines)
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                user?.copy(userRoutines = user.userRoutines + (newRoutine.routineID to newRoutine))
+            }
         }
     }
 
+
     fun removeUserRoutine(routineID: String) {
-        _userFlow.value?.let { user ->
-            val updatedRoutines = user.userRoutines - routineID
-            _userFlow.value = user.copy(userRoutines = updatedRoutines)
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                if (user?.userRoutines.isNullOrEmpty()) {
+                    Log.w("UserManager", "User routines are empty or null")
+                    return@update user // Return the user unchanged
+                }
+                user!!.copy(userRoutines = user.userRoutines - (routineID))
+            }
         }
     }
 
@@ -134,45 +168,75 @@ object UserManager {
     //-----------------------------------------------------------//
 
     fun addUserWorkout(newWorkout: UserWorkout) {
-        _userFlow.value?.let { user ->
-            val updatedWorkouts = user.userWorkouts + (newWorkout.userWorkoutID to newWorkout)
-            _userFlow.value = user.copy(userWorkouts = updatedWorkouts)
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                user?.copy(userWorkouts = user.userWorkouts + (newWorkout.workoutID to newWorkout))
+            }
         }
     }
 
     fun removeUserWorkout(workoutID: String) {
-        _userFlow.value?.let { user ->
-            val updatedWorkouts = user.userWorkouts - workoutID
-            _userFlow.value = user.copy(userWorkouts = updatedWorkouts)
+
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                if (user?.userWorkouts.isNullOrEmpty()) {
+                    Log.w("UserManager", "User Workouts are empty or null")
+                    return@update user // Return the user unchanged
+                }
+                user?.copy(userWorkouts = user.userWorkouts - (workoutID))
+            }
         }
     }
 
     //-----------------------------------------------------------//
     // WorkoutExercise Management
     //-----------------------------------------------------------//
-    fun addWorkoutExerciseToWorkout(workoutID: String, exercise: WorkoutExercise) {
-        _userFlow.value?.let { user ->
-            val updatedWorkout =
-                user.userWorkouts[workoutID]?.workoutExercises?.plus(exercise.exerciseID to exercise)
-            updatedWorkout?.let {
-                _userFlow.value = user.copy(
-                    userWorkouts = user.userWorkouts + (workoutID to user.userWorkouts[workoutID]!!.copy(
-                        workoutExercises = it
-                    ))
-                )
+    fun addExerciseToWorkout(workoutID: String, exercise: WorkoutExercise) {
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                user?.let {
+                    val updatedWorkout = it.userWorkouts[workoutID]?.workoutExercises?.plus(
+                        exercise.exerciseID to exercise
+                    )
+                    updatedWorkout?.let { exercises ->
+                        it.copy(
+                            userWorkouts = it.userWorkouts + (
+                                workoutID to it.userWorkouts[workoutID]!!.copy(
+                                    workoutExercises = exercises
+                                )
+                            )
+                        )
+                    } ?: it // Return the original user if no update occurred
+                }
             }
         }
+
     }
 
-    fun removeWorkoutExerciseFromWorkout(workoutID: String, exerciseID: String) {
-        _userFlow.value?.let { user ->
-            val updatedWorkout = user.userWorkouts[workoutID]?.workoutExercises?.minus(exerciseID)
-            updatedWorkout?.let {
-                _userFlow.value = user.copy(
-                    userWorkouts = user.userWorkouts + (workoutID to user.userWorkouts[workoutID]!!.copy(
-                        workoutExercises = it
-                    ))
+
+    fun removeExerciseFromWorkout(workoutID: String, exerciseID: String) {
+        _userFlow.update { user ->
+            val exercises = user?.userWorkouts?.get(workoutID)?.workoutExercises
+            if (exercises.isNullOrEmpty() || !exercises.containsKey(exerciseID)) {
+                Log.w(
+                    "UserManager",
+                    "the workout or doesn't exist or itn doesn't contain the exercise"
                 )
+                return@update user // Return the user unchanged
+            }
+
+            user.let {
+                val updatedWorkout =
+                    it.userWorkouts[workoutID]?.workoutExercises?.minus(exerciseID)
+                updatedWorkout?.let { exercises ->
+                    it.copy(
+                        userWorkouts = it.userWorkouts + (
+                            workoutID to it.userWorkouts[workoutID]!!.copy(
+                                workoutExercises = exercises
+                            )
+                        )
+                    )
+                } ?: it // Return the original user if no update occurred
             }
         }
     }
@@ -181,16 +245,28 @@ object UserManager {
     // UserExercise Management
     //-----------------------------------------------------------//
     fun addUserExercise(newExercise: Exercise) {
-        _userFlow.value?.let { user ->
-            val updatedExercises = user.userExercises + (newExercise.exerciseID to newExercise)
-            _userFlow.value = user.copy(userExercises = updatedExercises)
+        _userFlow.update { user ->
+            user?.let {
+                val updatedExercises = user.userExercises + (newExercise.exerciseID to newExercise)
+                it.copy(userExercises = updatedExercises)
+            }
         }
     }
 
     fun removeUserExercise(exerciseID: String) {
-        _userFlow.value?.let { user ->
-            val updatedExercises = user.userExercises - exerciseID
-            _userFlow.value = user.copy(userExercises = updatedExercises)
+        _userFlow.update { user ->
+            val exercises = user?.userExercises
+            if (exercises.isNullOrEmpty() || !exercises.containsKey(exerciseID)) {
+                Log.w(
+                    "UserManager",
+                    "user exercises are either empty or the exercise doesn't exist"
+                )
+                return@update user // Return the user unchanged
+            }
+            user.let {
+                val updatedExercises = user.userExercises - (exerciseID)
+                it.copy(userExercises = updatedExercises)
+            }
         }
     }
 
@@ -198,17 +274,30 @@ object UserManager {
     // UserAchievement Management
     //-----------------------------------------------------------//
     fun addUserAchievement(newAchievement: UserAchievement) {
-        _userFlow.value?.let { user ->
-            val updatedAchievements =
-                user.userAchievements + (newAchievement.achievementID to newAchievement)
-            _userFlow.value = user.copy(userAchievements = updatedAchievements)
+        _userFlow.update { user ->
+            user?.let {
+                val updatedAchievements =
+                    user.userAchievements + (newAchievement.achievementID to newAchievement)
+                it.copy(userAchievements = updatedAchievements)
+            }
         }
     }
 
     fun removeUserAchievement(achievementID: String) {
-        _userFlow.value?.let { user ->
-            val updatedAchievements = user.userAchievements - achievementID
-            _userFlow.value = user.copy(userAchievements = updatedAchievements)
+        _userFlow.update { user ->
+            val achievements = user?.userAchievements
+            if (achievements.isNullOrEmpty() || !achievements.containsKey(achievementID)) {
+                Log.w(
+                    "UserManager",
+                    "User Achievement are empty or null or the achievement doesn't exist"
+                )
+                return@update user // Return the user unchanged
+            }
+            user.let {
+                val updatedAchievements =
+                    user.userAchievements + (achievementID to user.userAchievements[achievementID]!!)
+                it.copy(userAchievements = updatedAchievements)
+            }
         }
     }
 
@@ -216,16 +305,25 @@ object UserManager {
     // UserInventory Management
     //-----------------------------------------------------------//
     fun addItemToInventory(newItem: Item) {
-        _userFlow.value?.let { user ->
-            val updatedInventory = user.userInventory + (newItem.itemID to newItem)
-            _userFlow.value = user.copy(userInventory = updatedInventory)
+        _userFlow.update { user ->
+            user?.let {
+                val updatedInventory = user.userInventory + (newItem.itemID to newItem)
+                it.copy(userInventory = updatedInventory)
+            }
         }
     }
 
     fun removeItemFromInventory(itemID: String) {
-        _userFlow.value?.let { user ->
-            val updatedInventory = user.userInventory - itemID
-            _userFlow.value = user.copy(userInventory = updatedInventory)
+        _userFlow.update { user ->
+            val inventory = user?.userInventory
+            if (inventory.isNullOrEmpty() || !inventory.containsKey(itemID)) {
+                Log.w("UserManager", "User Inventory is empty or the item doesn't exist")
+                return@update user // Return the user unchanged
+            }
+            user.let {
+                val updatedInventory = user.userInventory - (itemID)
+                it.copy(userInventory = updatedInventory)
+            }
         }
     }
 
@@ -233,17 +331,26 @@ object UserManager {
     // UserBackground Management
     //-----------------------------------------------------------//
     fun addUserBackground(newBackground: UserBackground) {
-        _userFlow.value?.let { user ->
-            val updatedBackgrounds =
-                user.userBackgrounds + (newBackground.backgroundID to newBackground)
-            _userFlow.value = user.copy(userBackgrounds = updatedBackgrounds)
+        _userFlow.update { user ->
+            user?.let {
+                val updatedBackgrounds =
+                    user.userBackgrounds + (newBackground.backgroundID to newBackground)
+                it.copy(userBackgrounds = updatedBackgrounds)
+            }
         }
     }
 
     fun removeUserBackground(backgroundID: String) {
-        _userFlow.value?.let { user ->
-            val updatedBackgrounds = user.userBackgrounds - backgroundID
-            _userFlow.value = user.copy(userBackgrounds = updatedBackgrounds)
+        _userFlow.update { user ->
+            val backgrounds = user?.userBackgrounds
+            if (backgrounds.isNullOrEmpty() || !backgrounds.containsKey(backgroundID)) {
+                Log.w("UserManager", "User Backgrounds are empty or the background doesn't exist")
+                return@update user // Return the user unchanged
+            }
+            user.let {
+                val updatedBackgrounds = user.userBackgrounds - (backgroundID)
+                it.copy(userBackgrounds = updatedBackgrounds)
+            }
         }
     }
 
@@ -253,34 +360,36 @@ object UserManager {
 
     private fun startUserSync() {
         userSyncJob?.cancel()
-        userSyncJob = CoroutineScope(Dispatchers.IO).launch {
-            _userFlow
-                .filterNotNull()
-                .debounce(500) // Debounce to prevent too frequent updates
-                .collectLatest { user ->
-                    println("UserManager: Detected user change, synchronizing with Firebase")
-                    synchronizeUserWithFirebase(user)
+        userSyncJob = userManagerScope.launch {
+            _userFlow.filterNotNull().debounce(300).collectLatest { user ->
+                Log.d("UserManager", "Detected user change, synchronizing with Firebase")
+                val result = synchronizeUserWithFirebase(user)
+                result.onFailure { exception ->
+                    Log.e("UserManager", "Failed to synchronize user data: ${exception.message}")
                 }
+
+            }
         }
     }
 
-    private fun synchronizeUserWithFirebase(user: User) {
-        val userId = user.userID
-        if (userId.isNotEmpty()) {
-            val databaseRef = FirebaseDatabase.getInstance().getReference("users").child(userId)
-            databaseRef.setValue(user)
-                .addOnSuccessListener {
-                    // Data successfully written
-                    println("UserManager: User data synchronized with Firebase")
-                }
-                .addOnFailureListener { exception ->
-                    // Handle failure
-                    println("UserManager: Failed to synchronize user data: ${exception.message}")
-                }
-        } else {
-            println("UserManager: User ID is empty, cannot synchronize")
+    private suspend fun synchronizeUserWithFirebase(user: User): Result<Unit> {
+        return try {
+            val userId = user.userID
+            if (userId.isNotEmpty()) {
+                val databaseRef =
+                    FirebaseDatabase.getInstance().getReference(USERS_PATH).child(userId)
+                databaseRef.setValue(user).await()
+                Log.d("UserManager", "User data synchronized with Firebase")
+                Result.success(Unit)
+            } else {
+                val exception = Exception("User ID is empty, cannot synchronize")
+                Log.e("UserManager", exception.message ?: "")
+                Result.failure(exception)
+            }
+        } catch (e: Exception) {
+            Log.e("UserManager", "Failed to synchronize user data: ${e.message}")
+            Result.failure(e)
         }
     }
-
 }
 //------------------------***EOF***-----------------------------//
