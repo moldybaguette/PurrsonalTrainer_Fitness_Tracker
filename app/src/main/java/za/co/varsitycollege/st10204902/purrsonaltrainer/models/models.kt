@@ -1,249 +1,87 @@
-package za.co.varsitycollege.st10204902.purrsonaltrainer.models
+package za.co.valsitycollege.st10204902.purrsonaltrainer.models
 
 import com.google.firebase.database.IgnoreExtraProperties
-import com.google.firebase.database.PropertyName
-
 // Item class for representing items in the shop
 @IgnoreExtraProperties
 data class Item(
-    @get:PropertyName("item_id")
-    @set:PropertyName("item_id")
-    var itemID: String = "",
-
-    @get:PropertyName("Name")
-    @set:PropertyName("Name")
-    var name: String = "",
-
-    @get:PropertyName("Description")
-    @set:PropertyName("Description")
-    var description: String = "",
-
-    @get:PropertyName("Cost")
-    @set:PropertyName("Cost")
-    var cost: Int = 0,
-
-    @get:PropertyName("ItemURI")
-    @set:PropertyName("ItemURI")
-    var itemURI: String = ""
-) {
-    constructor() : this("", "", "", 0, "")
-}
+    val itemID: String = "",
+    val name: String = "",
+    val description: String = "",
+    val cost: Int = 0,
+    val itemURI: String = ""
+)
 
 // User class representing a user and their related data
 @IgnoreExtraProperties
 data class User(
-    @get:PropertyName("userID")
-    @set:PropertyName("userID")
-    var userID: String = "",
+    val userID: String = "",
+    val name: String = "",
+    val catName: String = "",
+    val milkCoins: String = "",
+    val experiencePoints: String = "",
+    val backgroundURI: String = "",
+    val catURI: String = "",
+    val userRoutines: Map<String, UserRoutine> = emptyMap(),
+    val userWorkouts: Map<String, UserWorkout> = emptyMap(),
+    val userExercises: Map<String, Exercise> = emptyMap(),
+    val userAchievements: Map<String, UserAchievement> = emptyMap(),
+    val userBackgrounds: Map<String, UserBackground> = emptyMap(),
+    val userInventory: Map<String, Item> = emptyMap()
+)
 
-    @get:PropertyName("Name")
-    @set:PropertyName("Name")
-    var name: String = "",
-
-    @get:PropertyName("CatName")
-    @set:PropertyName("CatName")
-    var catName: String = "",
-
-    @get:PropertyName("MilkCoins")
-    @set:PropertyName("MilkCoins")
-    var milkCoins: String = "",
-
-    @get:PropertyName("ExperiencePoints")
-    @set:PropertyName("ExperiencePoints")
-    var experiencePoints: String = "",
-
-    @get:PropertyName("BackgroundURI")
-    @set:PropertyName("BackgroundURI")
-    var backgroundURI: String = "",
-
-    @get:PropertyName("CatURI")
-    @set:PropertyName("CatURI")
-    var catURI: String = "",
-
-    @get:PropertyName("UserRoutines")
-    @set:PropertyName("UserRoutines")
-    var userRoutines: Map<String, UserRoutine> = emptyMap(),
-
-    @get:PropertyName("UserWorkouts")
-    @set:PropertyName("UserWorkouts")
-    var userWorkouts: Map<String, UserWorkout> = emptyMap(),
-
-    @get:PropertyName("UserExercises")
-    @set:PropertyName("UserExercises")
-    var userExercises: Map<String, Exercise> = emptyMap(),
-
-    @get:PropertyName("UserAchievements")
-    @set:PropertyName("UserAchievements")
-    var userAchievements: Map<String, UserAchievement> = emptyMap(),
-
-    @get:PropertyName("UserInventory")
-    @set:PropertyName("UserInventory")
-    var userInventory: Map<String, Item> = emptyMap(),
-
-    @get:PropertyName("UserBackgrounds")
-    @set:PropertyName("UserBackgrounds")
-    var userBackgrounds: Map<String, UserBackground> = emptyMap()
-) {
-    // Empty constructor for Firebase deserialization
-    constructor() : this(
-        userID = "",
-        name = "",
-        catName = "",
-        milkCoins = "",
-        experiencePoints = "",
-        backgroundURI = "",
-        catURI = "",
-        userRoutines = emptyMap(),
-        userWorkouts = emptyMap(),
-        userExercises = emptyMap(),
-        userAchievements = emptyMap(),
-        userInventory = emptyMap(),
-        userBackgrounds = emptyMap()
-    )
-}
-
-// UserAchievement class representing unlocked achievements
-@IgnoreExtraProperties
-data class UserAchievement(
-    @get:PropertyName("AchievementID")
-    @set:PropertyName("AchievementID")
-    var achievementID: String = "",
-
-    @get:PropertyName("Name")
-    @set:PropertyName("Name")
-    var name: String = "",
-
-    @get:PropertyName("CatImageURI")
-    @set:PropertyName("CatImageURI")
-    var catImageURI: String = "",
-
-    @get:PropertyName("CatFact")
-    @set:PropertyName("CatFact")
-    var catFact: String = ""
-) {
-    constructor() : this("", "", "", "")
-}
-
-// UserRoutine class representing workout routines
-@IgnoreExtraProperties
-data class UserRoutine(
-    @get:PropertyName("routineID")
-    @set:PropertyName("routineID")
-    var routineID: String = "",
-
-    @get:PropertyName("Name")
-    @set:PropertyName("Name")
-    var name: String = "",
-
-    @get:PropertyName("Exercises")
-    @set:PropertyName("Exercises")
-    var exercises: Map<String, Exercise> = emptyMap()
-) {
-    constructor() : this("", "", emptyMap())
-}
-
-
-// UserWorkout class representing individual workouts
-@IgnoreExtraProperties
-data class UserWorkout(
-    @get:PropertyName("userWorkoutID")
-    @set:PropertyName("userWorkoutID")
-    var userWorkoutID: String = "",
-
-    @get:PropertyName("StartDateTime")
-    @set:PropertyName("StartDateTime")
-    var start: String = "",
-
-    @get:PropertyName("EndDateTime")
-    @set:PropertyName("EndDateTime")
-    var end: String = "",
-
-    @get:PropertyName("RoutineID")
-    @set:PropertyName("RoutineID")
-    var routineID: String = "",
-
-    @get:PropertyName("WorkoutExercises")
-    @set:PropertyName("WorkoutExercises")
-    var workoutExercises: Map<String, WorkoutExercise> = emptyMap()
-) {
-    constructor() : this("", "", "", "", emptyMap())
-}
-
-// WorkoutExercise class representing individual exercises performed during a workout
+// WorkoutExercise class representing an exercise during a workout
 @IgnoreExtraProperties
 data class WorkoutExercise(
-    @get:PropertyName("exerciseID")
-    @set:PropertyName("exerciseID")
-    var exerciseID: String = "",
-
-    @get:PropertyName("ExerciseName")
-    @set:PropertyName("ExerciseName")
-    var exerciseName: String = "",
-
-    @get:PropertyName("Category")
-    @set:PropertyName("Category")
-    var category: String = "",
-
-    @get:PropertyName("Weight(kg)")
-    @set:PropertyName("Weight(kg)")
-    var weight: Int? = 0,
-
-    @get:PropertyName("Reps")
-    @set:PropertyName("Reps")
-    var reps: Int? = 0,
-
-    @get:PropertyName("Distance")
-    @set:PropertyName("Distance")
-    var distance: Int? = 0,
-
-    @get:PropertyName("DurationSeconds")
-    @set:PropertyName("DurationSeconds")
-    var durationSeconds: Int? = 0,
-
-    @get:PropertyName("Notes")
-    @set:PropertyName("Notes")
-    var notes: String = ""
-) {
-    constructor() : this("", "", "", 0, 0, 0, 0, "")
-}
+    val exerciseID: String = "",
+    val exerciseName: String = "",
+    val category: String = "",
+    val weight: Int? = 0,
+    val reps: Int? = 0,
+    val distance: Int? = 0,
+    val durationSeconds: Int? = 0,
+    val notes: String = ""
+)
 
 // Exercise class for storing default and custom exercises
 @IgnoreExtraProperties
 data class Exercise(
-    @get:PropertyName("exercise_id")
-    @set:PropertyName("exercise_id")
-    var exerciseID: String = "",
-
-    @get:PropertyName("ExerciseName")
-    @set:PropertyName("ExerciseName")
-    var exerciseName: String = "",
-
-    @get:PropertyName("Category")
-    @set:PropertyName("Category")
-    var category: String = "",
-
-    @get:PropertyName("Notes")
-    @set:PropertyName("Notes")
-    var notes: String = ""
-) {
-    constructor() : this("", "", "", "")
-}
+    val exerciseID: String = "",
+    val exerciseName: String = "",
+    val category: String = "",
+    val notes: String = ""
+)
 
 // UserBackground class for representing user backgrounds
 @IgnoreExtraProperties
 data class UserBackground(
-    @get:PropertyName("BackgroundID")
-    @set:PropertyName("BackgroundID")
-    var backgroundID: String = "",
+    val backgroundID: String = "",
+    val name: String = "",
+    val backgroundURI: String = ""
+)
 
-    @get:PropertyName("Name")
-    @set:PropertyName("Name")
-    var name: String = "",
+// UserRoutine class representing a user's routine
+@IgnoreExtraProperties
+data class UserRoutine(
+    val routineID: String = "",
+    val name: String = "",
+    val description: String = "",
+    val exercises: Map<String, Exercise> = emptyMap()
+)
 
-    @get:PropertyName("BackgroundURI")
-    @set:PropertyName("BackgroundURI")
-    var backgroundURI: String = ""
-) {
-    constructor() : this("", "", "")
-}
+// UserWorkout class representing a workout within a routine
+@IgnoreExtraProperties
+data class UserWorkout(
+    val workoutID: String = "",
+    val name: String = "",
+    val workoutExercises: Map<String, WorkoutExercise> = emptyMap(),
+    val durationSeconds: Int = 0
+)
 
+// UserAchievement class representing a user's achievement
+@IgnoreExtraProperties
+data class UserAchievement(
+    val achievementID: String = "",
+    val name: String = "",
+    val description: String = "",
+    val dateAchieved: String = ""
+)
