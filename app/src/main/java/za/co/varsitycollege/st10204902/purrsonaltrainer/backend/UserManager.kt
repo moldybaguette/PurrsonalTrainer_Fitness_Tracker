@@ -15,10 +15,15 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import za.co.valsitycollege.st10204902.purrsonaltrainer.models.*
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.*
 
 
 object UserManager {
+
+    //                          PROPERTIES                       //
+    //-----------------------------------------------------------//
+
+
     private const val USERS_PATH = "users"
     private val _userFlow = MutableStateFlow<User?>(null)
     val userFlow: StateFlow<User?> = _userFlow.asStateFlow()
@@ -395,6 +400,6 @@ object UserManager {
     private fun clearUser() {
         _userFlow.value = null
     }
-
+    //-----------------------------------------------------------//
 }
 //------------------------***EOF***-----------------------------//
