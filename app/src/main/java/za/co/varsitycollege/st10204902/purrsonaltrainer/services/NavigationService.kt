@@ -6,7 +6,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 
-//------------------------------------------navigateTo()------------------------------------------//
+//-----------------------------------------------------------//
+//                          METHODS                          //
+//-----------------------------------------------------------//
+
 /**
  * Navigates to a new activity
  * If you have no data. Simply call this method with two arguments.
@@ -29,4 +32,4 @@ public fun navigateTo(context: Context, activityToOpen: Class<*>, dataToPass: Bu
     // starting the new activity
     context.startActivity(intent)
 }
-//....................................._____End of File_____......................................//
+//------------------------***EOF***-----------------------------//
