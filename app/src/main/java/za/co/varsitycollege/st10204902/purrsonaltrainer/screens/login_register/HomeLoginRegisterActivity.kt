@@ -10,6 +10,7 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
     // THIS IS THE FIRST PAGE IN UI FLOW
     private lateinit var binding: ActivityHomeBinding
 
+    //TODO Check that the multiple button logic works, need to implement the navigation to check that this logic works.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_login_register)
