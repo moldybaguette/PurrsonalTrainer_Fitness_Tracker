@@ -1,10 +1,12 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.models
 
 import com.google.firebase.database.IgnoreExtraProperties
+import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.CreateID
+
 // Item class for representing items in the shop
 @IgnoreExtraProperties
 data class Item(
-    val itemID: String = "",
+    val itemID: String = CreateID.GenerateID(),
     val name: String = "",
     val description: String = "",
     val cost: Int = 0,
@@ -32,7 +34,7 @@ data class User(
 // WorkoutExercise class representing an exercise during a workout
 @IgnoreExtraProperties
 data class WorkoutExercise(
-    val exerciseID: String = "",
+    val exerciseID: String = CreateID.GenerateID(),
     val exerciseName: String = "",
     val category: String = "",
     val weight: Int? = 0,
@@ -45,7 +47,7 @@ data class WorkoutExercise(
 // Exercise class for storing default and custom exercises
 @IgnoreExtraProperties
 data class Exercise(
-    val exerciseID: String = "",
+    val exerciseID: String = CreateID.GenerateID(),
     val exerciseName: String = "",
     val category: String = "",
     val notes: String = ""
@@ -54,7 +56,7 @@ data class Exercise(
 // UserBackground class for representing user backgrounds
 @IgnoreExtraProperties
 data class UserBackground(
-    val backgroundID: String = "",
+    val backgroundID: String = CreateID.GenerateID(),
     val name: String = "",
     val backgroundURI: String = ""
 )
@@ -62,7 +64,7 @@ data class UserBackground(
 // UserRoutine class representing a user's routine
 @IgnoreExtraProperties
 data class UserRoutine(
-    val routineID: String = "",
+    val routineID: String = CreateID.GenerateID(),
     val name: String = "",
     val description: String = "",
     val exercises: Map<String, Exercise> = emptyMap()
@@ -71,7 +73,7 @@ data class UserRoutine(
 // UserWorkout class representing a workout within a routine
 @IgnoreExtraProperties
 data class UserWorkout(
-    val workoutID: String = "",
+    val workoutID: String = CreateID.GenerateID(),
     val name: String = "",
     val workoutExercises: Map<String, WorkoutExercise> = emptyMap(),
     val durationSeconds: Int = 0
@@ -80,7 +82,7 @@ data class UserWorkout(
 // UserAchievement class representing a user's achievement
 @IgnoreExtraProperties
 data class UserAchievement(
-    val achievementID: String = "",
+    val achievementID: String = CreateID.GenerateID(),
     val name: String = "",
     val description: String = "",
     val dateAchieved: String = ""
