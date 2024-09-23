@@ -30,26 +30,53 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="125dp"/>
+        android:layout_marginTop="80dp"/>
 
-   <Button
-       android:id="@+id/loginButton"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       app:layout_constraintTop_toBottomOf="@id/appLogo"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintEnd_toEndOf="parent"
-       android:text="Login"
-       android:textSize="60sp"/>
-
-    <Button
-        android:id="@+id/registerButton"
+    <ImageView
+        android:id="@+id/loginButton"
+        android:layout_width="280dp"
+        android:layout_height="120dp"
+        android:layout_marginHorizontal="10dp"
+        android:background="@drawable/svg_orange_bblbtn"
+        android:textSize="60sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appLogo"
+        android:layout_marginTop="15dp"/>
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/loginButton"
-        app:layout_constraintStart_toStartOf="parent"
+        android:fontFamily="@font/knicknack_medium"
+        android:text="@string/login"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/loginButton"
+        app:layout_constraintEnd_toEndOf="@id/loginButton"
+        app:layout_constraintTop_toTopOf="@id/loginButton"
+        android:layout_marginTop="10dp"
+        android:textSize="60sp"/>
+
+
+    <ImageView
+        android:id="@+id/registerButton"
+        android:layout_width="350dp"
+        android:layout_height="130dp"
+        android:layout_marginHorizontal="10dp"
+        android:background="@drawable/svg_purple_bblbtn"
+        android:textSize="60sp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="Register"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loginButton"
+        android:layout_marginTop="15dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/knicknack_medium"
+        android:text="@string/register"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/registerButton"
+        app:layout_constraintEnd_toEndOf="@id/registerButton"
+        app:layout_constraintTop_toTopOf="@id/registerButton"
+        android:layout_marginTop="17dp"
         android:textSize="60sp"/>
 
     <Button
@@ -69,8 +96,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:visibility="gone"
-        android:background="@drawable/login_popup"/>
+        android:visibility="gone"/>
 
     <View
         android:id="@+id/loginDismissArea"
