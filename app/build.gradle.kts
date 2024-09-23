@@ -57,4 +57,22 @@ dependencies {
 
     // Use Firebase BOM for managing Firebase dependencies
     implementation(platform("com.google.firebase:firebase-bom:31.5.0"))
+
+    //Test Implementations
+    //JUnit5
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.engine)
+
+    //MockK for mocking
+    testImplementation(libs.mockk)
+
+    //Truth for assertions
+    testImplementation(libs.truth)
+
+    //RoboElectric for testing Components on JVM
+    testImplementation(libs.robolectric)
+
+    //Coroutines
+    testImplementation (libs.kotlinx.coroutines.test)
+
 }
