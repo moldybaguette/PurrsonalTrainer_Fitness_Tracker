@@ -62,7 +62,7 @@ object UserManager {
 
     fun userIsLoggedIn(): Boolean {
         if (_userFlow.value == null) {
-            Log.e("UserManager", "User is not logged in")
+            Log.i("UserManager", "User is not logged in")
             return false
         }
         return _userFlow.value != null
@@ -75,7 +75,7 @@ object UserManager {
         startUserSync()
     }
 
-    fun clearUser() {
+    private fun clearUser() {
         _userFlow.value = null
     }
 
@@ -162,7 +162,7 @@ object UserManager {
             }
         }
     }
-
+//todo make update methods
     //-----------------------------------------------------------//
     // UserWorkout Management
     //-----------------------------------------------------------//
@@ -210,7 +210,6 @@ object UserManager {
                 }
             }
         }
-
     }
 
 
