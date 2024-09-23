@@ -7,4 +7,9 @@
         <attr name="strokeColor" format="color" />
         <attr name="strokeWidth" format="dimension" />
     </declare-styleable>
+
+        <declare-styleable name="BubbleButton">
+            <attr name="buttonText" format="string" />
+        </declare-styleable>
 </resources>
+

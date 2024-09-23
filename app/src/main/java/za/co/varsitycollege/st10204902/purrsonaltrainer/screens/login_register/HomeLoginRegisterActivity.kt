@@ -5,11 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Button
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityHomeBinding
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityHomeLoginRegisterBinding
 import za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.BubbleButton
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
 class HomeLoginRegisterActivity : AppCompatActivity() {
     // THIS IS THE FIRST PAGE IN UI FLOW
@@ -27,6 +31,14 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
 
         // Apply login fragment before hand
         populateLoginFragment()
+
+
+        val registerButton: Button = findViewById(R.id.registerButton)
+        registerButton.setOnClickListener {
+            // Add your navigation logic here
+            // For example, navigate to the RegisterActivity
+            navigateTo(this, RegisterActivity::class.java, null)
+        }
 
         // Binding show and dismiss popup for login
         binding.loginButton.setOnClickListener { showLoginPopup() }

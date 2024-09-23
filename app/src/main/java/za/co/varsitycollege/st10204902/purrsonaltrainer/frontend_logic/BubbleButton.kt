@@ -8,7 +8,6 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 
-//This class is the class that will be used to customize the bubble button component for the different views.
 class BubbleButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -18,25 +17,39 @@ class BubbleButton @JvmOverloads constructor(
     init {
         // Set the base drawable as the background
         background = ContextCompat.getDrawable(context, R.drawable.bblbtn_combined)
+
+        // Obtain custom attributes
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.BubbleButton,
+            0, 0
+        ).apply {
+            try {
+                val startColor = getColor(R.styleable.GradientTextView_startColor, ContextCompat.getColor(context, R.color.default_start_color))
+                val endColor = getColor(R.styleable.GradientTextView_endColor, ContextCompat.getColor(context, R.color.default_end_color))
+                val buttonText = getString(R.styleable.BubbleButton_buttonText) ?: ""
+
+                setButtonProperties(startColor, endColor, buttonText)
+            } finally {
+                recycle()
+            }
+        }
     }
 
     /**
      * Set the gradient background and text for the button.
      *
-     * @param startColorRes The resource ID of the start color for the gradient.
-     * @param endColorRes The resource ID of the end color for the gradient.
-     * @param textRes The resource ID of the text to be set on the button.
+     * @param startColor The start color for the gradient.
+     * @param endColor The end color for the gradient.
+     * @param text The text to be set on the button.
      */
-    fun setButtonProperties(startColorRes: Int, endColorRes: Int, textRes: Int) {
+    fun setButtonProperties(startColor: Int, endColor: Int, text: String) {
         // Get the base drawable and modify its gradient
         val layerDrawable = background as LayerDrawable
         val gradientDrawable = layerDrawable.getDrawable(0) as GradientDrawable
-        gradientDrawable.colors = intArrayOf(
-            ContextCompat.getColor(context, startColorRes),
-            ContextCompat.getColor(context, endColorRes)
-        )
+        gradientDrawable.colors = intArrayOf(startColor, endColor)
 
         // Set the text
-        setText(textRes)
+        setText(text)
     }
 }
