@@ -3,6 +3,9 @@
     <!-- Extracted names -->
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string name="username">Username</string>
+    <string name="google_sso">Login with Google</string>
+
 
 
     <!-- TODO: Remove or change this placeholder text -->

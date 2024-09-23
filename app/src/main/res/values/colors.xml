@@ -2,10 +2,17 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Landing Colour Palette Start -->
     <color name="login_orange">#FF562F</color>
     <color name="login_yellow_gradient">#FED070</color>
     <color name="register_purple">#8A7DC0</color>
     <color name="register_purple_gradient">#B6ABE3</color>
+    <color name="hint_text">#9E9E9E</color>
+    <color name="input_text">#8D8D8D</color>
+    <color name="sso_gradient_start">#E3E3E3</color>
+    <color name="sso_gradient_end">#8B8B8B</color>
+    <color name="transparent">#00000000</color>
 
     <!-- Color Palette Start -->
     <color name="deep_cyan_blue">#1E97BA</color>
