@@ -95,7 +95,7 @@
                 android:id="@+id/passwordInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
+                android:inputType="textPassword"
                 android:layout_marginTop="0dp"
                 android:background="@drawable/userinput_design"
                 android:textSize="60sp"/>
@@ -114,7 +114,7 @@
                 android:id="@+id/passwordConfirmInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
+                android:inputType="textPassword"
                 android:layout_marginTop="0dp"
                 android:background="@drawable/userinput_design"
                 android:textSize="60sp"/>
