@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityMainBinding
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.login_register.HomeLoginRegisterActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.login_register.HomeLoginRegisterActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
@@ -21,6 +22,6 @@ class MainActivity : AppCompatActivity() {
         Log.d("MainActivity", "testing")
 
         // Temporary navigation to Home Activity
-        navigateTo(this, HomeActivity::class.java, null)
+        navigateTo(this, HomeLoginRegisterActivity::class.java, null)
     }
 }
