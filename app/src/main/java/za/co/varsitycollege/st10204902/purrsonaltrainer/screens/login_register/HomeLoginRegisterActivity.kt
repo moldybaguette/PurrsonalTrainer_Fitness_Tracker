@@ -1,6 +1,5 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.login_register
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -51,4 +50,3 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
         }
     }
 }
-
