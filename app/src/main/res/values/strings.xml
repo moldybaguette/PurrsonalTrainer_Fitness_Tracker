@@ -15,6 +15,11 @@
     <string name="home">Home</string>
 
     <string name="routines">Routines</string>
+    <string name="yourRoutines">Your Routines</string>
+    <string name="newRoutine">New Routine</string>
+    <string name="quickStart">Quick Start</string>
+    <string name="workout">Workout</string>
+    <string name="startEmptyWorkout">Start Empty Workout</string>
 
 
 

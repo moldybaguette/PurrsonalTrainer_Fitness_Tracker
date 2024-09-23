@@ -27,14 +27,11 @@
         android:fontFamily="@font/knicknack_black"
         android:textSize="60sp"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="40dp"
         app:startColor="@color/home_start_color"
         app:endColor="@color/home_end_color"
         app:strokeColor="@color/default_stroke_color"
         app:strokeWidth="15dp"/>
-
-
-
 
    <androidx.appcompat.widget.AppCompatImageButton
     android:id="@+id/add_button"
@@ -44,21 +41,21 @@
     app:layout_constraintEnd_toEndOf="parent"
     android:src="@drawable/isco_add"
     android:background="@drawable/btn_topright"
-    android:padding="10dp"
+    android:padding="12dp"
     android:scaleType="centerInside"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="35dp"
     android:layout_marginEnd="10dp"/>
 
    <androidx.appcompat.widget.AppCompatImageButton
        android:id="@+id/search_button"
        android:layout_width="50dp"
     android:layout_height="50dp"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="35dp"
     android:layout_marginEnd="10dp"
     android:background="@drawable/btn_topright"
     android:scaleType="centerInside"
     android:src="@drawable/ico_search"
-       android:padding="10dp"
+       android:padding="15dp"
     app:layout_constraintEnd_toStartOf="@id/add_button"
     app:layout_constraintTop_toTopOf="parent" />
 

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityMainBinding
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.login_register.HomeLoginRegisterActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -19,6 +20,6 @@ class MainActivity : AppCompatActivity() {
         Log.d("MainActivity", "testing")
 
         // Temporary navigation to Home Activity
-        navigateTo(this, HomeLoginRegisterActivity::class.java, null)
+        navigateTo(this, HomeActivity::class.java, null)
     }
 }
