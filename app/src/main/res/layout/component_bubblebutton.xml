@@ -13,13 +13,13 @@
         android:contentDescription="Shine effect"
         android:elevation="10dp"
         android:padding="25dp"
-        app:layout_constraintTop_toTopOf="@id/loginButton"
-        app:layout_constraintBottom_toBottomOf="@id/loginButton"
-        app:layout_constraintStart_toStartOf="@id/loginButton"
-        app:layout_constraintEnd_toEndOf="@id/loginButton" />
+        app:layout_constraintTop_toTopOf="@id/bblButton"
+        app:layout_constraintBottom_toBottomOf="@id/bblButton"
+        app:layout_constraintStart_toStartOf="@id/bblButton"
+        app:layout_constraintEnd_toEndOf="@id/bblButton" />
 
     <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.BubbleButton
-        android:id="@+id/loginButton"
+        android:id="@+id/bblButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bblbtn_combined"
@@ -27,7 +27,7 @@
         android:paddingVertical="22dp"
         android:paddingLeft="75dp"
         android:paddingRight="75dp"
-        android:text="@string/login"
+        android:text="Login"
         android:textColor="@color/white"
         android:textSize="50sp"
         android:textAllCaps="false"
