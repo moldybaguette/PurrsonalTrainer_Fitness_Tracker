@@ -1,4 +1,4 @@
-package za.co.valsitycollege.st10204902.purrsonaltrainer.models
+package za.co.varsitycollege.st10204902.purrsonaltrainer.models
 
 import com.google.firebase.database.IgnoreExtraProperties
 // Item class for representing items in the shop
