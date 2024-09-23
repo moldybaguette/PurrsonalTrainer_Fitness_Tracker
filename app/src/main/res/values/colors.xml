@@ -47,4 +47,7 @@
     <!-- Gradient Color Palette Routines View-->
     <color name="routine_start_color">#FFBF8B</color>
     <color name="routine_end_color">#E37F2D</color>
+
+    <!-- Login Color Palette -->
+    <color name="login_popup_background">#F9F9F9</color>
 </resources>
