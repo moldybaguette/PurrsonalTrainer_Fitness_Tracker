@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import za.co.valsitycollege.st10204902.purrsonaltrainer.models.*
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.*
 
 
 object UserManager {
