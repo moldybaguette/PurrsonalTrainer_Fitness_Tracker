@@ -17,9 +17,17 @@
     <string name="routines">Routines</string>
     <string name="yourRoutines">Your Routines</string>
     <string name="newRoutine">New Routine</string>
+<string name="untitledRoutine">Untitled Routine</string>
+    <string name="routineDetails">Routine Details</string>
     <string name="quickStart">Quick Start</string>
     <string name="workout">Workout</string>
     <string name="startEmptyWorkout">Start Empty Workout</string>
+    <string name="colour">Colour</string>
+    <string name="notes">Notes</string>
+    <string name="addExercises">Add Exercises</string>
+    <string name="addExercise">Add Exercise</string>
+    <string name="done">Done</string>
+
 
 
 
