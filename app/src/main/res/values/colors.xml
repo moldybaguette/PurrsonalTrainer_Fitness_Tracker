@@ -28,4 +28,17 @@
     <color name="bright_coral">#FF562F</color>
     <color name="light_peach_pink">#FFC1C6</color>
     <!-- Color Palette End -->
+
+    <!-- Gradient Color Palette Defaults -->
+    <color name="default_start_color">#ACCE82</color>
+    <color name="default_end_color">#60851B</color>
+    <color name="default_stroke_color">#ffffff</color>
+
+    <!-- Gradient Color Palette Home View-->
+    <color name="home_start_color">#CDEEA5</color>
+    <color name="home_end_color">#60851B</color>
+
+    <!-- Gradient Color Palette Routines View-->
+    <color name="routine_start_color">#FFBF8B</color>
+    <color name="routine_end_color">#E37F2D</color>
 </resources>
