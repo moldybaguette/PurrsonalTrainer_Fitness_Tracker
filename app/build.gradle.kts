@@ -75,4 +75,8 @@ dependencies {
     //Coroutines
     testImplementation (libs.kotlinx.coroutines.test)
 
+
+    androidTestImplementation("androidx.test.ext:junit:1.1.5") // AndroidX JUnit extensions
+    androidTestImplementation("androidx.test:runner:1.6.2") // AndroidX Test Runner
+
 }
