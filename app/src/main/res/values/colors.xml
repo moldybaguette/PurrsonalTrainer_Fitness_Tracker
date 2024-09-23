@@ -50,4 +50,7 @@
 
     <!-- Login Color Palette -->
     <color name="login_popup_background">#F9F9F9</color>
+
+
+    <color name="workout_view_text">#90FFFFFF</color>
 </resources>
