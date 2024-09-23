@@ -19,6 +19,11 @@ import za.co.valsitycollege.st10204902.purrsonaltrainer.models.*
 
 
 object UserManager {
+
+    //                          PROPERTIES                       //
+    //-----------------------------------------------------------//
+
+
     private const val USERS_PATH = "users"
     private val _userFlow = MutableStateFlow<User?>(null)
     val userFlow: StateFlow<User?> = _userFlow.asStateFlow()
@@ -395,6 +400,6 @@ object UserManager {
     private fun clearUser() {
         _userFlow.value = null
     }
-
+    //-----------------------------------------------------------//
 }
 //------------------------***EOF***-----------------------------//
