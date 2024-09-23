@@ -123,19 +123,19 @@
                 android:id="@+id/registerButton"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
-                android:elevation="5dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="30dp"
                 android:background="@drawable/svg_purple_bblbtn"
-                android:text="@string/register"
-                android:textSize="50sp"
+                android:elevation="5dp"
                 android:fontFamily="@font/knicknack_medium"
+                android:text="@string/register"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
+                android:textSize="50sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="20dp"
-                android:textAllCaps="false"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"/>
+                app:layout_constraintTop_toTopOf="parent" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
