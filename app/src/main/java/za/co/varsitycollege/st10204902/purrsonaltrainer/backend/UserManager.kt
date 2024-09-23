@@ -1,4 +1,4 @@
-package za.co.varsitycollege.st10204902.purrsonaltrainer.databaseAPI
+package za.co.varsitycollege.st10204902.purrsonaltrainer.backend
 
 import android.util.Log
 import com.google.firebase.database.FirebaseDatabase
@@ -38,7 +38,7 @@ object UserManager {
     // Authentication Methods
     //-----------------------------------------------------------//
 
-    suspend fun loginUser(userId: String): Result<User> {
+    suspend fun setUpSingleton(userId: String): Result<User> {
         return try {
             val databaseRef = FirebaseDatabase.getInstance().getReference(USERS_PATH).child(userId)
             val dataSnapshot = databaseRef.get().await()
@@ -67,16 +67,6 @@ object UserManager {
         }
         return _userFlow.value != null
 
-    }
-
-    private fun setUser(user: User) {
-        println(user.userID)
-        _userFlow.value = user
-        startUserSync()
-    }
-
-    private fun clearUser() {
-        _userFlow.value = null
     }
 
     //-----------------------------------------------------------//
@@ -390,5 +380,21 @@ object UserManager {
             Result.failure(e)
         }
     }
+
+    //-----------------------------------------------------------//
+    // Private helper methods
+    //-----------------------------------------------------------//
+
+    private fun setUser(user: User) {
+        println(user.userID)
+        _userFlow.value = user
+        startUserSync()
+    }
+
+
+    private fun clearUser() {
+        _userFlow.value = null
+    }
+
 }
 //------------------------***EOF***-----------------------------//
