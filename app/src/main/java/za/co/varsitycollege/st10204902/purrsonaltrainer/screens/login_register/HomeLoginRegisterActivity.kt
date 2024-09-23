@@ -1,13 +1,17 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.login_register
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityHomeBinding
@@ -33,15 +37,25 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
         populateLoginFragment()
 
 
-        val registerButton: Button = findViewById(R.id.registerButton)
+        val registerButton: ImageView = findViewById(R.id.registerButton)
+        val originalBackgroundRegister = registerButton.background //getting the original background of the button
         registerButton.setOnClickListener {
-            // Add your navigation logic here
-            // For example, navigate to the RegisterActivity
             navigateTo(this, RegisterActivity::class.java, null)
+            registerButton.setBackgroundResource(R.drawable.svg_purple_bblbtn_clicked) // Set the background to the clicked background
+            Handler(Looper.getMainLooper()).postDelayed({
+                registerButton.background = originalBackgroundRegister
+            }, 400)
         }
 
+        val loginButton: ImageView = findViewById(R.id.loginButton)
+        val originalBackgroundLogin = loginButton.background
         // Binding show and dismiss popup for login
-        binding.loginButton.setOnClickListener { showLoginPopup() }
+        binding.loginButton.setOnClickListener {
+            showLoginPopup()
+            loginButton.setBackgroundResource(R.drawable.svg_orange_bblbtn_clicked) // Set the background to the clicked background
+            Handler(Looper.getMainLooper()).postDelayed({
+                loginButton.background = originalBackgroundLogin
+            }, 400)}
         binding.loginDismissArea.setOnClickListener { dismissLoginPopup() }
     }
 
