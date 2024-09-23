@@ -13,6 +13,12 @@
     <color name="sso_gradient_start">#E3E3E3</color>
     <color name="sso_gradient_end">#8B8B8B</color>
     <color name="transparent">#00000000</color>
+    <color name="workout_information">#80FFFFFF</color>
+    <color name="workout_stroke_gradient_start">#F0F0F0</color>
+    <color name="workout_stroke_gradient_end">#D2D2D2</color>
+    <color name="workout_duration_color">#D4D4D4</color>
+    <color name="workout_text_color">#BCBCBC</color>
+    <color name="workout_title">#FFC1C6</color>
 
     <!-- Color Palette Start -->
     <color name="deep_cyan_blue">#1E97BA</color>
