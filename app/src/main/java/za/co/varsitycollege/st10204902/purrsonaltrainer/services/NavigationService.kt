@@ -13,9 +13,9 @@ import androidx.appcompat.app.AlertDialog
  * @param context the current context of the application. Just write 'applicationContext'
  * @param activityToOpen the activity you want to navigate to. Something like
  * 'MainActivity::class.java' yes it should say java
- * @param dataToPass a bundle containing additional data to be passed to the activity being
- * navigated to. You can get this data by calling 'intent.extras?.getBundle("data")' in
- * the onCreate method of the activity being navigated to.
+ * @param dataToPass **Set to null if no data to pass** a bundle containing additional data to be
+ * passed to the activity being navigated to. You can get this data by calling
+ * 'intent.extras?.getBundle("data")' in the onCreate method of the activity being navigated to.
  */
 public fun navigateTo(context: Context, activityToOpen: Class<*>, dataToPass: Bundle?)
 {
