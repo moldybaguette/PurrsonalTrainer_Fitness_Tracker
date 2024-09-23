@@ -13,15 +13,21 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.CatFra
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.HomeFragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.RoutinesFragment
 
-//-----------------------------------------FragmentUtils------------------------------------------//
 /**
  * Object holding useful fragment manipulation functions
  */
 object FragmentUtils
 {
+    //-----------------------------------------------------------//
+    //                          PROPERTIES                       //
+    //-----------------------------------------------------------//
+
     public lateinit var supportFragmentManager: FragmentManager
 
-    //------------------------------------------------------------setCurrentFragment()------------------------------------------------------------//
+    //-----------------------------------------------------------//
+    //                          METHODS                          //
+    //-----------------------------------------------------------//
+
     /**
      * Changes the fragment shown to the one given.
      * How to use: 'FragmentUtils.navigateToFragment(DashboardFragment())' where 'DashboardFragment()' is the method
@@ -66,3 +72,5 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 }
+
+//------------------------***EOF***-----------------------------//
