@@ -45,31 +45,18 @@ class AuthManager {
 
     /**
      * logs the user in with the provided GoogleSignInAccount
-     * @param acct The GoogleSignInAccount object returned from the Google Sign In API
+     * @param idToken The GoogleSignInAccount object returned from the Google Sign In API
      * @return A Result object containing the Users ID if successful, or an exception if unsuccessful
      */
-    suspend fun loginWithSSO(acct: GoogleSignInAccount): Result<String>
+    suspend fun signInWithSSO(idToken: String): Result<String>
     {
         return try {
-        val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
         val authResult = auth.signInWithCredential(credential).await()
+            if (authResult.additionalUserInfo!!.isNewUser) {
+                createUserInRealtimeDatabase(authResult)
+            }
         Result.success(authResult.user!!.uid)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    /**
-     * Registers the user with the provided GoogleSignInAccount
-     * @param acct The GoogleSignInAccount object returned from the Google Sign In API
-     * @return A Result object containing the Users ID if successful, or an exception if unsuccessful
-     */
-    suspend fun registerWithSSO(acct: GoogleSignInAccount): Result<String>
-    {
-        return try {
-        val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        val authResult = auth.signInWithCredential(credential).await()
-        return Result.success(authResult.user!!.uid)
         } catch (e: Exception) {
             Result.failure(e)
         }
