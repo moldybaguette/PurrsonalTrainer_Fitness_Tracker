@@ -71,4 +71,14 @@
         app:layout_constraintStart_toStartOf="parent"
         android:visibility="gone"
         android:background="@drawable/login_popup"/>
+
+    <View
+        android:id="@+id/loginDismissArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/loginFragmentContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

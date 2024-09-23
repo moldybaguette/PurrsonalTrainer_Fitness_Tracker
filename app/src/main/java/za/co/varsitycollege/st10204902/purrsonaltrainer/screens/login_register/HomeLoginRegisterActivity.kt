@@ -20,16 +20,28 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Apply login fragment before hand
+        populateLoginFragment()
+
+        // Show popup
+        binding.loginButton.setOnClickListener {
+            binding.loginFragmentContainer.visibility = View.VISIBLE
+            binding.loginDismissArea.visibility = View.VISIBLE
+        }
+
+        // Dismiss popup
+        binding.loginDismissArea.setOnClickListener {
+            binding.loginFragmentContainer.visibility = View.GONE
+            binding.loginDismissArea.visibility = View.GONE
+
+            populateLoginFragment()
+        }
+    }
+
+    private fun populateLoginFragment() {
         this.supportFragmentManager.beginTransaction().apply {
             replace(binding.loginFragmentContainer.id, LoginFragment())
             addToBackStack(null)
             commit()
-        }
-
-        // Show popup
-        binding.loginButton.setOnClickListener {
-            // Show popup
-            binding.loginFragmentContainer.visibility = View.VISIBLE
         }
     }
 }
