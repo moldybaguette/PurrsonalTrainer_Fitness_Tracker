@@ -8,7 +8,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
-
+    <string name="your_web_client_id">http://859936099389-19fcm5qa1m50jqb04hot8jqbjl12oc9m.apps.googleusercontent.com</string>
     <!-- Home Labels -->
     <string name="home">Home</string>
 

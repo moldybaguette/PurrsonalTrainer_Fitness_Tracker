@@ -1,6 +1,5 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.backend
 
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -48,15 +47,14 @@ class AuthManager {
      * @param idToken The GoogleSignInAccount object returned from the Google Sign In API
      * @return A Result object containing the Users ID if successful, or an exception if unsuccessful
      */
-    suspend fun signInWithSSO(idToken: String): Result<String>
-    {
+    suspend fun signInWithSSO(idToken: String): Result<String> {
         return try {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        val authResult = auth.signInWithCredential(credential).await()
+            val credential = GoogleAuthProvider.getCredential(idToken, null)
+            val authResult = auth.signInWithCredential(credential).await()
             if (authResult.additionalUserInfo!!.isNewUser) {
                 createUserInRealtimeDatabase(authResult)
             }
-        Result.success(authResult.user!!.uid)
+            Result.success(authResult.user!!.uid)
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -68,11 +66,25 @@ class AuthManager {
      * @return The user's unique ID
      */
     private fun createUserInRealtimeDatabase(authUser: AuthResult): String {
-        val userObject = User(authUser.user!!.uid, "", "", "", "", "", "", emptyMap(), emptyMap(), emptyMap(), emptyMap(), emptyMap(), emptyMap())
-        FirebaseDatabase.getInstance().reference.child("users").child(authUser.user!!.uid).setValue(userObject)
+        val userObject = User(
+            authUser.user!!.uid,
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            emptyMap(),
+            emptyMap(),
+            emptyMap(),
+            emptyMap(),
+            emptyMap(),
+            emptyMap()
+        )
+        FirebaseDatabase.getInstance().reference.child("users").child(authUser.user!!.uid)
+            .setValue(userObject)
         return authUser.user!!.uid
     }
-
 
 
 }
