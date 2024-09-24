@@ -19,7 +19,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         Log.d("MainActivity", "testing")
 
+        navigateTo(this, HomeLoginRegisterActivity::class.java, null)
         // Temporary navigation to Home Activity
-        navigateTo(this, HomeActivity::class.java, null)
+        //navigateTo(this, HomeActivity::class.java, null)
     }
 }

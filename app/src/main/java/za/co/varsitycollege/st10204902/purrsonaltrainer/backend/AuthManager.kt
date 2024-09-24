@@ -23,7 +23,7 @@ class AuthManager(val auth: FirebaseAuth = FirebaseAuth.getInstance()) {
     suspend fun registerUser(email: String, password: String): Result<String> {
         return try {
             val authResult = auth.createUserWithEmailAndPassword(email, password).await()
-            val userID = createUserInRealtimeDatabase(authResult)
+            val userID = createUserInRealtimeDatabase(authResult.user!!.uid)
             Result.success(userID)
         } catch (e: Exception) {
             Result.failure(e)
@@ -55,7 +55,7 @@ class AuthManager(val auth: FirebaseAuth = FirebaseAuth.getInstance()) {
             val credential = GoogleAuthProvider.getCredential(idToken, null)
             val authResult = auth.signInWithCredential(credential).await()
             if (authResult.additionalUserInfo!!.isNewUser) {
-                createUserInRealtimeDatabase(authResult)
+                createUserInRealtimeDatabase(authResult.user!!.uid)
             }
             Result.success(authResult.user!!.uid)
         } catch (e: Exception) {
@@ -68,10 +68,10 @@ class AuthManager(val auth: FirebaseAuth = FirebaseAuth.getInstance()) {
      * @param authUser The AuthResult object returned from the registration
      * @return The user's unique ID
      */
-    private fun createUserInRealtimeDatabase(authUser: AuthResult): String {
+    fun createUserInRealtimeDatabase(usersID: String): String {
 
         val userObject = User(
-            authUser.user!!.uid,
+            usersID,
             "",
             "",
             "",
@@ -87,7 +87,7 @@ class AuthManager(val auth: FirebaseAuth = FirebaseAuth.getInstance()) {
         )
         UserManager.userManagerScope.launch {
             val task =
-                database.reference.child("users").child(authUser.user!!.uid).setValue(userObject)
+                database.reference.child("users").child(usersID).setValue(userObject)
             task.addOnCompleteListener { task1 ->
                 if (task1.isSuccessful) {
                     println("User added to Realtime Database successfully")
