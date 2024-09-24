@@ -1,3 +1,5 @@
+import kotlin.math.sign
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -7,6 +9,14 @@ plugins {
 android {
     namespace = "za.co.varsitycollege.st10204902.purrsonaltrainer"
     compileSdk = 34
+    signingConfigs{
+        create("debugFirebase"){
+            storeFile = file("shared_debug.keystore")
+            storePassword = "android"
+            keyAlias = "shareddebugkey"
+            keyPassword = "android"
+        }
+    }
 
     defaultConfig {
         applicationId = "za.co.varsitycollege.st10204902.purrsonaltrainer"
@@ -21,6 +31,9 @@ android {
         enable = true
     }
     buildTypes {
+        debug{
+            signingConfig = signingConfigs.getByName("debugFirebase")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -56,7 +69,7 @@ dependencies {
     implementation ("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
     implementation ("androidx.credentials:credentials:<latest version>")
     implementation ("androidx.credentials:credentials-play-services-auth:<latest version>")
-    implementation ("com.google.android.libraries.identity.googleid:googleid:<latest version>")
+    //implementation ("com.google.android.libraries.identity.googleid:googleid:<latest version>")
     implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation("androidx.biometric:biometric:1.2.0-alpha04")
 
