@@ -5,14 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.marginStart
+import androidx.core.view.marginTop
+import androidx.core.view.setMargins
+import androidx.core.view.updateLayoutParams
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 
 class ColorSpinnerAdapter(
     context: Context,
     private val colors: List<String>) : ArrayAdapter<String>(context, 0, colors)
 {
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View
     {
         return createViewFromResource(position, convertView, parent, false)
@@ -29,6 +35,7 @@ class ColorSpinnerAdapter(
         val color = colors[position]
 
         // Elements needing to be changed
+        val layout = view.findViewById<LinearLayout>(R.id.colorPickerItemLayout)
         val colorCircle = view.findViewById<View>(R.id.colorCircle)
         val colorText = view.findViewById<TextView>(R.id.colorText)
 
@@ -42,6 +49,7 @@ class ColorSpinnerAdapter(
             "green" -> { colorText.text = "green"; colorCircle.setBackgroundResource(R.drawable.color_picker_green) }
             "purple" -> { colorText.text = "purple"; colorCircle.setBackgroundResource(R.drawable.color_picker_purple) }
         }
+
         return view
     }
 }
