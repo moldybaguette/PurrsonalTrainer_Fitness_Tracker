@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import androidx.core.content.ContextCompat
+import kotlinx.coroutines.NonDisposableHandle.parent
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.ChooseCategoryFragment
 
-class CategoryAdapter(private val categories: List<String>, private val colors: List<Int>) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+
+class CategoryAdapter(private val categories: List<String>,) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView: TextView = itemView.findViewById(R.id.categoryText)
@@ -35,6 +38,20 @@ class CategoryAdapter(private val categories: List<String>, private val colors: 
             holder.itemView.setBackgroundColor(Color.WHITE)
         }
 
+        val colors = listOf(
+            ContextCompat.getColor(holder.itemView.context, R.color.categoryPink),
+            ContextCompat.getColor(holder.itemView.context, R.color.categoryRed),
+            ContextCompat.getColor(holder.itemView.context, R.color.categoryOrange1),
+            ContextCompat.getColor(holder.itemView.context, R.color.categoryOrange2),
+            ContextCompat.getColor(holder.itemView.context, R.color.categoryYellow),
+            ContextCompat.getColor(holder.itemView.context, R.color.categoryLightYellow),
+            ContextCompat.getColor(holder.itemView.context, R.color.categoryGreen1),
+            ContextCompat.getColor(holder.itemView.context, R.color.categoryGreen2),
+            ContextCompat.getColor(holder.itemView.context, R.color.categoryLightBlue),
+            ContextCompat.getColor(holder.itemView.context, R.color.categoryBlue),
+            ContextCompat.getColor(holder.itemView.context, R.color.categoryDarkBlue),
+            ContextCompat.getColor(holder.itemView.context, R.color.categoryPurple),
+        )
 
         val color = colors[position % colors.size]
         holder.textView.setTextColor(color)

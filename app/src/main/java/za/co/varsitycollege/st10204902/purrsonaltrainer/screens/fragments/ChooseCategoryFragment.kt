@@ -20,24 +20,11 @@ class ChooseCategoryFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_choose_category, container, false)
 
-        val specificColors = listOf(
-            ContextCompat.getColor(requireContext(), R.color.categoryPink),
-            ContextCompat.getColor(requireContext(), R.color.categoryRed),
-            ContextCompat.getColor(requireContext(), R.color.categoryOrange1),
-            ContextCompat.getColor(requireContext(), R.color.categoryOrange2),
-            ContextCompat.getColor(requireContext(), R.color.categoryYellow),
-            ContextCompat.getColor(requireContext(), R.color.categoryLightYellow),
-            ContextCompat.getColor(requireContext(), R.color.categoryGreen1),
-            ContextCompat.getColor(requireContext(), R.color.categoryGreen2),
-            ContextCompat.getColor(requireContext(), R.color.categoryLightBlue),
-            ContextCompat.getColor(requireContext(), R.color.categoryBlue),
-            ContextCompat.getColor(requireContext(), R.color.categoryDarkBlue),
-            ContextCompat.getColor(requireContext(), R.color.categoryPurple),
-        )
+
 
         val recyclerView: RecyclerView = view.findViewById(R.id.categoryRecycler)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = CategoryAdapter(categories, specificColors)
+        recyclerView.adapter = CategoryAdapter(categories)
 
         return view
     }
