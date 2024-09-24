@@ -29,6 +29,12 @@
     <string name="done">Done</string>
 
 
+        <string-array name="set_type_options">
+            <item>W</item>
+            <item>1</item>
+            <item>F</item>
+            <item>D</item>
+        </string-array>
 
 
 

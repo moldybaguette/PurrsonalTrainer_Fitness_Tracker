@@ -78,8 +78,11 @@
                 android:inputType="textEmailAddress"
                 android:layout_marginTop="0dp"
                 android:background="@drawable/userinput_design"
-                android:textSize="60sp"
-                />
+                android:textSize="25sp"
+                android:textColor="@color/hint_text"
+                android:fontFamily="@font/rounded"
+                android:paddingVertical="25dp"
+                android:paddingHorizontal="30dp"/>
 
             <TextView
                 android:fontFamily="@font/rounded"
@@ -98,7 +101,11 @@
                 android:inputType="textPassword"
                 android:layout_marginTop="0dp"
                 android:background="@drawable/userinput_design"
-                android:textSize="60sp"/>
+                android:textSize="25sp"
+                android:textColor="@color/hint_text"
+                android:fontFamily="@font/rounded"
+                android:paddingVertical="25dp"
+                android:paddingHorizontal="30dp"/>
 
             <TextView
                 android:fontFamily="@font/rounded"
@@ -117,7 +124,11 @@
                 android:inputType="textPassword"
                 android:layout_marginTop="0dp"
                 android:background="@drawable/userinput_design"
-                android:textSize="60sp"/>
+                android:textSize="25sp"
+                android:textColor="@color/hint_text"
+                android:fontFamily="@font/rounded"
+                android:paddingVertical="25dp"
+                android:paddingHorizontal="30dp"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/registerButton"
