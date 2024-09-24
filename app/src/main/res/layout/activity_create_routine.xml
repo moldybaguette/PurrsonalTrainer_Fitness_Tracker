@@ -11,12 +11,14 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/bg_spotty"/>
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/bg_spotty" />
 
     <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientEditText
         android:id="@+id/untitledRoutineTitle"
