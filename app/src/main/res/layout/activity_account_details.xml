@@ -60,6 +60,7 @@
 
     <EditText
         android:id="@+id/emailInput"
+        android:enabled="false"
         android:layout_width="match_parent"
         android:autofillHints="emailAddress"
         android:labelFor="@id/emailInput"
@@ -182,7 +183,7 @@
         android:layout_height="wrap_content"
         android:text="@string/done"
         android:textColor="@color/white"
-        android:labelFor="@+id/doneButtonAccountDetails"
+        android:labelFor="@+id/doneButtonPasswordReentry"
         app:layout_constraintStart_toStartOf="@id/doneButtonAccountDetails"
         app:layout_constraintEnd_toEndOf="@id/doneButtonAccountDetails"
         app:layout_constraintTop_toTopOf="@id/doneButtonAccountDetails"
@@ -191,5 +192,24 @@
         android:fontFamily="@font/knicknack_medium"
         android:layout_marginBottom="8dp"
         />
+
+    <FrameLayout
+        android:id="@+id/PasswordReentryFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"/>
+
+    <View
+        android:id="@+id/passwordDismissArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/PasswordReentryFragmentContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
