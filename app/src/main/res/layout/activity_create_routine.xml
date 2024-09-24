@@ -105,6 +105,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="40dp"
+        android:inputType="textMultiLine"
         android:background="@drawable/bg_start_workout_button"
         app:layout_constraintTop_toBottomOf="@id/FILLER"/>
 
