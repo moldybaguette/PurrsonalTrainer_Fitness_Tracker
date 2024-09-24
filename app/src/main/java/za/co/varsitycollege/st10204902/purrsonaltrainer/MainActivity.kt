@@ -59,6 +59,7 @@ private fun setupBiometricPrompt() {
         override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
             super.onAuthenticationError(errorCode, errString)
             Toast.makeText(this@MainActivity, "Authentication error: $errString", Toast.LENGTH_SHORT).show()
+            navigateTo(this@MainActivity, HomeLoginRegisterActivity::class.java, null)
         }
 
         override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
@@ -70,6 +71,7 @@ private fun setupBiometricPrompt() {
         override fun onAuthenticationFailed() {
             super.onAuthenticationFailed()
             Toast.makeText(this@MainActivity, "Authentication failed. Please try again.", Toast.LENGTH_SHORT).show()
+            navigateTo(this@MainActivity, HomeLoginRegisterActivity::class.java, null)
         }
     })
 
