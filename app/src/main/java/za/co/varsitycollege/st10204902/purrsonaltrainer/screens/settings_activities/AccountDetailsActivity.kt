@@ -24,7 +24,7 @@ class AccountDetailsActivity : AppCompatActivity() {
         currentUser?.let { user ->
             val providerData = user.providerData
             for (profile in providerData) {
-                when (val providerId = profile.providerId) {
+                when (profile.providerId) {
                     "google.com" -> {
                         binding.emailInput.isEnabled=false
                         binding.passwordInput.isEnabled=false
