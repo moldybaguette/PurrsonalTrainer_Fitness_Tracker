@@ -1,17 +1,13 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.login_register
 
-import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.Button
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.util.Log
 import android.widget.Toast
@@ -28,13 +24,10 @@ import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import androidx.fragment.app.Fragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.AuthManager
-import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityHomeBinding
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityHomeLoginRegisterBinding
-import za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.BubbleButton
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
 class HomeLoginRegisterActivity : AppCompatActivity() {
