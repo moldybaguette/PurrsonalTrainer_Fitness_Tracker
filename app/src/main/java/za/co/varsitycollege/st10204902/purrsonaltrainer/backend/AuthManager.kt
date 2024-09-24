@@ -1,6 +1,8 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.backend
 
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -21,7 +23,7 @@ class AuthManager(val auth: FirebaseAuth = FirebaseAuth.getInstance()) {
     suspend fun registerUser(email: String, password: String): Result<String> {
         return try {
             val authResult = auth.createUserWithEmailAndPassword(email, password).await()
-            val userID = createUserInRealtimeDatabase(authResult.user!!.uid)
+            val userID = createUserInRealtimeDatabase(authResult)
             Result.success(userID)
         } catch (e: Exception) {
             Result.failure(e)
@@ -43,16 +45,33 @@ class AuthManager(val auth: FirebaseAuth = FirebaseAuth.getInstance()) {
         }
     }
 
+    /**
+     * logs the user in with the provided GoogleSignInAccount
+     * @param idToken The GoogleSignInAccount object returned from the Google Sign In API
+     * @return A Result object containing the Users ID if successful, or an exception if unsuccessful
+     */
+    suspend fun signInWithSSO(idToken: String): Result<String> {
+        return try {
+            val credential = GoogleAuthProvider.getCredential(idToken, null)
+            val authResult = auth.signInWithCredential(credential).await()
+            if (authResult.additionalUserInfo!!.isNewUser) {
+                createUserInRealtimeDatabase(authResult)
+            }
+            Result.success(authResult.user!!.uid)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 
     /**
      * creates the user in the realtime database when they register
-     * @param usersID The user's unique ID
+     * @param authUser The AuthResult object returned from the registration
      * @return The user's unique ID
      */
-    fun createUserInRealtimeDatabase(usersID: String): String {
+    private fun createUserInRealtimeDatabase(authUser: AuthResult): String {
 
         val userObject = User(
-            usersID,
+            authUser.user!!.uid,
             "",
             "",
             "",
@@ -68,7 +87,7 @@ class AuthManager(val auth: FirebaseAuth = FirebaseAuth.getInstance()) {
         )
         UserManager.userManagerScope.launch {
             val task =
-                database.reference.child("users").child(usersID).setValue(userObject)
+                database.reference.child("users").child(authUser.user!!.uid).setValue(userObject)
             task.addOnCompleteListener { task1 ->
                 if (task1.isSuccessful) {
                     println("User added to Realtime Database successfully")

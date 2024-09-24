@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         Log.d("MainActivity", "testing")
 
-
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
         setupBiometricPrompt()
