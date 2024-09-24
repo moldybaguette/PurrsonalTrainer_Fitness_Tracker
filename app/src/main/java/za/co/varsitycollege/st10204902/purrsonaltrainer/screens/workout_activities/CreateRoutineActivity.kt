@@ -11,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
+import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.ColorSpinnerAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityCreateRoutineBinding
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.ChooseCategoryFragment
 
@@ -20,7 +21,8 @@ class CreateRoutineActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_create_routine)
+        binding =  ActivityCreateRoutineBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val doneButton: AppCompatButton = findViewById(R.id.doneButton)
         val originalBackground = doneButton.background
@@ -36,6 +38,13 @@ class CreateRoutineActivity : AppCompatActivity() {
         addExerciseButton.setOnClickListener {
             showChooseCategoryFragment()
         }
+
+        // Color spinner adapter
+        val spinner = binding.colorPickerSpinner
+
+        val colors = mutableListOf("blue", "red", "orange", "yellow", "green", "purple")
+        val adapter = ColorSpinnerAdapter(this, colors)
+        spinner.adapter = adapter
     }
 
     private fun showChooseCategoryFragment() {
