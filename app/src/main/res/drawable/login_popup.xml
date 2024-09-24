@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/login_popup_background"/>
+    <corners
+        android:topRightRadius="89px"
+        android:topLeftRadius="89px"
+        />
+</shape>

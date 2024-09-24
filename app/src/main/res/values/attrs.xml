@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Creates attributes to all of the gradient text things so that you can set the gradient in the frontend code instead of in the logic code. -->
+<resources>
+    <declare-styleable name="GradientTextView">
+        <attr name="startColor" format="color" />
+        <attr name="endColor" format="color" />
+        <attr name="strokeColor" format="color" />
+        <attr name="strokeWidth" format="dimension" />
+    </declare-styleable>
+
+        <declare-styleable name="BubbleButton">
+            <attr name="buttonText" format="string" />
+        </declare-styleable>
+</resources>
+

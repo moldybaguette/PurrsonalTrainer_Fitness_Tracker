@@ -13,6 +13,12 @@
     <color name="sso_gradient_start">#E3E3E3</color>
     <color name="sso_gradient_end">#8B8B8B</color>
     <color name="transparent">#00000000</color>
+    <color name="workout_information">#80FFFFFF</color>
+    <color name="workout_stroke_gradient_start">#F0F0F0</color>
+    <color name="workout_stroke_gradient_end">#D2D2D2</color>
+    <color name="workout_duration_color">#D4D4D4</color>
+    <color name="workout_text_color">#BCBCBC</color>
+    <color name="workout_title">#FFC1C6</color>
 
     <!-- Color Palette Start -->
     <color name="deep_cyan_blue">#1E97BA</color>
@@ -28,4 +34,25 @@
     <color name="bright_coral">#FF562F</color>
     <color name="light_peach_pink">#FFC1C6</color>
     <!-- Color Palette End -->
+
+    <!-- Gradient Color Palette Defaults -->
+    <color name="default_start_color">#ACCE82</color>
+    <color name="default_end_color">#60851B</color>
+    <color name="default_stroke_color">#ffffff</color>
+
+    <!-- Gradient Color Palette Home View-->
+    <color name="home_start_color">#CDEEA5</color>
+    <color name="home_end_color">#60851B</color>
+
+    <!-- Gradient Color Palette Routines View-->
+    <color name="routine_start_color">#FFBF8B</color>
+    <color name="routine_end_color">#E37F2D</color>
+
+    <!-- Login Color Palette -->
+    <color name="login_popup_background">#F9F9F9</color>
+
+    <color name="untitled_routine_start_color">#EDEDED</color>
+    <color name="untitled_routine_end_color">#B8B8B8</color>
+
+    <color name="workout_view_text">#90FFFFFF</color>
 </resources>

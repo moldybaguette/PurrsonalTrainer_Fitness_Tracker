@@ -1,10 +1,43 @@
 <resources>
     <string name="app_name">Purrsonal Trainer</string>
-    <!-- Extracted names -->
+    <!-- Landing, Login and Register Labels -->
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="username">Username</string>
     <string name="google_sso">Login with Google</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="welcome">Welcome!</string>
+<string name="welcomeBack">Welcome\nBack!</string>
+    <string name="firebase_web_client_id">859936099389-19fcm5qa1m50jqb04hot8jqbjl12oc9m.apps.googleusercontent.com</string>
+    <!-- Home Labels -->
+    <string name="home">Home</string>
+    <string name="accountDetails">Account Details</string>
+    <string name="catSettings">Cat Settings</string>
+    <string name="statistics">Statistics</string>
+<string name="settingsTitle">Settings</string>
+    <string name="routines">Routines</string>
+    <string name="yourRoutines">Your Routines</string>
+    <string name="newRoutine">New Routine</string>
+<string name="untitledRoutine">Untitled Routine</string>
+    <string name="routineDetails">Routine Details</string>
+    <string name="quickStart">Quick Start</string>
+    <string name="workout">Workout</string>
+    <string name="startEmptyWorkout">Start Empty Workout</string>
+    <string name="colour">Colour</string>
+    <string name="notes">Notes</string>
+    <string name="addExercises">Add Exercises</string>
+    <string name="addExercise">Add Exercise</string>
+    <string name="done">Done</string>
+
+
+        <string-array name="set_type_options">
+            <item>W</item>
+            <item>1</item>
+            <item>F</item>
+            <item>D</item>
+        </string-array>
 
 
 
