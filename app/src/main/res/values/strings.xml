@@ -8,6 +8,9 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="resetApp">Reset App</string>
+    <string name="logOut">Log Out</string>
+    <string name="done">Done</string>
     <string name="welcome">Welcome!</string>
 <string name="welcomeBack">Welcome\nBack!</string>
     <string name="firebase_web_client_id">859936099389-19fcm5qa1m50jqb04hot8jqbjl12oc9m.apps.googleusercontent.com</string>
