@@ -18,12 +18,15 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:contentDescription="@string/background"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/bg_cogs"/>
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/bg_cogs" />
 
     <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientTextView
         android:id="@+id/AccountDetailsTitle"
@@ -32,6 +35,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/accountDetails"
         android:text="@string/accountDetails"
         android:fontFamily="@font/knicknack_black"
         android:textSize="40sp"
@@ -47,6 +51,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         android:text="@string/email"
+        android:contentDescription="@string/email_text_view"
         android:fontFamily="@font/rounded"
         android:textSize="22sp"
         android:layout_marginStart="35dp"
@@ -56,6 +61,8 @@
     <EditText
         android:id="@+id/emailInput"
         android:layout_width="match_parent"
+        android:autofillHints="emailAddress"
+        android:labelFor="@id/emailInput"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailLabel"
@@ -73,6 +80,7 @@
         android:id="@+id/passwordLabel"
         android:fontFamily="@font/rounded"
         android:textSize="22sp"
+        android:contentDescription="@string/password_text_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailInput"
         android:layout_margin="35dp"
@@ -86,6 +94,8 @@
         android:id="@+id/passwordInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints="password"
+        android:labelFor="@id/passwordInput"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -103,6 +113,7 @@
         android:layout_width="200dp"
         android:layout_height="80dp"
         android:background="@drawable/svg_orange_bblbtn"
+        android:contentDescription="@string/reset_app_button"
         android:textSize="60sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -114,6 +125,7 @@
         android:layout_height="wrap_content"
         android:text="@string/resetApp"
         android:textColor="@color/white"
+        android:labelFor="@+id/resetAppButton"
         app:layout_constraintStart_toStartOf="@id/resetAppButton"
         app:layout_constraintEnd_toEndOf="@id/resetAppButton"
         app:layout_constraintTop_toTopOf="@id/resetAppButton"
@@ -129,6 +141,8 @@
         android:layout_height="80dp"
         android:layout_marginHorizontal="10dp"
         android:background="@drawable/svg_blue_bblbtn"
+        android:contentDescription="@string/log_out_button"
+        android:labelFor="@id/logOutButton"
         android:textSize="60sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -139,6 +153,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/logOut"
+        android:labelFor="@+id/logOutButton"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="@id/logOutButton"
         app:layout_constraintEnd_toEndOf="@id/logOutButton"
@@ -156,6 +171,7 @@
         android:layout_marginHorizontal="10dp"
         android:background="@drawable/svg_green_bblbtn"
         android:textSize="60sp"
+        android:contentDescription="@string/done_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/logOutButton"
@@ -166,6 +182,7 @@
         android:layout_height="wrap_content"
         android:text="@string/done"
         android:textColor="@color/white"
+        android:labelFor="@+id/doneButtonAccountDetails"
         app:layout_constraintStart_toStartOf="@id/doneButtonAccountDetails"
         app:layout_constraintEnd_toEndOf="@id/doneButtonAccountDetails"
         app:layout_constraintTop_toTopOf="@id/doneButtonAccountDetails"
@@ -174,8 +191,5 @@
         android:fontFamily="@font/knicknack_medium"
         android:layout_marginBottom="8dp"
         />
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
