@@ -45,37 +45,35 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
 
     //TODO Check that the multiple button logic works, need to implement the navigation to check that this logic works.
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-        setContentView(R.layout.activity_home_login_register)
-        binding = ActivityHomeLoginRegisterBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    super.onCreate(savedInstanceState)
+    binding = ActivityHomeLoginRegisterBinding.inflate(layoutInflater)
+    setContentView(binding.root)
 
-        // Apply login fragment before hand
-        populateLoginFragment()
+    // Apply login fragment before hand
+    populateLoginFragment()
 
-
-        val registerButton: ImageView = findViewById(R.id.registerButton)
-        val originalBackgroundRegister = registerButton.background //getting the original background of the button
-        registerButton.setOnClickListener {
-            navigateTo(this, RegisterActivity::class.java, null)
-            registerButton.setBackgroundResource(R.drawable.svg_purple_bblbtn_clicked) // Set the background to the clicked background
-            Handler(Looper.getMainLooper()).postDelayed({
-                registerButton.background = originalBackgroundRegister
-            }, 400)
-        }
-
-        val loginButton: ImageView = findViewById(R.id.loginButton)
-        val originalBackgroundLogin = loginButton.background
-        // Binding show and dismiss popup for login
-        binding.loginButton.setOnClickListener {
-            showLoginPopup()
-            loginButton.setBackgroundResource(R.drawable.svg_orange_bblbtn_clicked) // Set the background to the clicked background
-            Handler(Looper.getMainLooper()).postDelayed({
-                loginButton.background = originalBackgroundLogin
-            }, 400)}
-        binding.loginDismissArea.setOnClickListener { dismissLoginPopup() }
+    val registerButton: ImageView = findViewById(R.id.registerButton)
+    val originalBackgroundRegister = registerButton.background //getting the original background of the button
+    registerButton.setOnClickListener {
+        navigateTo(this, RegisterActivity::class.java, null)
+        registerButton.setBackgroundResource(R.drawable.svg_purple_bblbtn_clicked) // Set the background to the clicked background
+        Handler(Looper.getMainLooper()).postDelayed({
+            registerButton.background = originalBackgroundRegister // Restore the original background after the delay
+        }, 200) // Delay in milliseconds
     }
+
+    val loginButton: ImageView = findViewById(R.id.loginButton)
+    val originalBackgroundLogin = loginButton.background
+    // Binding show and dismiss popup for login
+    binding.loginButton.setOnClickListener {
+        showLoginPopup()
+        loginButton.setBackgroundResource(R.drawable.svg_orange_bblbtn_clicked) // Set the background to the clicked background
+        Handler(Looper.getMainLooper()).postDelayed({
+            loginButton.background = originalBackgroundLogin // Restore the original background after the delay
+        }, 200) // Delay in milliseconds
+    }
+    binding.loginDismissArea.setOnClickListener { dismissLoginPopup() }
+}
 
     // Login Popup Methods
     //-----------------------------------------------------------//
