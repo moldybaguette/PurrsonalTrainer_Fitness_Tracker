@@ -16,6 +16,8 @@ import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10204902.purrsonaltrainer.Validator
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.AuthManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
 class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,6 +81,7 @@ class RegisterActivity : AppCompatActivity() {
                                 async {
                                     UserManager.setUpSingleton(data.toString())
                                 }.await()
+                                navigateTo(this@RegisterActivity, HomeActivity::class.java, null)
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -90,6 +93,7 @@ class RegisterActivity : AppCompatActivity() {
                 } else {
                     runOnUiThread {
                         Toast.makeText(this@RegisterActivity, "Unable to complete registration. Please try again.", Toast.LENGTH_SHORT).show()
+                        Log.e("LoginFragment", "error: ${result.exceptionOrNull()}")
                     }
                 }
             }
