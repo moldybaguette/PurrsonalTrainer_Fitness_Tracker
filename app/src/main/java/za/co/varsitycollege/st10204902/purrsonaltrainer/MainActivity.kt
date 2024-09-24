@@ -3,15 +3,27 @@ package za.co.varsitycollege.st10204902.purrsonaltrainer
 import androidx.biometric.BiometricManager
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityMainBinding
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.CatFact
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.CatImage
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.login_register.HomeLoginRegisterActivity
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.CatFactsApi
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.CatsApiService
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
 class MainActivity : AppCompatActivity() {
@@ -19,13 +31,36 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
+    private lateinit var catFactTextView: TextView
+    private lateinit var catImageView: ImageView
+    private lateinit var api: CatFactsApi
+    private lateinit var catsApiService: CatsApiService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        Log.d("MainActivity", "testing")
+
+        catFactTextView = findViewById(R.id.catFactTextView)
+        catImageView = findViewById(R.id.catImageView)
+
+        val retrofit1 = Retrofit.Builder()
+            .baseUrl("https://catfact.ninja/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val retrofit2 = Retrofit.Builder()
+            .baseUrl("https://api.thecatapi.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        api = retrofit1.create(CatFactsApi::class.java)
+        catsApiService = retrofit2.create(CatsApiService::class.java)
+
+
+        fetchCatFact()
+        loadNewCatImage()
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
@@ -42,6 +77,38 @@ class MainActivity : AppCompatActivity() {
             navigateTo(this, HomeLoginRegisterActivity::class.java, null)
         }
     }
+
+    private fun loadNewCatImage() {
+        catsApiService.getRandomCatImage().enqueue(object : Callback<List<CatImage>> {
+            override fun onResponse(call: Call<List<CatImage>>, response: Response<List<CatImage>>) {
+                if (response.isSuccessful && response.body() != null) {
+                    val catImageUrl = response.body()!![0].url
+                    Picasso.get().load(catImageUrl).into(catImageView)
+                }
+            }
+
+            override fun onFailure(call: Call<List<CatImage>>, t: Throwable) {
+                // Handle failure
+            }
+        })
+    }
+
+    private fun fetchCatFact() {
+        api.getCatFact().enqueue(object : Callback<CatFact> {
+            override fun onResponse(call: Call<CatFact>, response: Response<CatFact>) {
+                if (response.isSuccessful) {
+                    catFactTextView.text = response.body()?.fact
+                } else {
+                    catFactTextView.text = "Error fetching cat fact"
+                }
+            }
+
+            override fun onFailure(call: Call<CatFact>, t: Throwable) {
+                catFactTextView.text = "Failed to load cat fact"
+            }
+        })
+    }
+
 
     private fun checkBiometricSupport() {
         val biometricManager = BiometricManager.from(this)
