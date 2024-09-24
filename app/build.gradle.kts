@@ -77,6 +77,7 @@ dependencies {
     // Use Firebase BOM for managing Firebase dependencies
     implementation(platform("com.google.firebase:firebase-bom:31.5.0"))
 
+
     //Test Implementations
     //JUnit5
     testImplementation(libs.junit.jupiter.api)

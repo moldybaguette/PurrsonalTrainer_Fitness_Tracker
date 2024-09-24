@@ -62,7 +62,7 @@
         app:layout_constraintStart_toStartOf="@+id/FILLER"
         android:layout_marginStart="40dp"/>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <ImageView
         android:id="@+id/FILLER"
         android:layout_width="360dp"
         android:layout_height="80dp"
@@ -121,7 +121,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginTop="25dp"/>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <ImageView
         android:id="@+id/addExerciseButton"
         android:layout_width="360dp"
         android:layout_height="80dp"
@@ -167,4 +167,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="60dp"/>
+
+    <FrameLayout
+    android:id="@+id/chooseCategoryFragmentContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+        android:elevation="10dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
