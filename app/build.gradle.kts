@@ -49,11 +49,23 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
     implementation(libs.gson)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.jetbrains.kotlinx.coroutines.android)
     implementation (libs.jetbrains.kotlinx.coroutines.play.services)
     implementation (libs.kotlinx.collections.immutable)
+
+    implementation("com.google.code.gson:gson:2.10.1")
+    
+    
+    
+    implementation ("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
+    
+    
+    
+    implementation("androidx.biometric:biometric:1.2.0-alpha04")
+
 
     // Use Firebase BOM for managing Firebase dependencies
     implementation(platform(libs.firebase.bom))
