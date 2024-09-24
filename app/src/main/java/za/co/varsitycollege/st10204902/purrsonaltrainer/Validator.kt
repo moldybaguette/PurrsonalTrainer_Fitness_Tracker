@@ -17,7 +17,7 @@ class Validator {
 
         val passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=])(?=\\S+\$).{8,}\$".toRegex()
         //return passwordPattern.matches(password)
-        return password.length >= 84
+        return true
     }
 
     fun validateStartEndTime(startTime: String, endTime: String): Boolean {
