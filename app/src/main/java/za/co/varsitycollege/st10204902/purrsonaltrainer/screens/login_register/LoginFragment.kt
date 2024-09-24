@@ -3,12 +3,23 @@ package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.login_register
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
+import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.AuthManager
+import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
 class LoginFragment : Fragment() {
 
@@ -30,6 +41,8 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val loginButton: ImageView = view.findViewById(R.id.loginButton)
+        val email: EditText = view.findViewById(R.id.emailInput)
+        val password: EditText = view.findViewById(R.id.passwordInput)
         val originalBackgroundLogin = loginButton.background
 
         loginButton.setOnClickListener {
@@ -39,6 +52,34 @@ class LoginFragment : Fragment() {
             Handler(Looper.getMainLooper()).postDelayed({
                 loginButton.background = originalBackgroundLogin
             }, 400)
+
+            LoginUser(email.text.toString(), password.text.toString())
+        }
+    }
+
+    private fun LoginUser(email: String, password: String) {
+        var authManager = AuthManager()
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = authManager.loginUser(email, password)
+            if (result.isSuccess) {
+                val data = result.getOrNull()
+                if (data != null) {
+                    try {
+                        UserManager.userManagerScope.launch {
+                            async {
+                                UserManager.setUpSingleton(data.toString())
+                            }.await()
+                            navigateTo(requireContext(), HomeActivity::class.java, null)
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                            Toast.makeText(requireContext(), "Error setting up user", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } else {
+                    Toast.makeText(requireContext(), "Unable to complete registration. Please try again.", Toast.LENGTH_SHORT).show()
+                    Log.e("LoginFragment", "error: ${result.exceptionOrNull()}")
+            }
         }
     }
 
@@ -48,4 +89,6 @@ class LoginFragment : Fragment() {
             LoginFragment().apply {
             }
     }
+
+
 }

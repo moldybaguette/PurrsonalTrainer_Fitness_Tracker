@@ -128,11 +128,6 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
         })
 
         //onclick listeners
-        binding.loginButton.setOnClickListener {
-            //navigateTo(this,LoginFragment::class.java, null)
-            Toast.makeText(this@HomeLoginRegisterActivity, "feature not ready", Toast.LENGTH_SHORT)
-                .show()
-        }
         binding.registerButton.setOnClickListener {
             navigateTo(this, RegisterActivity::class.java, null)
         }
