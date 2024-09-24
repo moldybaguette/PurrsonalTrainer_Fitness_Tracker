@@ -71,6 +71,7 @@ class RegisterActivity : AppCompatActivity() {
                 Log.d("RegisterActivity","the coroutine is running")
                 val authManager = AuthManager()
                 val result = authManager.registerUser(emailText, passwordText)
+                println("Result: $result")
                 if (result.isSuccess) {
                     val data = result.getOrNull()
                     if (data != null) {
