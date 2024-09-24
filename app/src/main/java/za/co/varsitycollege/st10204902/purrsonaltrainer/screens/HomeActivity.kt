@@ -1,10 +1,15 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens
 
 import android.os.Bundle
+import android.provider.Settings
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.forEachIndexed
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
@@ -12,6 +17,7 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityHome
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.CatFragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.HomeFragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.RoutinesFragment
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
 /**
  * Object holding useful fragment manipulation functions
@@ -47,7 +53,17 @@ object FragmentUtils
 class HomeActivity : AppCompatActivity() {
     //THIS IS THE FRAGMENT MANAGER PAGE
     //TABS: HOME, ROUTINES, CAT
+
+    //-----------------------------------------------------------//
+    //                          PROPERTIES                       //
+    //-----------------------------------------------------------//
+
     private lateinit var binding: ActivityHomeBinding
+
+    //-----------------------------------------------------------//
+    //                          METHODS                          //
+    //-----------------------------------------------------------//
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -57,21 +73,81 @@ class HomeActivity : AppCompatActivity() {
         // Navigation Code:
         FragmentUtils.supportFragmentManager = this.supportFragmentManager
 
-        // Setting initial fragment shown
+        // Custom navbar setup
+        setupNavBar()
+    }
+
+    // Custom navbar methods
+    //-----------------------------------------------------------//
+
+    private fun setupNavBar()
+    {
+        // Initial fragment shown
         FragmentUtils.navigateToFragment(HomeFragment())
 
-        // Assigning navigation paths to bottom navigation menu items
-        binding.bottomNavigationView.setOnItemSelectedListener()
-        {
-            when(it.itemId)
-            {
-                R.id.homeMenuItem -> FragmentUtils.navigateToFragment(HomeFragment())
-                R.id.routinesMenuItem -> FragmentUtils.navigateToFragment(RoutinesFragment())
-                R.id.catMenuItem -> FragmentUtils.navigateToFragment(CatFragment())
-            }
-            true
-        }
+        // ImageViews
+        val homeIcon = binding.customNavBar.homeIcon
+        val routinesIcon = binding.customNavBar.routinesIcon
+        val settingsIcon = binding.customNavBar.settingsIcon
+
+        // onClicks
+        homeIcon.setOnClickListener { onHomeSelected(homeIcon, routinesIcon, settingsIcon) }
+        routinesIcon.setOnClickListener { onRoutinesSelected(homeIcon, routinesIcon, settingsIcon) }
+        settingsIcon.setOnClickListener { onSettingsSelected(homeIcon, routinesIcon, settingsIcon) }
+    }
+
+    private fun onHomeSelected(homeIcon: ImageView, routinesIcon: ImageView, settingsIcon: ImageView)
+    {
+        // Icon
+        homeIcon.setImageResource(R.drawable.home_selected)
+        routinesIcon.setImageResource(R.drawable.routines_deselected)
+        settingsIcon.setImageResource(R.drawable.settings_deselected)
+        // Width
+        homeIcon.layoutParams.width = 300
+        routinesIcon.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+        settingsIcon.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+        // Height
+        homeIcon.layoutParams.height = 121
+        routinesIcon.layoutParams.height = 90
+        settingsIcon.layoutParams.height = 90
+        // Navigation
+        FragmentUtils.navigateToFragment(HomeFragment())
+    }
+
+    private fun onRoutinesSelected(homeIcon: ImageView, routinesIcon: ImageView, settingsIcon: ImageView)
+    {
+        // Icon
+        routinesIcon.setImageResource(R.drawable.routines_selected)
+        homeIcon.setImageResource(R.drawable.home_deselected)
+        settingsIcon.setImageResource(R.drawable.settings_deselected)
+        // Width
+        homeIcon.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+        routinesIcon.layoutParams.width = 400
+        settingsIcon.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+        // Height
+        homeIcon.layoutParams.height = 90
+        routinesIcon.layoutParams.height = 121
+        settingsIcon.layoutParams.height = 90
+        // Navigation
+        FragmentUtils.navigateToFragment(RoutinesFragment())
+    }
+
+    private fun onSettingsSelected(homeIcon: ImageView, routinesIcon: ImageView, settingsIcon: ImageView)
+    {
+        // Icon
+        settingsIcon.setImageResource(R.drawable.settings_selected)
+        homeIcon.setImageResource(R.drawable.home_deselected)
+        routinesIcon.setImageResource(R.drawable.routines_deselected)
+        // Width
+        homeIcon.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+        routinesIcon.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+        settingsIcon.layoutParams.width = 380
+        // Height
+        homeIcon.layoutParams.height = 90
+        routinesIcon.layoutParams.height = 90
+        settingsIcon.layoutParams.height = 121
+        // Navigation
+        navigateTo(this, SettingsActivity::class.java, null)
     }
 }
-
 //------------------------***EOF***-----------------------------//
