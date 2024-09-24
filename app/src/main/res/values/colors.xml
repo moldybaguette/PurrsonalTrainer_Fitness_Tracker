@@ -73,4 +73,5 @@
     <color name="listGrey">#F5F5F5</color>
 
     <color name="comboBoxGrey">#EBEBEB</color>
+    <color name="lowOpacityBlack">#80000000</color>
 </resources>

@@ -63,7 +63,6 @@
         android:enabled="false"
         android:layout_width="match_parent"
         android:autofillHints="emailAddress"
-        android:labelFor="@id/emailInput"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailLabel"
@@ -72,6 +71,7 @@
         android:layout_marginTop="0dp"
         android:background="@drawable/userinput_design"
         android:textSize="25sp"
+        android:hint="@string/email"
         android:textColor="@color/hint_text"
         android:fontFamily="@font/rounded"
         android:paddingVertical="25dp"
@@ -93,6 +93,7 @@
 
     <EditText
         android:id="@+id/passwordInput"
+        android:hint="new password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autofillHints="password"
@@ -109,34 +110,24 @@
         android:paddingVertical="25dp"
         android:paddingHorizontal="30dp"/>
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/resetAppButton"
         android:layout_width="200dp"
         android:layout_height="80dp"
         android:background="@drawable/svg_orange_bblbtn"
         android:contentDescription="@string/reset_app_button"
-        android:textSize="60sp"
+        android:textSize="30sp"
+        android:text="@string/resetApp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/passwordInput"
-        android:layout_marginTop="25dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/resetApp"
-        android:textColor="@color/white"
-        android:labelFor="@+id/resetAppButton"
-        app:layout_constraintStart_toStartOf="@id/resetAppButton"
-        app:layout_constraintEnd_toEndOf="@id/resetAppButton"
-        app:layout_constraintTop_toTopOf="@id/resetAppButton"
-        app:layout_constraintBottom_toBottomOf="@id/resetAppButton"
-        android:textSize="30sp"
+        android:layout_marginTop="25dp"
         android:fontFamily="@font/knicknack_medium"
-        android:layout_marginBottom="8dp"
-        />
+        android:textColor="@color/white"/>
 
-    <ImageView
+
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/logOutButton"
         android:layout_width="200dp"
         android:layout_height="80dp"
@@ -144,71 +135,52 @@
         android:background="@drawable/svg_blue_bblbtn"
         android:contentDescription="@string/log_out_button"
         android:labelFor="@id/logOutButton"
-        android:textSize="60sp"
+        android:textSize="30sp"
+        android:text="@string/logOut"
+        android:fontFamily="@font/knicknack_medium"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/resetAppButton"
         android:layout_marginTop="15dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/logOut"
-        android:labelFor="@+id/logOutButton"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="@id/logOutButton"
-        app:layout_constraintEnd_toEndOf="@id/logOutButton"
-        app:layout_constraintTop_toTopOf="@id/logOutButton"
-        app:layout_constraintBottom_toBottomOf="@id/logOutButton"
-        android:textSize="30sp"
-        android:fontFamily="@font/knicknack_medium"
-        android:layout_marginBottom="8dp"
-        />
 
-    <ImageView
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/doneButtonAccountDetails"
         android:layout_width="235dp"
         android:layout_height="80dp"
         android:layout_marginHorizontal="10dp"
         android:background="@drawable/svg_green_bblbtn"
-        android:textSize="60sp"
+        android:textSize="30sp"
+        android:fontFamily="@font/knicknack_medium"
+        android:textColor="@color/white"
+        android:text="@string/done"
         android:contentDescription="@string/done_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/logOutButton"
         android:layout_marginTop="55dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/done"
-        android:textColor="@color/white"
-        android:labelFor="@+id/doneButtonPasswordReentry"
-        app:layout_constraintStart_toStartOf="@id/doneButtonAccountDetails"
-        app:layout_constraintEnd_toEndOf="@id/doneButtonAccountDetails"
-        app:layout_constraintTop_toTopOf="@id/doneButtonAccountDetails"
-        app:layout_constraintBottom_toBottomOf="@id/doneButtonAccountDetails"
-        android:textSize="30sp"
-        android:fontFamily="@font/knicknack_medium"
-        android:layout_marginBottom="8dp"
-        />
-
     <FrameLayout
-        android:id="@+id/PasswordReentryFragmentContainer"
+        android:id="@+id/popupFragmentContainer"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:elevation="5dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:visibility="gone"/>
 
     <View
-        android:id="@+id/passwordDismissArea"
+        android:id="@+id/dismissArea"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"
+        android:background="@color/lowOpacityBlack"
+        android:elevation="4dp"
+        android:layout_marginBottom="-40dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/PasswordReentryFragmentContainer"
+        app:layout_constraintBottom_toTopOf="@+id/popupFragmentContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
