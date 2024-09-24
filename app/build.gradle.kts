@@ -57,6 +57,7 @@ dependencies {
     implementation ("androidx.credentials:credentials:<latest version>")
     implementation ("androidx.credentials:credentials-play-services-auth:<latest version>")
     implementation ("com.google.android.libraries.identity.googleid:googleid:<latest version>")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
 
     // Use Firebase BOM for managing Firebase dependencies
     implementation(platform("com.google.firebase:firebase-bom:31.5.0"))
