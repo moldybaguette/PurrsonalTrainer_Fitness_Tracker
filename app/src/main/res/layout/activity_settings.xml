@@ -7,6 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".screens.SettingsActivity"
     android:background="@drawable/bg_orange_gradient">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/bg_cogs"/>
 
     <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientTextView
         android:id="@+id/settingsTitle"
@@ -37,6 +46,32 @@
         android:layout_marginTop="15dp"/>
 
     <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/ico_user"
+        app:layout_constraintStart_toStartOf="@id/accountButton"
+        app:layout_constraintTop_toTopOf="@id/accountButton"
+        app:layout_constraintBottom_toBottomOf="@id/accountButton"
+        android:layout_marginStart="35dp"
+        android:layout_marginBottom="10dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/accountDetails"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/accountButton"
+        app:layout_constraintEnd_toEndOf="@id/accountButton"
+        app:layout_constraintTop_toTopOf="@id/accountButton"
+        app:layout_constraintBottom_toBottomOf="@id/accountButton"
+        android:textSize="30sp"
+        android:fontFamily="@font/knicknack_medium"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="35dp"
+        />
+
+    <ImageView
         android:id="@+id/catSettingsButton"
         android:layout_width="350dp"
         android:layout_height="110dp"
@@ -47,6 +82,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/accountButton"
         android:layout_marginTop="15dp"/>
+
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/ico_paw"
+        app:layout_constraintStart_toStartOf="@id/catSettingsButton"
+        app:layout_constraintTop_toTopOf="@id/catSettingsButton"
+        app:layout_constraintBottom_toBottomOf="@id/catSettingsButton"
+        android:layout_marginStart="45dp"
+        android:layout_marginBottom="10dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/catSettings"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/catSettingsButton"
+        app:layout_constraintEnd_toEndOf="@id/catSettingsButton"
+        app:layout_constraintTop_toTopOf="@id/catSettingsButton"
+        app:layout_constraintBottom_toBottomOf="@id/catSettingsButton"
+        android:textSize="30sp"
+        android:fontFamily="@font/knicknack_medium"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="35dp"
+        />
 
     <ImageView
         android:id="@+id/statisticsButton"
@@ -60,8 +121,30 @@
         app:layout_constraintTop_toBottomOf="@id/catSettingsButton"
         android:layout_marginTop="15dp"/>
 
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/ico_stats"
+        app:layout_constraintStart_toStartOf="@id/statisticsButton"
+        app:layout_constraintTop_toTopOf="@id/statisticsButton"
+        app:layout_constraintBottom_toBottomOf="@id/statisticsButton"
+        android:layout_marginStart="55dp"
+        android:layout_marginBottom="10dp"
+        />
 
-
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/statistics"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/statisticsButton"
+        app:layout_constraintEnd_toEndOf="@id/statisticsButton"
+        app:layout_constraintTop_toTopOf="@id/statisticsButton"
+        app:layout_constraintBottom_toBottomOf="@id/statisticsButton"
+        android:textSize="30sp"
+        android:fontFamily="@font/knicknack_medium"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="35dp"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
