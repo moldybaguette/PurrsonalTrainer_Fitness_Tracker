@@ -71,4 +71,6 @@
     <color name="categoryPurple">#B6ABE3</color>
 
     <color name="listGrey">#F5F5F5</color>
+
+    <color name="comboBoxGrey">#EBEBEB</color>
 </resources>

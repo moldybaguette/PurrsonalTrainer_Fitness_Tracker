@@ -12,18 +12,18 @@
     <string name="logOut">Log Out</string>
     <string name="done">Done</string>
     <string name="welcome">Welcome!</string>
-<string name="welcomeBack">Welcome\nBack!</string>
+    <string name="welcomeBack">Welcome\nBack!</string>
     <string name="firebase_web_client_id">859936099389-19fcm5qa1m50jqb04hot8jqbjl12oc9m.apps.googleusercontent.com</string>
     <!-- Home Labels -->
     <string name="home">Home</string>
     <string name="accountDetails">Account Details</string>
     <string name="catSettings">Cat Settings</string>
     <string name="statistics">Statistics</string>
-<string name="settingsTitle">Settings</string>
+    <string name="settingsTitle">Settings</string>
     <string name="routines">Routines</string>
     <string name="yourRoutines">Your Routines</string>
     <string name="newRoutine">New Routine</string>
-<string name="untitledRoutine">Untitled Routine</string>
+    <string name="untitledRoutine">Untitled Routine</string>
     <string name="routineDetails">Routine Details</string>
     <string name="quickStart">Quick Start</string>
     <string name="workout">Workout</string>
@@ -34,14 +34,12 @@
     <string name="addExercise">Add Exercise</string>
 
 
-
-        <string-array name="set_type_options">
-            <item>W</item>
-            <item>1</item>
-            <item>F</item>
-            <item>D</item>
-        </string-array>
-
+    <string-array name="set_type_options">
+        <item>W</item>
+        <item>1</item>
+        <item>F</item>
+        <item>D</item>
+    </string-array>
 
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -52,4 +50,5 @@
     <string name="reset_app_button">Reset App Button</string>
     <string name="log_out_button">Log out button</string>
     <string name="done_button">Done Button</string>
+    <string name="please_re_enter_your_password">Please re-enter your password</string>
 </resources>
