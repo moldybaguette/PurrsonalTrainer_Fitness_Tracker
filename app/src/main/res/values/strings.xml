@@ -10,7 +10,8 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="welcome">Welcome!</string>
 <string name="welcomeBack">Welcome\nBack!</string>
-    <string name="your_web_client_id">http://859936099389-19fcm5qa1m50jqb04hot8jqbjl12oc9m.apps.googleusercontent.com</string>
+    <string name="WEB_CLIENT_ID_FIREBASE" translatable="false">859936099389-19fcm5qa1m50jqb04hot8jqbjl12oc9m.apps.googleusercontent.com</string>
+    <string name="ANDROID_CLIENT_ID" translatable="false">915639803987-n1p0fig0nv28nsgsjc7cf98ifqhc794j.apps.googleusercontent.com</string>
     <!-- Home Labels -->
     <string name="home">Home</string>
 
