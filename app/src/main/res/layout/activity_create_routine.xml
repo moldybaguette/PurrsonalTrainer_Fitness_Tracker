@@ -74,9 +74,8 @@
         tools:listitem="@layout/color_picker_item"
         android:popupBackground="@drawable/bg_start_workout_button"
         tools:itemCount="1"
-        android:paddingHorizontal="25dp"
         android:dropDownWidth="360dp"
-        android:dropDownVerticalOffset="70dp"
+        android:dropDownVerticalOffset="0dp"
         />
 
     <TextView
