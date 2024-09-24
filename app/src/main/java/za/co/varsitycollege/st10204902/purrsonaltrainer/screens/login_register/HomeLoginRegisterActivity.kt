@@ -1,43 +1,41 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.login_register
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.ImageView
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
-import com.google.android.gms.common.SignInButton
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.auth
+import com.google.firebase.database.FirebaseDatabase
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.AuthManager
-import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityHomeLoginRegisterBinding
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
 class HomeLoginRegisterActivity : AppCompatActivity() {
 
 
-    //TODO
-    private lateinit var mGoogleSignInClient: GoogleSignInClient
-    private val RC_SIGN_IN = 9001
+
     // THIS IS THE FIRST PAGE IN UI FLOW
     private lateinit var binding: ActivityHomeLoginRegisterBinding
+    private lateinit var oneTapClient: SignInClient
+    private lateinit var signInRequest: BeginSignInRequest
+    private val TAG = "GoogleSignIn"
+    private val REQ_ONE_TAP = 2
+    private lateinit var auth: FirebaseAuth
 
     //-----------------------------------------------------------//
     //                          METHODS                          //
@@ -45,49 +43,76 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
 
     //TODO Check that the multiple button logic works, need to implement the navigation to check that this logic works.
     override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    binding = ActivityHomeLoginRegisterBinding.inflate(layoutInflater)
-    setContentView(binding.root)
+        super.onCreate(savedInstanceState)
+        binding = ActivityHomeLoginRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        auth = Firebase.auth
 
-    // Apply login fragment before hand
-    populateLoginFragment()
+        oneTapSetup()
 
-    val registerButton: ImageView = findViewById(R.id.registerButton)
-    val originalBackgroundRegister = registerButton.background //getting the original background of the button
-    registerButton.setOnClickListener {
-        navigateTo(this, RegisterActivity::class.java, null)
-        registerButton.setBackgroundResource(R.drawable.svg_purple_bblbtn_clicked) // Set the background to the clicked background
-        Handler(Looper.getMainLooper()).postDelayed({
-            registerButton.background = originalBackgroundRegister // Restore the original background after the delay
-        }, 200) // Delay in milliseconds
+        // Apply login fragment before hand
+        populateLoginFragment()
+
+
+        val originalBackgroundRegister =
+            binding.registerButton.background //getting the original background of the button
+        binding.registerButton.setOnClickListener {
+            navigateTo(this, RegisterActivity::class.java, null)
+            binding.registerButton.setBackgroundResource(R.drawable.svg_purple_bblbtn_clicked) // Set the background to the clicked background
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.registerButton.background =
+                    originalBackgroundRegister // Restore the original background after the delay
+            }, 200) // Delay in milliseconds
+        }
+
+
+        val originalBackgroundLogin = binding.loginButton.background
+        // Binding show and dismiss popup for login
+        binding.loginButton.setOnClickListener {
+            showLoginPopup()
+            binding.loginButton.setBackgroundResource(R.drawable.svg_orange_bblbtn_clicked) // Set the background to the clicked background
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.loginButton.background =
+                    originalBackgroundLogin // Restore the original background after the delay
+            }, 200) // Delay in milliseconds
+        }
+        binding.googleSignInButton.setOnClickListener() {
+            signInWithGoogle()
+        }
+
+        binding.loginDismissArea.setOnClickListener { dismissLoginPopup() }
     }
 
-    val loginButton: ImageView = findViewById(R.id.loginButton)
-    val originalBackgroundLogin = loginButton.background
-    // Binding show and dismiss popup for login
-    binding.loginButton.setOnClickListener {
-        showLoginPopup()
-        loginButton.setBackgroundResource(R.drawable.svg_orange_bblbtn_clicked) // Set the background to the clicked background
-        Handler(Looper.getMainLooper()).postDelayed({
-            loginButton.background = originalBackgroundLogin // Restore the original background after the delay
-        }, 200) // Delay in milliseconds
+    private fun oneTapSetup() {
+        oneTapClient = Identity.getSignInClient(this)
+        signInRequest = BeginSignInRequest.builder()
+            .setPasswordRequestOptions(
+                BeginSignInRequest.PasswordRequestOptions.builder()
+                    .setSupported(true)
+                    .build()
+            )
+            .setGoogleIdTokenRequestOptions(
+                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                    .setSupported(true)
+                    .setServerClientId(getString(R.string.firebase_web_client_id))
+                    .setFilterByAuthorizedAccounts(false)
+                    .build()
+            )
+            .setAutoSelectEnabled(false)
+            .build()
     }
-    binding.loginDismissArea.setOnClickListener { dismissLoginPopup() }
-}
 
     // Login Popup Methods
     //-----------------------------------------------------------//
 
-    private fun showLoginPopup()
-    {
+    private fun showLoginPopup() {
         val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
         binding.loginFragmentContainer.startAnimation(slideUp)
         binding.loginFragmentContainer.visibility = View.VISIBLE
         binding.loginDismissArea.visibility = View.VISIBLE
     }
 
-    private fun dismissLoginPopup()
-    {
+    private fun dismissLoginPopup() {
         val slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down)
         binding.loginFragmentContainer.startAnimation(slideDown)
         slideDown.setAnimationListener(object : Animation.AnimationListener {
@@ -98,83 +123,88 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
                 // Reset the login fragment
                 populateLoginFragment()
             }
+
             override fun onAnimationRepeat(animation: Animation?) {}
         })
 
-        //TODO
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-
-        //buttons
-        var loginButton = findViewById<ImageView>(R.id.loginButton)
-        var registerButton = findViewById<AppCompatButton>(R.id.registerButton)
-        val googleSignInButton = findViewById<SignInButton>(R.id.googleSignInButton)
-
         //onclick listeners
-        loginButton.setOnClickListener {
+        binding.loginButton.setOnClickListener {
             //navigateTo(this,LoginFragment::class.java, null)
-            Toast.makeText(this@HomeLoginRegisterActivity, "feature not ready", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@HomeLoginRegisterActivity, "feature not ready", Toast.LENGTH_SHORT)
+                .show()
         }
-        registerButton.setOnClickListener {
-            navigateTo(this,RegisterActivity::class.java, null)
+        binding.registerButton.setOnClickListener {
+            navigateTo(this, RegisterActivity::class.java, null)
         }
-        findViewById<SignInButton>(R.id.googleSignInButton).setOnClickListener {
-            //TODO
-            signIn()
-        }
+
     }
 
-    //TODO
-    private fun signIn() {
-        val signInIntent = mGoogleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
-    //TODO
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            handleSignInResult(task)
-        }
-    }
-    //TODO
-    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
-        try {
-            val account = completedTask.getResult(ApiException::class.java)
-            // Google Sign In was successful, authenticate with your backend
-            account?.idToken?.let { token ->
-                CoroutineScope(Dispatchers.Main).launch {
-                    var authManager = AuthManager()
-                    val result = authManager.signInWithSSO(token)
-                    if (result.isSuccess) {
-                        // Handle successful sign-in
-                        Toast.makeText(this@HomeLoginRegisterActivity, "Sign-in successful", Toast.LENGTH_SHORT).show()
-                        // Navigate to the next screen or update UI
-                        navigateTo(this@HomeLoginRegisterActivity, HomeActivity::class.java, null)
-                    } else {
-                        // Handle sign-in failure
-                        Toast.makeText(this@HomeLoginRegisterActivity, "Sign-in failed", Toast.LENGTH_SHORT).show()
-                    }
+    private fun signInWithGoogle() {
+        oneTapClient.beginSignIn(signInRequest)
+            .addOnSuccessListener { result ->
+                try {
+                    startIntentSenderForResult(
+                        result.pendingIntent.intentSender, REQ_ONE_TAP,
+                        null, 0, 0, 0, null
+                    )
+                } catch (e: Exception) {
+                    Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
                 }
             }
-        } catch (e: ApiException) {
-            // Google Sign In failed, handle the error
-            Log.e(TAG, "Google sign in failed", e)
-            val errorMessage = when (e.statusCode) {
-                GoogleSignInStatusCodes.SIGN_IN_CANCELLED -> "Google Sign In was cancelled"
-                GoogleSignInStatusCodes.NETWORK_ERROR -> "Network error occurred"
-                GoogleSignInStatusCodes.INVALID_ACCOUNT -> "Invalid account"
-                GoogleSignInStatusCodes.SIGN_IN_REQUIRED -> "Sign In required"
-                else -> "Google Sign In failed: ${e.statusCode}"
+            .addOnFailureListener(this) { e ->
+                Log.e(TAG, "Google Sign-In failed", e)
+                Toast.makeText(this, "Google Sign-In failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
             }
-            // Google Sign In failed, update UI appropriately
-            Toast.makeText(this@HomeLoginRegisterActivity, "Google sign in failed", Toast.LENGTH_SHORT).show()
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQ_ONE_TAP) {
+            try {
+                val credential = oneTapClient.getSignInCredentialFromIntent(data)
+                val idToken = credential.googleIdToken
+
+                if (idToken != null) {
+                    Log.d(TAG, "Got ID token: $idToken")
+                    val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
+                    auth.signInWithCredential(firebaseCredential)
+                        .addOnCompleteListener(this) { task ->
+                            if (task.isSuccessful) {
+                                // Sign in success
+                                Log.d(TAG, "signInWithCredential:success")
+                                val user = auth.currentUser
+
+                                // Check if user does not exist in the database
+                                val userRef = FirebaseDatabase.getInstance().getReference("users").child(user!!.uid)
+                                userRef.get().addOnCompleteListener { task1 ->
+                                    if (task1.isSuccessful) {
+                                        if (!task1.result.exists()) {
+                                            // If user does not exist, create user in the database
+                                            AuthManager().createUserInRealtimeDatabase(user.uid)
+                                        }
+                                    } else {
+                                        Log.e(TAG, "Failed to check if user exists: ${task.exception?.message}")
+                                    }
+                                }
+
+                                // Navigate to the next screen
+                                navigateTo(this, HomeActivity::class.java, null)
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.e(TAG, "signInWithCredential:failure", task.exception)
+                            }
+                        }
+                } else {
+                    Log.e(TAG, "No ID token!")
+                }
+            } catch (e: ApiException) {
+                Log.e(TAG, "Sign-in failed with error code: ${e.statusCode}")
+                e.printStackTrace()
+            }
         }
     }
+
 
 
 

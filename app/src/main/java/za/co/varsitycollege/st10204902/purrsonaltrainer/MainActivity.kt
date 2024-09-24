@@ -44,36 +44,63 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkBiometricSupport() {
-    val biometricManager = BiometricManager.from(this)
+        val biometricManager = BiometricManager.from(this)
         when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)) {
             BiometricManager.BIOMETRIC_SUCCESS -> authenticate()
-            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> Toast.makeText(this, "No biometric features available on this device.", Toast.LENGTH_SHORT).show()
-            BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> Toast.makeText(this, "Biometric features are currently unavailable.", Toast.LENGTH_SHORT).show()
-            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> Toast.makeText(this, "No biometric credentials enrolled.", Toast.LENGTH_SHORT).show()
+            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> Toast.makeText(
+                this,
+                "No biometric features available on this device.",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> Toast.makeText(
+                this,
+                "Biometric features are currently unavailable.",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> navigateTo(
+                this,
+                HomeLoginRegisterActivity::class.java,
+                null
+            )
         }
     }
 
-private fun setupBiometricPrompt() {
-    val executor = ContextCompat.getMainExecutor(this)
-    biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
-        override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-            super.onAuthenticationError(errorCode, errString)
-            Toast.makeText(this@MainActivity, "Authentication error: $errString", Toast.LENGTH_SHORT).show()
-            navigateTo(this@MainActivity, HomeLoginRegisterActivity::class.java, null)
-        }
+    private fun setupBiometricPrompt() {
+        val executor = ContextCompat.getMainExecutor(this)
+        biometricPrompt =
+            BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                    super.onAuthenticationError(errorCode, errString)
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Authentication error: $errString",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    navigateTo(this@MainActivity, HomeLoginRegisterActivity::class.java, null)
+                }
 
-        override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-            super.onAuthenticationSucceeded(result)
-            Toast.makeText(this@MainActivity, "Authentication succeeded!", Toast.LENGTH_SHORT).show()
-            navigateTo(this@MainActivity, HomeActivity::class.java, null)
-        }
+                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                    super.onAuthenticationSucceeded(result)
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Authentication succeeded!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    navigateTo(this@MainActivity, HomeActivity::class.java, null)
+                }
 
-        override fun onAuthenticationFailed() {
-            super.onAuthenticationFailed()
-            Toast.makeText(this@MainActivity, "Authentication failed. Please try again.", Toast.LENGTH_SHORT).show()
-            navigateTo(this@MainActivity, HomeLoginRegisterActivity::class.java, null)
-        }
-    })
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Authentication failed. Please try again.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    navigateTo(this@MainActivity, HomeLoginRegisterActivity::class.java, null)
+                }
+            })
 
 
         promptInfo = BiometricPrompt.PromptInfo.Builder()
