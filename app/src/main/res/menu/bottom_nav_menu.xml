@@ -2,11 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/homeMenuItem"
+        android:icon="@drawable/home_deselected"
         android:title="home" />
     <item
         android:id="@+id/routinesMenuItem"
+        android:icon="@drawable/routines_deselected"
         android:title="routines" />
     <item
         android:id="@+id/catMenuItem"
+        android:icon="@drawable/settings_deselected"
         android:title="cat" />
 </menu>
