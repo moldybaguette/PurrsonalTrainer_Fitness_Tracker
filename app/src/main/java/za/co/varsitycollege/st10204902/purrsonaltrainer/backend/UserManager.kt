@@ -109,6 +109,36 @@ object UserManager {
     // User Property Updates
     //-----------------------------------------------------------//
 
+    suspend fun deleteUserDataExceptID(){
+        val currentUser = _userFlow.value ?: return
+        val userId = currentUser.userID
+
+        val updatedUser = User(
+            userID = userId,
+            name = "",
+            catName = "",
+            experiencePoints = "",
+            backgroundURI = "",
+            catURI = "",
+            milkCoins = "",
+            userRoutines = emptyMap(),
+            userWorkouts = emptyMap(),
+            userExercises = emptyMap(),
+            userAchievements = emptyMap(),
+            userInventory = emptyMap(),
+            userBackgrounds = emptyMap()
+        )
+
+        try {
+            val databaseRef = FirebaseDatabase.getInstance().getReference(USERS_PATH).child(userId)
+            databaseRef.setValue(updatedUser).await()
+            setUser(updatedUser)
+            Log.d("UserManager", "User data cleared except for userID")
+        } catch (e: Exception) {
+            Log.e("UserManager", "Failed to clear user data: ${e.message}")
+        }
+    }
+
     /**
      * Updates the user's name
      * @param newName The new name to update the user with
