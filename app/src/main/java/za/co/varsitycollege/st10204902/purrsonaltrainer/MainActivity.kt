@@ -12,11 +12,14 @@ import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityMainBinding
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.CatFact
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.CatImage
@@ -35,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var catImageView: ImageView
     private lateinit var api: CatFactsApi
     private lateinit var catsApiService: CatsApiService
+    private lateinit var idToken: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         // Check if a user is already logged in
         val currentUser = auth.currentUser
         if (currentUser != null) {
+            idToken = currentUser.getIdToken(true).toString()
             checkBiometricSupport()
 
         } else {
@@ -155,7 +160,13 @@ class MainActivity : AppCompatActivity() {
                         "Authentication succeeded!",
                         Toast.LENGTH_SHORT
                     ).show()
-                    navigateTo(this@MainActivity, HomeActivity::class.java, null)
+
+                    UserManager.userManagerScope.launch {
+                        async {
+                            UserManager.setUpSingleton(idToken)
+                        }.await()
+                        navigateTo(this@MainActivity, HomeActivity::class.java, null)
+                    }
                 }
 
                 override fun onAuthenticationFailed() {
