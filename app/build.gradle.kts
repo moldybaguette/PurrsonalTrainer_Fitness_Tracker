@@ -1,5 +1,3 @@
-import kotlin.math.sign
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -72,6 +70,9 @@ dependencies {
     //implementation ("com.google.android.libraries.identity.googleid:googleid:<latest version>")
     implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation("androidx.biometric:biometric:1.2.0-alpha04")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.picasso:picasso:2.71828")
 
     // Use Firebase BOM for managing Firebase dependencies
     implementation(platform("com.google.firebase:firebase-bom:31.5.0"))
