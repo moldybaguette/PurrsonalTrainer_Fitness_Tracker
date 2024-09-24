@@ -55,4 +55,20 @@
     <color name="untitled_routine_end_color">#B8B8B8</color>
 
     <color name="workout_view_text">#90FFFFFF</color>
+
+    <!-- List Colours Rainbow -->
+    <color name="categoryPink">#FFC1C6</color>
+    <color name="categoryRed">#FF562F</color>
+    <color name="categoryOrange1">#FB6A0F</color>
+    <color name="categoryOrange2">#F78D37</color>
+    <color name="categoryYellow">#F2A815</color>
+    <color name="categoryLightYellow">#FED070</color>
+    <color name="categoryGreen1">#ACCE82</color>
+    <color name="categoryGreen2">#60851C</color>
+    <color name="categoryLightBlue">#B2F0FF</color>
+    <color name="categoryBlue">#65CBD0</color>
+    <color name="categoryDarkBlue">#1D98BA</color>
+    <color name="categoryPurple">#B6ABE3</color>
+
+    <color name="listGrey">#F5F5F5</color>
 </resources>

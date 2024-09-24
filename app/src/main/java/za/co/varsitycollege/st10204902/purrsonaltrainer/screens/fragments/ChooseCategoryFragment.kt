@@ -5,56 +5,40 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
+import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.CategoryAdapter
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ChooseCategoryFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ChooseCategoryFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private val categories = listOf("Category 1", "Category 2", "Category 3", "Category 4", "Category 5", "Category 6", "Category 7", "Category 8", "Category 9", "Category 10", "Category 11", "Category 12")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_choose_category, container, false)
-    }
+        val view = inflater.inflate(R.layout.fragment_choose_category, container, false)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ChooseCategoryFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ChooseCategoryFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        val specificColors = listOf(
+            ContextCompat.getColor(requireContext(), R.color.categoryPink),
+            ContextCompat.getColor(requireContext(), R.color.categoryRed),
+            ContextCompat.getColor(requireContext(), R.color.categoryOrange1),
+            ContextCompat.getColor(requireContext(), R.color.categoryOrange2),
+            ContextCompat.getColor(requireContext(), R.color.categoryYellow),
+            ContextCompat.getColor(requireContext(), R.color.categoryLightYellow),
+            ContextCompat.getColor(requireContext(), R.color.categoryGreen1),
+            ContextCompat.getColor(requireContext(), R.color.categoryGreen2),
+            ContextCompat.getColor(requireContext(), R.color.categoryLightBlue),
+            ContextCompat.getColor(requireContext(), R.color.categoryBlue),
+            ContextCompat.getColor(requireContext(), R.color.categoryDarkBlue),
+            ContextCompat.getColor(requireContext(), R.color.categoryPurple),
+        )
+
+        val recyclerView: RecyclerView = view.findViewById(R.id.categoryRecycler)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = CategoryAdapter(categories, specificColors)
+
+        return view
     }
 }
