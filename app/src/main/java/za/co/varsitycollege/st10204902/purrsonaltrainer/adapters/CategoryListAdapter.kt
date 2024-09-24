@@ -1,5 +1,6 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.adapters
 
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +11,21 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import androidx.core.content.ContextCompat
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.NonDisposableHandle.parent
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.ChooseCategoryFragment
+import java.io.InputStreamReader
+import java.lang.Thread.sleep
 
 
-class CategoryAdapter(private val categories: List<String>,) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+class CategoryAdapter(private val categories: List<String>, private val context: Context) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView: TextView = itemView.findViewById(R.id.categoryText)
@@ -56,8 +67,23 @@ class CategoryAdapter(private val categories: List<String>,) : RecyclerView.Adap
         val color = colors[position % colors.size]
         holder.textView.setTextColor(color)
         holder.imageView.setColorFilter(color)
-    }
 
+        holder.itemView.setOnClickListener {
+
+           println("clicked on $category")
+            CoroutineScope(Dispatchers.Main).launch {
+                val exerciseList = async(Dispatchers.IO) {
+                    val inputStream = context.assets.open("globalExercises.json")
+                    val reader = InputStreamReader(inputStream)
+                    val gson = Gson()
+                    val exerciseListType = object : TypeToken<List<Exercise>>() {}.type
+                    gson.fromJson<List<Exercise>>(reader, exerciseListType)
+                }.await()
+                println("exerciseList: $exerciseList")
+            }
+        }
+    }
+    
     override fun getItemCount(): Int {
         return categories.size
     }

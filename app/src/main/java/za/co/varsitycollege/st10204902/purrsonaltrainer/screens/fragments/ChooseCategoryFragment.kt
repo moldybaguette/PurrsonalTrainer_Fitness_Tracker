@@ -61,7 +61,7 @@ class ChooseCategoryFragment : Fragment() {
             recyclerView.layoutManager = LinearLayoutManager(context)
             //print each category
             Log.d("ChooseCategoryFragment", "completeCategoryList: ${completeCategoryList.listIterator()}")
-            recyclerView.adapter = CategoryAdapter(completeCategoryList)
+            recyclerView.adapter = CategoryAdapter(completeCategoryList, requireContext())
 
         return view
     }
