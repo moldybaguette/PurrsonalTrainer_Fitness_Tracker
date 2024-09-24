@@ -1,6 +1,8 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.login_register
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -116,7 +118,7 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
         //buttons
-        var loginButton = findViewById<AppCompatButton>(R.id.loginButton)
+        var loginButton = findViewById<ImageView>(R.id.loginButton)
         var registerButton = findViewById<AppCompatButton>(R.id.registerButton)
         val googleSignInButton = findViewById<SignInButton>(R.id.googleSignInButton)
 

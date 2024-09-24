@@ -7,9 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityMainBinding
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.login_register.HomeLoginRegisterActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
-import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.login_register.HomeLoginRegisterActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
-import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

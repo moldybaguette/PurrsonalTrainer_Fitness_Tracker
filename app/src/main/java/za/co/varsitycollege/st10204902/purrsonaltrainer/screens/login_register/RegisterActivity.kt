@@ -3,24 +3,18 @@ package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.login_register
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.widget.ImageView
-import android.os.UserManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
-import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.Validator
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.AuthManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
-import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
-import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
 class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
