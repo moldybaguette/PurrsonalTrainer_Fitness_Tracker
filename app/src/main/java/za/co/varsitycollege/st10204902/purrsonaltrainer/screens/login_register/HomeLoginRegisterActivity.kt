@@ -42,13 +42,25 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
     //-----------------------------------------------------------//
 
     //TODO Check that the multiple button logic works, need to implement the navigation to check that this logic works.
+    /**
+     * Called when the activity is starting.
+     * This method will initialize the activity and set up the One Tap API.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState.
+     * Otherwise, it is null.
+     * @see onCreate
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeLoginRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Initialize Firebase Auth
         auth = Firebase.auth
+
+        // Initialize One Tap API
         oneTapClient = Identity.getSignInClient(this)
+
+        // Initialize One Tap sign in request
         signInRequest = BeginSignInRequest.builder()
             .setPasswordRequestOptions(
                 BeginSignInRequest.PasswordRequestOptions.builder()
@@ -68,25 +80,28 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
         // Apply login fragment before hand
         populateLoginFragment()
 
-        val registerButton: ImageView = findViewById(R.id.registerButton)
+
+        // Binding the register button
         val originalBackgroundRegister =
-            registerButton.background //getting the original background of the button
-        registerButton.setOnClickListener {
+            binding.registerButton.background //getting the original background of the button
+        // Setting the click listener for the register button
+        binding.registerButton.setOnClickListener {
             navigateTo(this, RegisterActivity::class.java, null)
-            registerButton.setBackgroundResource(R.drawable.svg_purple_bblbtn_clicked) // Set the background to the clicked background
+            binding.registerButton.setBackgroundResource(R.drawable.svg_purple_bblbtn_clicked) // Set the background to the clicked background
             Handler(Looper.getMainLooper()).postDelayed({
-                registerButton.background = originalBackgroundRegister
+                binding.registerButton.background = originalBackgroundRegister
             }, 400)
         }
 
-        val loginButton: ImageView = findViewById(R.id.loginButton)
-        val originalBackgroundLogin = loginButton.background
+        // Binding the login button
+
+        val originalBackgroundLogin = binding.loginButton.background
         // Binding show and dismiss popup for login
         binding.loginButton.setOnClickListener {
             showLoginPopup()
-            loginButton.setBackgroundResource(R.drawable.svg_orange_bblbtn_clicked) // Set the background to the clicked background
+            binding.loginButton.setBackgroundResource(R.drawable.svg_orange_bblbtn_clicked) // Set the background to the clicked background
             Handler(Looper.getMainLooper()).postDelayed({
-                loginButton.background = originalBackgroundLogin
+                binding.loginButton.background = originalBackgroundLogin
             }, 400)
         }
         binding.loginDismissArea.setOnClickListener { dismissLoginPopup() }
@@ -99,6 +114,10 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
     // Login Popup Methods
     //-----------------------------------------------------------//
 
+    /**
+     * Shows the login popup.
+     * This method will animate the login fragment container to slide up and then show the container.
+     */
     private fun showLoginPopup() {
         val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
         binding.loginFragmentContainer.startAnimation(slideUp)
@@ -106,6 +125,11 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
         binding.loginDismissArea.visibility = View.VISIBLE
     }
 
+
+    /**
+     * Dismisses the login popup.
+     * This method will animate the login fragment container to slide down and then hide the container.
+     */
     private fun dismissLoginPopup() {
         val slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down)
         binding.loginFragmentContainer.startAnimation(slideDown)
@@ -122,6 +146,10 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Populates the login fragment in the login fragment container.
+     * This method replaces the current fragment in the container with a new instance of `LoginFragment`.
+     */
     private fun populateLoginFragment() {
         this.supportFragmentManager.beginTransaction().apply {
             replace(binding.loginFragmentContainer.id, LoginFragment())
@@ -130,6 +158,10 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Signs in with Google using the One Tap API.
+     * This method will start the One Tap UI to sign in with Google.
+     */
     private fun signInWithGoogle() {
         oneTapClient.beginSignIn(signInRequest).addOnSuccessListener { result ->
             try {
@@ -147,11 +179,19 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
     }
 
 
+    /**
+     * Handles the result of the One Tap sign in.
+     * This method will be called when the One Tap sign in activity completes.
+     * @param requestCode The request code of the activity
+     * @param resultCode The result code of the activity
+     * @param data The intent data from the activity
+     * @see onActivityResult
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == REQ_ONE_TAP){
-            try{
+        if (requestCode == REQ_ONE_TAP) {
+            try {
                 val credential = oneTapClient.getSignInCredentialFromIntent(data)
                 val idToken = credential.googleIdToken
                 val displayName = credential.displayName
@@ -174,23 +214,23 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
 
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                    Toast.makeText(baseContext, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        baseContext, "Authentication failed.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             }
                     }
+
                     else -> {
                         // Shouldn't happen.
                         Log.d(TAG, "No ID token!")
                     }
                 }
-            }catch (e: ApiException){
+            } catch (e: ApiException) {
                 Log.e(TAG, "One Tap failed: ${e.localizedMessage}")
-
             }
         }
     }
-
-
 }
 //------------------------***EOF***-----------------------------//
