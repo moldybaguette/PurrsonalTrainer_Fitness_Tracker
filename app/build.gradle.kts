@@ -49,6 +49,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.gson)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.jetbrains.kotlinx.coroutines.android)
+    implementation (libs.jetbrains.kotlinx.coroutines.play.services)
+    implementation (libs.kotlinx.collections.immutable)
+
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.0")
@@ -60,8 +67,9 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation("androidx.biometric:biometric:1.2.0-alpha04")
 
+
     // Use Firebase BOM for managing Firebase dependencies
-    implementation(platform("com.google.firebase:firebase-bom:31.5.0"))
+    implementation(platform(libs.firebase.bom))
 
     //Test Implementations
     //JUnit5
@@ -80,8 +88,10 @@ dependencies {
     //Coroutines
     testImplementation (libs.kotlinx.coroutines.test)
 
+    //Google SSO libs
+    implementation(libs.play.services.auth)
 
-    androidTestImplementation("androidx.test.ext:junit:1.1.5") // AndroidX JUnit extensions
-    androidTestImplementation("androidx.test:runner:1.6.2") // AndroidX Test Runner
+    androidTestImplementation(libs.androidx.junit) // AndroidX JUnit extensions
+    androidTestImplementation(libs.androidx.runner) // AndroidX Test Runner
 
 }

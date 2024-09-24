@@ -150,4 +150,5 @@ class HomeActivity : AppCompatActivity() {
         navigateTo(this, SettingsActivity::class.java, null)
     }
 }
+
 //------------------------***EOF***-----------------------------//
