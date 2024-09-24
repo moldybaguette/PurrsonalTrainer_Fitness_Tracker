@@ -1,12 +1,12 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer
 
-import androidx.biometric.BiometricManager
+import android.hardware.biometrics.BiometricManager
+import android.hardware.biometrics.BiometricPrompt
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityMainBinding
