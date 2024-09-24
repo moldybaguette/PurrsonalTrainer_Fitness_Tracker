@@ -4,11 +4,14 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.User
 
-class AuthManager {
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+class AuthManager(val auth: FirebaseAuth = FirebaseAuth.getInstance()) {
+
+    private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
+
 
     /**
      * Registers a user with the provided email and password
@@ -66,6 +69,7 @@ class AuthManager {
      * @return The user's unique ID
      */
     private fun createUserInRealtimeDatabase(authUser: AuthResult): String {
+
         val userObject = User(
             authUser.user!!.uid,
             "",
@@ -81,10 +85,20 @@ class AuthManager {
             emptyMap(),
             emptyMap()
         )
-        FirebaseDatabase.getInstance().reference.child("users").child(authUser.user!!.uid)
-            .setValue(userObject)
-        return authUser.user!!.uid
-    }
+        UserManager.userManagerScope.launch {
+            val task =
+                database.reference.child("users").child(authUser.user!!.uid).setValue(userObject)
+            task.addOnCompleteListener { task1 ->
+                if (task1.isSuccessful) {
+                    println("User added to Realtime Database successfully")
+                } else {
+                    println("Failed to add user to Realtime Database: ${task.exception?.message}")
+                }
+            }
+        }
 
+
+        return userObject.userID
+    }
 
 }
