@@ -1,20 +1,14 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens
 
 import android.os.Bundle
-import android.provider.Settings
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.forEachIndexed
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityHomeBinding
-import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.CatFragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.HomeFragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.RoutinesFragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
@@ -28,7 +22,7 @@ object FragmentUtils
     //                          PROPERTIES                       //
     //-----------------------------------------------------------//
 
-    public lateinit var supportFragmentManager: FragmentManager
+    lateinit var supportFragmentManager: FragmentManager
 
     //-----------------------------------------------------------//
     //                          METHODS                          //
@@ -75,6 +69,11 @@ class HomeActivity : AppCompatActivity() {
 
         // Custom navbar setup
         setupNavBar()
+    }
+
+    override fun onResume(){
+        super.onResume()
+        onHomeSelected(binding.customNavBar.homeIcon, binding.customNavBar.routinesIcon, binding.customNavBar.settingsIcon)
     }
 
     // Custom navbar methods
