@@ -3,6 +3,7 @@ package za.co.varsitycollege.st10204902.purrsonaltrainer.services
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.CreateID
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutExercise
 
 object RoutineBuilder {
     //-----------------------------------------------------------//
@@ -26,7 +27,7 @@ object RoutineBuilder {
     /**
      * The exercises in the routine being built
      */
-    var exercises: MutableMap<String, Exercise> = mutableMapOf()
+    var exercises: MutableMap<String, WorkoutExercise> = mutableMapOf()
 
     /**
      * The color of the routine being built
@@ -76,7 +77,11 @@ object RoutineBuilder {
     fun addExercise(exercise: Exercise) {
         // if the exercise is not already in the exercises list then add it
         if (!exercises.contains(exercise.exerciseID)) {
-            exercises[exercise.exerciseID] = exercise
+            val tempExerciseID = exercise.exerciseID
+            val tempExerciseName = exercise.exerciseName
+            val tempCategory = exercise.category
+            val tempNotes = exercise.notes
+            exercises[tempExerciseID] = WorkoutExercise(tempExerciseID, tempExerciseName, tempCategory, 0, 0, 0, 0, tempNotes, "")
         }
     }
 
