@@ -24,6 +24,7 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.CategoryAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.ExerciseService
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.SlideUpPopup
 import java.io.InputStreamReader
 import java.lang.Thread.sleep
 
@@ -91,52 +92,15 @@ class ChooseCategoryFragment : Fragment() {
         }.await()
     }
 
+    // Example of how to use the SlideUpPopup class
     private fun setupAddCategoryPopup(view: View)
     {
         val addCategoryButton = view.findViewById<AppCompatButton>(R.id.addCategoryButton)
         val fragmentContainer = requireActivity().findViewById<FrameLayout>(R.id.createCategoryFragmentContainer)
         val dismissArea = requireActivity().findViewById<View>(R.id.createCategoryDismissArea)
 
-        // Preset the CreateCategoryFragment
-        bindCreateCategoryFragment(fragmentContainer)
-
-        // Setting up onclicks to show/ dismiss popup
-        addCategoryButton.setOnClickListener { showCreateCategoryPopup(fragmentContainer, dismissArea) }
-        dismissArea.setOnClickListener { dismissCreateCategoryPopup(fragmentContainer, dismissArea) }
-    }
-
-    private fun showCreateCategoryPopup(fragmentContainer: FrameLayout, dismissArea: View)
-    {
-        val slideUp = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_up)
-        fragmentContainer.startAnimation(slideUp)
-        fragmentContainer.visibility = View.VISIBLE
-        dismissArea.visibility = View.VISIBLE
-    }
-
-    private fun dismissCreateCategoryPopup(fragmentContainer: FrameLayout, dismissArea: View)
-    {
-        val slideDown = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_down)
-        fragmentContainer.startAnimation(slideDown)
-        slideDown.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {
-                dismissArea.visibility = View.GONE
-            }
-            override fun onAnimationEnd(animation: Animation?) {
-                fragmentContainer.visibility = View.GONE
-                // Reset the login fragment
-                bindCreateCategoryFragment(fragmentContainer)
-            }
-
-            override fun onAnimationRepeat(animation: Animation?) {}
-        })
-    }
-
-    private fun bindCreateCategoryFragment(fragmentContainer: FrameLayout)
-    {
-        parentFragmentManager.beginTransaction().apply {
-            replace(fragmentContainer.id, CreateCategoryFragment())
-            addToBackStack(null)
-            commit()
-        }
+        // setup popup
+        val popup = SlideUpPopup(parentFragmentManager, fragmentContainer, dismissArea, CreateCategoryFragment(), requireContext())
+        addCategoryButton.setOnClickListener { popup.showPopup() }
     }
 }

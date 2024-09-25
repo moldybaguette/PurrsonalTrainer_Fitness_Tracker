@@ -4,7 +4,15 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import za.co.varsitycollege.st10204902.purrsonaltrainer.R
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.CreateCategoryFragment
 
 //-----------------------------------------------------------//
 //                          METHODS                          //
@@ -31,5 +39,56 @@ public fun navigateTo(context: Context, activityToOpen: Class<*>, dataToPass: Bu
 
     // starting the new activity
     context.startActivity(intent)
+}
+
+public class SlideUpPopup(
+    private val fragmentManager: FragmentManager,
+    private val fragmentContainer: FrameLayout,
+    private val dismissArea: View,
+    private val fragment: Fragment,
+    private val context: Context)
+{
+    init
+    {
+        // Binding fragment preemptively
+        bindToFragment()
+        // Setup dismissArea OnClick
+        dismissArea.setOnClickListener { dismissPopup() }
+    }
+
+    private fun bindToFragment()
+    {
+        fragmentManager.beginTransaction().apply {
+            replace(fragmentContainer.id, fragment)
+            addToBackStack(null)
+            commit()
+        }
+    }
+
+    public fun showPopup()
+    {
+        val slideUp = AnimationUtils.loadAnimation(context, R.anim.slide_up)
+        fragmentContainer.startAnimation(slideUp)
+        fragmentContainer.visibility = View.VISIBLE
+        dismissArea.visibility = View.VISIBLE
+    }
+
+    public fun dismissPopup()
+    {
+        val slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down)
+        fragmentContainer.startAnimation(slideDown)
+        slideDown.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+                dismissArea.visibility = View.GONE
+            }
+            override fun onAnimationEnd(animation: Animation?) {
+                fragmentContainer.visibility = View.GONE
+                // Reset the login fragment
+                bindToFragment()
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {}
+        })
+    }
 }
 //------------------------***EOF***-----------------------------//
