@@ -5,6 +5,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivitySettingsBinding
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.settings_activities.AccountDetailsActivity
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.settings_activities.BreakdownActivity
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.settings_activities.CatSettingsActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
 class SettingsActivity : AppCompatActivity() {
@@ -23,6 +25,13 @@ class SettingsActivity : AppCompatActivity() {
             navigateTo(this, AccountDetailsActivity::class.java, null)
         }
 
+        binding.catSettingsButton.setOnClickListener(){
+            navigateTo(this, CatSettingsActivity::class.java, null)
+        }
+        
+        binding.statisticsButton.setOnClickListener(){
+            navigateTo(this, BreakdownActivity::class.java, null)
+        }
 
 
     }
