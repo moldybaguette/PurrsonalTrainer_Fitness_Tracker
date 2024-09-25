@@ -41,7 +41,7 @@ public fun navigateTo(context: Context, activityToOpen: Class<*>, dataToPass: Bu
     context.startActivity(intent)
 }
 
-public class slideUpPopup(
+public class SlideUpPopup(
     private val fragmentManager: FragmentManager,
     private val fragmentContainer: FrameLayout,
     private val dismissArea: View,
