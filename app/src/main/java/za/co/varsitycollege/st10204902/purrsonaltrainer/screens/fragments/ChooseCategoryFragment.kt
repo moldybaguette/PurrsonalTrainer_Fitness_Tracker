@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -61,7 +62,17 @@ class ChooseCategoryFragment : Fragment() {
             recyclerView.layoutManager = LinearLayoutManager(context)
             //print each category
             Log.d("ChooseCategoryFragment", "completeCategoryList: ${completeCategoryList.listIterator()}")
-            recyclerView.adapter = CategoryAdapter(completeCategoryList, requireContext())
+            recyclerView.adapter = CategoryAdapter(completeCategoryList, requireContext(), object : View.OnClickListener {
+                override fun onClick(v: View?) {
+                    //get suportfragmentmanager from parent
+                    val fragmentManager = parentFragmentManager
+                    fragmentManager.beginTransaction().apply {
+                        replace(R.id.chooseCategoryFragmentContainer, AddExerciseListFragment.newInstance("category"))
+                        addToBackStack(null)
+                        commit()
+                    }
+                }
+            })
 
         return view
     }
@@ -73,18 +84,5 @@ class ChooseCategoryFragment : Fragment() {
             }
         }
         return mainCategoryList
-    }
-
-    private suspend fun loadExercisesMappedByCategory(jsonFileName: String): List<String> {
-        return CoroutineScope(Dispatchers.IO).async {
-            val gson = Gson()
-            val assetManager = requireContext().assets
-            val inputStream = assetManager.open(jsonFileName)
-            val reader = InputStreamReader(inputStream)
-            val exerciseListType = object : TypeToken<List<Exercise>>() {}.type
-            val exercises: List<Exercise> = gson.fromJson(reader, exerciseListType)
-            reader.close()
-            exercises.map { it.category }.distinct()
-        }.await()
     }
 }
