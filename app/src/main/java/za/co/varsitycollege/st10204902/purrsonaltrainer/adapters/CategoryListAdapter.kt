@@ -22,7 +22,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.ChooseCategoryFragment
-import za.co.varsitycollege.st10204902.purrsonaltrainer.services.ExersisesService
 import java.io.InputStreamReader
 import java.lang.Thread.sleep
 

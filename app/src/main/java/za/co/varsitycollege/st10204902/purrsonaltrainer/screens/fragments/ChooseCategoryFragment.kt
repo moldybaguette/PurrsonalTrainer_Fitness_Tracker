@@ -33,25 +33,7 @@ class ChooseCategoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_choose_category, container, false)
-            categories = mutableListOf(
-                "lower back",
-                "biceps",
-                "traps",
-                "adductors",
-                "abs",
-                "middle back",
-                "glutes",
-                "neck",
-                "calves",
-                "shoulders",
-                "triceps",
-                "forearms",
-                "abductors",
-                "hamstrings",
-                "quads",
-                "lats",
-                "chest"
-            )
+
 
             // Add all the unique exercise categories from the user's custom exercises that don't already exist in the default exercises
             val completeCategoryList = usersCustomExercises?.let {
