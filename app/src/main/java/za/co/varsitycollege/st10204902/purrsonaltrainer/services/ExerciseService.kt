@@ -77,4 +77,31 @@ class ExerciseService(private val context: Context) {
         return exercisesList
     }
 
+    /**
+     * checks the user's exercises and adds any that are not already in the exercisesList
+     */
+    fun updateExerciseService() {
+       // add any exercises that do not already exist in exercisesList to the list from the userManager
+        UserManager.user?.userExercises?.let {
+            it.values.forEach { userExercise ->
+                if (!exercisesList.contains(userExercise)) {
+                    exercisesList.plus(userExercise)
+                }
+            }
+        }
+    }
+
+    /**
+     * Search for exercises in the list of exercises
+     * @param search - Search query
+     * @param listToSearch - List of exercises to search
+     * @return List<Exercise> - List of exercises that match the search query
+     */
+    fun searchExercises(search: String, listToSearch: List<Exercise>): List<Exercise> {
+        if (search.isEmpty()) {
+            return listToSearch
+        }
+        return listToSearch.filter { it.exerciseName.contains(search, ignoreCase = true) }
+    }
+
 }
