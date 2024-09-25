@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -21,11 +22,12 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.ChooseCategoryFragment
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.ExersisesService
 import java.io.InputStreamReader
 import java.lang.Thread.sleep
 
 
-class CategoryAdapter(private val categories: List<String>, private val context: Context) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+class CategoryAdapter(private val categories: List<String>, private val context: Context,private val listener: View.OnClickListener) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView: TextView = itemView.findViewById(R.id.categoryText)
@@ -68,23 +70,9 @@ class CategoryAdapter(private val categories: List<String>, private val context:
         holder.textView.setTextColor(color)
         holder.imageView.setColorFilter(color)
 
-        //HANDLES GETTING ALL EXERCISES FOR A CATEGORY WHEN CLICKING ON A CATEGORY
-        holder.itemView.setOnClickListener {
-           println("clicked on $category")
-            CoroutineScope(Dispatchers.Main).launch {
-                val exerciseList = async(Dispatchers.IO) {
-                    val inputStream = context.assets.open("globalExercises.json")
-                    val reader = InputStreamReader(inputStream)
-                    val gson = Gson()
-                    val exerciseListType = object : TypeToken<List<Exercise>>() {}.type
-                    val allExercises = gson.fromJson<List<Exercise>>(reader, exerciseListType)
-                    allExercises.filter { it.category == category }
-                }.await()
-                //just print the list of exercises for now
-                println("exerciseList: $exerciseList")
-            }
-        }
+        holder.itemView.setOnClickListener(listener)
     }
+
     
     override fun getItemCount(): Int {
         return categories.size
