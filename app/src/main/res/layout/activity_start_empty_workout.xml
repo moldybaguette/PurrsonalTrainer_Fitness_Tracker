@@ -5,6 +5,84 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_purple_gradient"
     tools:context=".screens.workout_activities.StartEmptyWorkoutActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/bg_rain"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Empty"
+                android:fontFamily="@font/knicknack_black"
+                android:textSize="57sp"
+                app:startColor="#F2CB56"
+                app:endColor="#ED750C"
+                app:strokeColor="@color/default_stroke_color"
+                app:strokeWidth="15dp"/>
+
+            <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Workout"
+                android:fontFamily="@font/knicknack_black"
+                android:textSize="57sp"
+                app:startColor="#F2CB56"
+                app:endColor="#ED750C"
+                android:layout_marginTop="-45dp"
+                app:strokeColor="@color/default_stroke_color"
+                app:strokeWidth="15dp"/>
+
+            <include
+                layout="@layout/component_workouttime_bodyweight" />
+
+            <LinearLayout
+                android:layout_marginTop="25dp"
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_start_workout_button"
+                android:paddingStart="45dp"
+                android:layout_gravity="center_horizontal"
+                android:paddingVertical="25dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/isco_add" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="add exercise"
+                    android:fontFamily="@font/rounded"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="25sp"
+                    android:textFontWeight="600"
+                    android:textColor="#CCCACA"
+                    android:elevation="5dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
