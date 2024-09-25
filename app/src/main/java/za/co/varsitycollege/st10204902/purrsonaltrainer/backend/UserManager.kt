@@ -591,10 +591,16 @@ object UserManager {
      * @param newCategory The new category to add to the user
      */
     fun addCustomCategory(newCategory: String) {
-        _userFlow.update { user ->
-            user?.let {
-                val updatedCategories = user.customCategories + newCategory
-                it.copy(customCategories = updatedCategories)
+        if (userIsLoggedIn()) {
+            if (user!!.customCategories.contains(newCategory)) {
+                Log.w("UserManager", "Category already exists")
+                return
+            }
+            _userFlow.update { user ->
+                user?.let {
+                    val updatedCategories = user.customCategories + newCategory
+                    it.copy(customCategories = updatedCategories)
+                }
             }
         }
     }
