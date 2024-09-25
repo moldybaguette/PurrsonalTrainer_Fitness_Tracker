@@ -8,7 +8,6 @@
     tools:context=".screens.fragments.CreateCategoryFragment">
 
     <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientEditText
-        android:id="@+id/untitledRoutineTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="false"
@@ -23,7 +22,6 @@
         app:strokeWidth="8dp"/>
 
     <TextView
-        android:id="@+id/notesLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="name"
@@ -34,7 +32,9 @@
         android:layout_marginStart="20dp"/>
 
     <EditText
-        android:id="@+id/notes"
+        android:id="@+id/customCategoryName"
+        android:inputType="text"
+        android:imeOptions="actionDone"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:paddingHorizontal="20dp"
