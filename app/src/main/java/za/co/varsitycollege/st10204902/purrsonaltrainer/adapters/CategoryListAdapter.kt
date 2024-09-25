@@ -5,28 +5,23 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import androidx.core.content.ContextCompat
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.NonDisposableHandle.parent
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
-import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.ChooseCategoryFragment
-import java.io.InputStreamReader
-import java.lang.Thread.sleep
 
 
-class CategoryAdapter(private val categories: List<String>, private val context: Context,private val listener: View.OnClickListener) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+
+class CategoryAdapter(
+    private val categories: List<String>,
+    private val context: Context,
+    private val listener: OnItemClickListener
+) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onItemClick(category: String)
+    }
 
     class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView: TextView = itemView.findViewById(R.id.categoryText)
@@ -50,6 +45,7 @@ class CategoryAdapter(private val categories: List<String>, private val context:
             holder.itemView.setBackgroundColor(Color.WHITE)
         }
 
+        // Define color palette for categories
         val colors = listOf(
             ContextCompat.getColor(holder.itemView.context, R.color.categoryPink),
             ContextCompat.getColor(holder.itemView.context, R.color.categoryRed),
@@ -69,10 +65,12 @@ class CategoryAdapter(private val categories: List<String>, private val context:
         holder.textView.setTextColor(color)
         holder.imageView.setColorFilter(color)
 
-        holder.itemView.setOnClickListener(listener)
+        // Set the OnClickListener for the item
+        holder.itemView.setOnClickListener {
+            listener.onItemClick(category)
+        }
     }
 
-    
     override fun getItemCount(): Int {
         return categories.size
     }
