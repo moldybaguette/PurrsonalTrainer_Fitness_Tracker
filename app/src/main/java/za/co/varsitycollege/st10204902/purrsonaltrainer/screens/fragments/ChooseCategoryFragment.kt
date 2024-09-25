@@ -33,8 +33,8 @@ import java.lang.Thread.sleep
 class ChooseCategoryFragment() : Fragment() {
 
     private lateinit var categories: MutableList<String>
-    private val usersCustomExercises: Map<String, Exercise>?
-        get() = UserManager.user?.userExercises
+    private val usersCustomExercises: List<String>?
+        get() = UserManager.user?.customCategories
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,12 +72,12 @@ class ChooseCategoryFragment() : Fragment() {
         return view
     }
 
-        private fun addUsersCustomCategories(mainCategoryList: MutableList<String>, usersCustomExercises: Map<String, Exercise>): List<String> {
-            usersCustomExercises.keys.forEach {
+        private fun addUsersCustomCategories(mainCategoryList: MutableList<String>, customCategories: List<String>): List<String> {
+            customCategories.forEach {
                 if (!mainCategoryList.contains(it)) {
-                mainCategoryList.add(it)
+                    mainCategoryList.add(it)
+                }
             }
-        }
         return mainCategoryList
     }
 
