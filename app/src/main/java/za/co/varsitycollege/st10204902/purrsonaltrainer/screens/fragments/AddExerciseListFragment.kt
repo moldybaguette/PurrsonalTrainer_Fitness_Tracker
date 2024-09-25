@@ -2,10 +2,13 @@ package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments
 
 import android.os.Bundle
 import android.os.Parcelable
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
@@ -34,12 +37,43 @@ class AddExerciseListFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_add_exercise_list, container, false)
 
         var exerciseService = ExerciseService(requireContext())
-        var exercises = exerciseService.getExerciseInCategory(categoryId!!)
+        //maintain a list of ALL exercises in the category
+        val fullListOfCategoryExercises = exerciseService.getExerciseInCategory(categoryId!!)
+        var displayedExerciseList = fullListOfCategoryExercises
+        val txtSearch = view.findViewById<EditText>(R.id.searchInput)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.categoryRecycler)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        recyclerView.adapter = ExerciseAdapter(exercises, requireContext(), object : ExerciseAdapter.OnItemClickListener {
+        txtSearch.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                displayedExerciseList = exerciseService.searchExercises(s.toString(), fullListOfCategoryExercises)
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                recyclerView.adapter = ExerciseAdapter(displayedExerciseList, requireContext(), object : ExerciseAdapter.OnItemClickListener {
+                    override fun onItemClick(exercise: Exercise) {
+                        RoutineBuilder.addExercise(exercise)
+                        val fragmentManager = parentFragmentManager
+                        fragmentManager.beginTransaction().apply {
+                            replace(R.id.chooseCategoryFragmentContainer, EditExerciseFragment.newInstance(exercise))
+                            addToBackStack(null)
+                            commit()
+                        }
+                    }
+                }
+                )
+            }
+        })
+
+
+        recyclerView.adapter = ExerciseAdapter(displayedExerciseList, requireContext(), object : ExerciseAdapter.OnItemClickListener {
             override fun onItemClick(exercise: Exercise) {
                 RoutineBuilder.addExercise(exercise)
                 val fragmentManager = parentFragmentManager
