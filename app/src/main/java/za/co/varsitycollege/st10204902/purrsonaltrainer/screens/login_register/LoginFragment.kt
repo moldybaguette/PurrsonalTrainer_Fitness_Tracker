@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
@@ -77,8 +78,10 @@ class LoginFragment : Fragment() {
                     }
                 }
             } else {
-                    Toast.makeText(requireContext(), "Unable to complete registration. Please try again.", Toast.LENGTH_SHORT).show()
-                    Log.e("LoginFragment", "error: ${result.exceptionOrNull()}")
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "Unable to login with supplied details. Please try again.", Toast.LENGTH_SHORT).show()
+                }
+                Log.e("LoginFragment", "error: ${result.exceptionOrNull()}")
             }
         }
     }

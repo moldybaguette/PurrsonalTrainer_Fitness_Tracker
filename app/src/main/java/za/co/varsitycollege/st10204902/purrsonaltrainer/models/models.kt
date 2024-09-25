@@ -2,6 +2,7 @@ package za.co.varsitycollege.st10204902.purrsonaltrainer.models
 
 import com.google.firebase.database.IgnoreExtraProperties
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.CreateID
+import java.util.Date
 
 // Item class for representing items in the shop
 @IgnoreExtraProperties
@@ -80,7 +81,8 @@ data class UserWorkout(
     val workoutID: String = CreateID.GenerateID(),
     val name: String = "",
     val workoutExercises: Map<String, WorkoutExercise> = emptyMap(),
-    val durationSeconds: Int = 0
+    val durationSeconds: Int = 0,
+    val date: Date = Date()
 )
 
 // UserAchievement class representing a user's achievement

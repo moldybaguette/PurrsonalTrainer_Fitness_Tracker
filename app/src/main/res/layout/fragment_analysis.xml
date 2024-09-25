@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".screens.fragments.AnalysisFragment">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/background"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/bg_cogs" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientTextView
+                android:id="@+id/AnalysisTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="1dp"
+                android:fontFamily="@font/knicknack_medium"
+                android:gravity="center_horizontal"
+                android:text="@string/analysis"
+                android:textColor="@color/bright_teal"
+                android:textSize="50sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp" />
+
+            <View
+                android:id="@+id/WhereComboBoxGoes"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="16dp" />
+
+            <com.anychart.AnyChartView
+                android:id="@+id/anyChartPie"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:paddingHorizontal="10dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="20dp" />
+
+            <View
+                android:id="@+id/WhereBreakdownGoes"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="16dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>
