@@ -15,6 +15,7 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.MainActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityAccountDetailsBinding
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.SettingsActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.DataWipeConfirmationFragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.PasswordReentryFragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
@@ -47,13 +48,23 @@ class AccountDetailsActivity : AppCompatActivity(),
             }
         }
 
-        binding.doneButtonAccountDetails.setOnClickListener { launchPasswordReentryFragment() }
+        binding.doneButtonAccountDetails.setOnClickListener {
+            if(binding.passwordInput.text.isNotEmpty()) {
+                launchPasswordReentryFragment()
+            }
+            else{
+                navigateTo(this, SettingsActivity::class.java, null)
+            }
+
+        }
         binding.resetAppButton.setOnClickListener { launchDataWipeConfirmationFragment() }
         binding.logOutButton.setOnClickListener {
             auth.signOut()
             navigateTo(this, MainActivity::class.java, null)
         }
     }
+
+
 
     override fun onPasswordReentered(password: String) {
         dismissPopup()

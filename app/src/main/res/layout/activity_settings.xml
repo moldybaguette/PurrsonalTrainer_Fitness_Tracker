@@ -9,6 +9,7 @@
 
     <ImageView
         android:layout_width="match_parent"
+        android:contentDescription="@string/background"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,6 +62,7 @@
         android:text="@string/catSettings"
         android:textColor="@color/white"
         android:textSize="30sp"
+        android:enabled="false"
         android:fontFamily="@font/knicknack_medium"
         android:drawableStart="@drawable/ico_paw"
         android:drawablePadding="-40dp"
