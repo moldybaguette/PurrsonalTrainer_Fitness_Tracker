@@ -50,7 +50,8 @@ data class Exercise(
     val exerciseID: String = CreateID.GenerateID(),
     val exerciseName: String = "",
     val category: String = "",
-    val notes: String = ""
+    val notes: String = "",
+    val isCustom: Boolean = false
 )
 
 // UserBackground class for representing user backgrounds

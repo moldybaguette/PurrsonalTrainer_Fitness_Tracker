@@ -68,8 +68,8 @@ class CategoryAdapter(private val categories: List<String>, private val context:
         holder.textView.setTextColor(color)
         holder.imageView.setColorFilter(color)
 
+        //HANDLES GETTING ALL EXERCISES FOR A CATEGORY WHEN CLICKING ON A CATEGORY
         holder.itemView.setOnClickListener {
-
            println("clicked on $category")
             CoroutineScope(Dispatchers.Main).launch {
                 val exerciseList = async(Dispatchers.IO) {
@@ -77,8 +77,10 @@ class CategoryAdapter(private val categories: List<String>, private val context:
                     val reader = InputStreamReader(inputStream)
                     val gson = Gson()
                     val exerciseListType = object : TypeToken<List<Exercise>>() {}.type
-                    gson.fromJson<List<Exercise>>(reader, exerciseListType)
+                    val allExercises = gson.fromJson<List<Exercise>>(reader, exerciseListType)
+                    allExercises.filter { it.category == category }
                 }.await()
+                //just print the list of exercises for now
                 println("exerciseList: $exerciseList")
             }
         }
