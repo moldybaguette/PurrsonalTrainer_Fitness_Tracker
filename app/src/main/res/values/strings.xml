@@ -57,4 +57,5 @@
     <string name="please_re_enter_your_password">Please re-enter your password</string>
     <string name="analysis">Analysis</string>
     <string name="records">Records</string>
+    <string name="placeholder_rm">0 RM</string>
 </resources>
