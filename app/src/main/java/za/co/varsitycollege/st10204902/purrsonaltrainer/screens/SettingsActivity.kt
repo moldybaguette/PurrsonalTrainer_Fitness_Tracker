@@ -32,7 +32,11 @@ class SettingsActivity : AppCompatActivity() {
         binding.statisticsButton.setOnClickListener(){
             navigateTo(this, BreakdownActivity::class.java, null)
         }
+    }
 
-
+    override fun onBackPressed() {
+        super.onBackPressed()
+        navigateTo(this, HomeActivity::class.java, null)
+        finish()
     }
 }
