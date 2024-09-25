@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingVertical="20dp"
+    android:paddingHorizontal="20dp">
 
     <TextView
         android:id="@+id/categoryText"
@@ -12,14 +14,12 @@
         android:fontFamily="@font/knicknack_black"
         android:textSize="35dp"
         android:textColor="@color/hint_text"
-        android:layout_marginVertical="20dp"
-        android:layout_marginStart="20dp"/>
+        android:layout_weight="1"/>
 
     <ImageView
         android:id="@+id/categoryIcon"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ico_right_arrow"
-        android:layout_gravity="center"
-        android:layout_marginStart="70dp"/>
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ico_right_arrow" />
 </LinearLayout>
