@@ -23,30 +23,17 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/workoutDuration"
-                android:layout_marginEnd="10dp"
-                android:backgroundTint="@color/transparent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="45 min"
-                android:gravity="end"
-                android:textColor="@color/workout_duration_color"
-                android:fontFamily="@font/rounded"
-                android:textSize="17sp"/>
-
-            <TextView
-                android:id="@+id/workoutTitle"
+                android:id="@+id/routineTitle"
                 android:layout_marginStart="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Leg Day"
                 android:textColor="@color/workout_title"
                 android:textSize="30sp"
-                android:fontFamily="@font/knicknack_medium"
-                android:layout_marginTop="-20dp"/>
+                android:fontFamily="@font/knicknack_medium" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/workoutExersises"
+                android:id="@+id/routineExercises"
                 android:layout_marginStart="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
