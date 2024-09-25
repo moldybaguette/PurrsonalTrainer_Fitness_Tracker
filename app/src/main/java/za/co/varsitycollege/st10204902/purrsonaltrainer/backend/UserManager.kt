@@ -55,6 +55,9 @@ object UserManager {
      */
     val userManagerScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
+
+    val SET_TYPES = listOf("WARMUP", "FAILURE", "DROPSET", "NUMBERED")
+
     //-----------------------------------------------------------//
     //                          METHODS                          //
     //-----------------------------------------------------------//
@@ -577,6 +580,42 @@ object UserManager {
             removeUserBackground(backgroundID)
             addUserBackground(newBackground)
         }
+    }
+
+    //-----------------------------------------------------------//
+    // CustomCategories Management
+    //-----------------------------------------------------------//
+
+    /**
+     * Adds a new custom category to the user
+     * @param newCategory The new category to add to the user
+     */
+    fun addCustomCategory(newCategory: String) {
+        _userFlow.update { user ->
+            user?.let {
+                val updatedCategories = user.customCategories + newCategory
+                it.copy(customCategories = updatedCategories)
+            }
+        }
+    }
+
+    /**
+     * Removes a custom category from the user
+     * @param category The category to remove
+     */
+    fun removeCustomCategory(category: String) {
+        _userFlow.update { user ->
+            val categories = user?.customCategories
+            if (categories.isNullOrEmpty() || !categories.contains(category)) {
+                Log.w("UserManager", "User Custom Categories are empty or the category doesn't exist")
+                return@update user // Return the user unchanged
+            }
+            user.let {
+                val updatedCategories = user.customCategories - category
+                it.copy(customCategories = updatedCategories)
+            }
+        }
+
     }
 
     //-----------------------------------------------------------//
