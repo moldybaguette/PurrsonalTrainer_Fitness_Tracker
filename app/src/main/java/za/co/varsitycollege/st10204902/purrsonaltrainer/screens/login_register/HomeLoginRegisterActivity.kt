@@ -80,6 +80,11 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
             signInWithGoogle()
         }
 
+        //onclick listeners
+        binding.registerButton.setOnClickListener {
+            navigateTo(this, RegisterActivity::class.java, null)
+        }
+
         binding.loginDismissArea.setOnClickListener { dismissLoginPopup() }
     }
 
@@ -127,10 +132,7 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
             override fun onAnimationRepeat(animation: Animation?) {}
         })
 
-        //onclick listeners
-        binding.registerButton.setOnClickListener {
-            navigateTo(this, RegisterActivity::class.java, null)
-        }
+
 
     }
 
