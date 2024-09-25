@@ -101,7 +101,11 @@ class ChooseCategoryFragment() : Fragment() {
         val dismissArea = requireActivity().findViewById<View>(R.id.createCategoryDismissArea)
 
         // setup popup
-        val popup = SlideUpPopup(parentFragmentManager, fragmentContainer, dismissArea, CreateCategoryFragment(), requireContext())
+        val fragment = CreateCategoryFragment()
+        val popup = SlideUpPopup(parentFragmentManager, fragmentContainer, dismissArea, fragment, requireContext())
         addCategoryButton.setOnClickListener { popup.showPopup() }
+
+        // Setting dismiss action so that fragment is removed when user enters category
+        fragment.setDismissAction { popup.dismissPopup() }
     }
 }
