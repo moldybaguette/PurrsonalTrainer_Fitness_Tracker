@@ -8,8 +8,17 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.models.User
 
 class AuthManager(val auth: FirebaseAuth = FirebaseAuth.getInstance()) {
 
+    //                          PROPERTIES                       //
+    //----------------------------------------------------------//
+
+    /**
+     * The Firebase Realtime Database instance
+     */
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
 
+    //----------------------------------------------------------//
+    //                          METHODS                          //
+    //----------------------------------------------------------//
 
     /**
      * Registers a user with the provided email and password
@@ -76,9 +85,8 @@ class AuthManager(val auth: FirebaseAuth = FirebaseAuth.getInstance()) {
                 }
             }
         }
-
-
         return userObject.userID
     }
-
+//--------------------------------------------------------------//
 }
+//------------------------***EOF***-----------------------------//
