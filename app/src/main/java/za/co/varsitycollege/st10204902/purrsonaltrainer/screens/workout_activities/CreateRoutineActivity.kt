@@ -17,6 +17,7 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.Choose
 class CreateRoutineActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateRoutineBinding
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
