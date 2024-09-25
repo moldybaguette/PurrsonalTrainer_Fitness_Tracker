@@ -78,6 +78,7 @@ dependencies {
     // Use Firebase BOM for managing Firebase dependencies
     implementation(platform("com.google.firebase:firebase-bom:31.5.0"))
 
+    implementation(libs.anychart.android)
 
     //Test Implementations
     //JUnit5

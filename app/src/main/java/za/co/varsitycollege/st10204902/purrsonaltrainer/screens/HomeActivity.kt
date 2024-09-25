@@ -7,13 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
-import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.CreateID
-import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityHomeBinding
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.*
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.HomeFragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.RoutinesFragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
@@ -76,6 +71,9 @@ class HomeActivity : AppCompatActivity() {
         // Custom navbar setup
         setupNavBar()
     }
+
+
+
 
 
     override fun onResume(){

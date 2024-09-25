@@ -55,4 +55,6 @@
     <string name="log_out_button">Log out button</string>
     <string name="done_button">Done Button</string>
     <string name="please_re_enter_your_password">Please re-enter your password</string>
+    <string name="analysis">Analysis</string>
+    <string name="records">Records</string>
 </resources>
