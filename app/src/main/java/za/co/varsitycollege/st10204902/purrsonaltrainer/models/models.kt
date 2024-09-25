@@ -72,7 +72,7 @@ data class UserRoutine(
     val name: String = "",
     val color : String = "",
     val description: String = "",
-    val exercises: Map<String, Exercise> = emptyMap()
+    val exercises: Map<String, WorkoutExercise> = emptyMap()
 )
 
 // UserWorkout class representing a workout within a routine
