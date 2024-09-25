@@ -80,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:itemCount="5"
-                tools:listitem="@layout/workout_exersise_item"/>
+                tools:listitem="@layout/item_workout_exersise"/>
 
 
         </LinearLayout>

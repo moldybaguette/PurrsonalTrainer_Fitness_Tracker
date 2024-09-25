@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="@drawable/userinput_design">
+    android:background="@drawable/bg_userinput">
 
         <!-- Exercise Name -->
         <TextView

@@ -1,14 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.fragments.CreateExerciseFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".screens.fragments.CreateExerciseFragment"
+    android:background="@drawable/login_popup">
 
-    <!-- TODO: Update blank fragment layout -->
+    <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientEditText
+        android:id="@+id/exerciseTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:singleLine="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Untitled Exercise"
+        android:inputType="text"
+        android:fontFamily="@font/knicknack_black"
+        android:textSize="45sp"
+        android:layout_marginTop="40dp"
+        app:startColor="@color/routine_start_color"
+        app:endColor="@color/routine_end_color"
+        app:strokeColor="#EDEDED"
+        app:strokeWidth="15dp"/>
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/workoutType"
+        android:fontFamily="@font/rounded"
+        android:textColor="@color/hint_text"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="@+id/workoutTypeSpinner"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="-5dp"
+        app:layout_constraintBottom_toTopOf="@id/workoutTypeSpinner"/>
+    <Spinner
+        android:id="@+id/workoutTypeSpinner"
+        android:layout_width="360dp"
+        android:layout_height="90dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_spinner_exercise"
+        app:layout_constraintTop_toBottomOf="@id/exerciseTitle"
+        tools:listitem="@layout/item_exercise_spinner"
+        android:popupBackground="@drawable/bg_start_workout_button"
+        tools:itemCount="1"
+        android:dropDownWidth="360dp"
+        android:dropDownVerticalOffset="0dp"
+        />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/notesLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/notes"
+        android:fontFamily="@font/rounded"
+        android:textSize="25sp"
+        android:textColor="@color/hint_text"
+        android:layout_marginBottom="-5dp"
+        app:layout_constraintBottom_toTopOf="@id/notes"
+        app:layout_constraintStart_toStartOf="@+id/workoutTypeSpinner"
+        android:layout_marginStart="40dp"/>
+
+    <EditText
+        android:id="@+id/notes"
+        android:layout_width="360dp"
+        android:layout_height="200dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="40dp"
+        android:inputType="textMultiLine"
+        android:background="@drawable/bg_spinner_exercise"
+        app:layout_constraintTop_toBottomOf="@id/workoutTypeSpinner"
+        android:gravity="top"
+        android:maxLength="250"
+        android:fontFamily="@font/rounded"
+        android:textSize="15dp"
+        android:textColor="@color/hint_text"
+        android:padding="25dp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/doneButton"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:background="@drawable/svg_green_bblbtn"
+        android:elevation="5dp"
+        android:fontFamily="@font/knicknack_medium"
+        android:text="@string/done"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="50sp"
+        app:layout_constraintTop_toBottomOf="@+id/notes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

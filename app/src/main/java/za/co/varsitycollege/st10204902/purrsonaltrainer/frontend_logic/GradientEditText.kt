@@ -39,7 +39,8 @@ class GradientEditText @JvmOverloads constructor(
 
         val shader = LinearGradient(
             0f, 0f, 0f, textSize,
-            startColor, endColor,
+            intArrayOf(startColor, endColor),
+            floatArrayOf(0.65f, 1.0f),
             Shader.TileMode.CLAMP
         )
         paint.shader = shader

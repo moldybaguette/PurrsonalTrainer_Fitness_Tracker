@@ -7,11 +7,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.view.marginStart
-import androidx.core.view.marginTop
-import androidx.core.view.setMargins
-import androidx.core.view.updateLayoutParams
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 
 class ColorSpinnerAdapter(
@@ -31,7 +26,7 @@ class ColorSpinnerAdapter(
 
     private fun createViewFromResource(position: Int, convertView: View?, parent: ViewGroup, isDropdown: Boolean): View
     {
-        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.color_picker_item, parent, false)
+        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_color_picker, parent, false)
         val color = colors[position]
 
         // Elements needing to be changed
