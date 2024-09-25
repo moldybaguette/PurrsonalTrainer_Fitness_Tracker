@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatButton
 import android.widget.AdapterView
@@ -94,11 +96,7 @@ class ChooseCategoryFragment : Fragment() {
         val dismissArea = requireActivity().findViewById<View>(R.id.createCategoryDismissArea)
 
         // Preset the CreateCategoryFragment
-        parentFragmentManager.beginTransaction().apply {
-            replace(R.id.createCategoryFragmentContainer, CreateCategoryFragment())
-            addToBackStack(null)
-            commit()
-        }
+        bindCreateCategoryFragment(fragmentContainer)
 
         // Setting up onclicks to show/ dismiss popup
         addCategoryButton.setOnClickListener { showCreateCategoryPopup(fragmentContainer, dismissArea) }
@@ -107,13 +105,36 @@ class ChooseCategoryFragment : Fragment() {
 
     private fun showCreateCategoryPopup(fragmentContainer: FrameLayout, dismissArea: View)
     {
+        val slideUp = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_up)
+        fragmentContainer.startAnimation(slideUp)
         fragmentContainer.visibility = View.VISIBLE
         dismissArea.visibility = View.VISIBLE
     }
 
     private fun dismissCreateCategoryPopup(fragmentContainer: FrameLayout, dismissArea: View)
     {
-        fragmentContainer.visibility = View.GONE
-        dismissArea.visibility = View.GONE
+        val slideDown = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_down)
+        fragmentContainer.startAnimation(slideDown)
+        slideDown.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+                dismissArea.visibility = View.GONE
+            }
+            override fun onAnimationEnd(animation: Animation?) {
+                fragmentContainer.visibility = View.GONE
+                // Reset the login fragment
+                bindCreateCategoryFragment(fragmentContainer)
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {}
+        })
+    }
+
+    private fun bindCreateCategoryFragment(fragmentContainer: FrameLayout)
+    {
+        parentFragmentManager.beginTransaction().apply {
+            replace(fragmentContainer.id, CreateCategoryFragment())
+            addToBackStack(null)
+            commit()
+        }
     }
 }
