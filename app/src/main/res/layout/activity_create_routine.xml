@@ -182,6 +182,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:elevation="10dp"
+        android:background="@color/lowOpacityBlack"
+        android:visibility="gone" />
 
     <FrameLayout
         android:id="@+id/createCategoryFragmentContainer"
