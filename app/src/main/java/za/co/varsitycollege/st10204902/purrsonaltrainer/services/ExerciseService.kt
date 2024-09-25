@@ -3,8 +3,10 @@ package za.co.varsitycollege.st10204902.purrsonaltrainer.services
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.CreateID
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
 import java.io.InputStreamReader
 
 class ExerciseService(private val context: Context) {
@@ -104,4 +106,51 @@ class ExerciseService(private val context: Context) {
         return listToSearch.filter { it.exerciseName.contains(search, ignoreCase = true) }
     }
 
+}
+
+
+object RoutineBuilder {
+    var routineID: String = CreateID.GenerateID()
+    var name: String = ""
+    var description: String = ""
+    var exercises: MutableMap<String, Exercise> = mutableMapOf()
+    var color: String = ""
+
+    fun setRoutineName(name: String) {
+        this.name = name
+        println("the name is ${name}. thecolor is ${color}, the description is ${description}, the exercises are ${exercises}")
+    }
+
+    fun setRoutineColor(color: String) {
+        this.color = color
+        println("setRoutineColor the name is ${name}. thecolor is ${RoutineBuilder.color}, the description is ${description}, the exercises are ${exercises}")
+    }
+
+    fun setRoutineDescription(description: String) {
+        this.description = description
+        println("setRoutineDescription the name is ${name}. thecolor is ${color}, the description is ${RoutineBuilder.description}, the exercises are ${exercises}")
+    }
+
+    fun hasAnExercise(): Boolean {
+        return exercises.isNotEmpty()
+    }
+
+    fun addExercise(exercise: Exercise) {
+       // if the exercise is not already in the exercises list then add it
+        if (!exercises.contains(exercise.exerciseID)) {
+            exercises[exercise.exerciseID] = exercise
+        }
+        println("addExercise the name is ${name}. thecolor is ${color}, the description is ${description}, the exercises are ${exercises}")
+    }
+
+    fun buildRoutine(): UserRoutine {
+        val newRoutine =  UserRoutine(routineID, name , color, description, exercises)
+        println("buildRoutine the name is ${name}. thecolor is ${color}, the description is ${description}, the exercises are ${exercises}")
+        routineID= CreateID.GenerateID()
+        name = ""
+        description = ""
+        exercises = mutableMapOf()
+        color = ""
+        return newRoutine
+    }
 }

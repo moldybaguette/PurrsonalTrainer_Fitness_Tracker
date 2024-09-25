@@ -1,6 +1,7 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments
 
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,10 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.CategoryAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.ExerciseAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.User
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.ExerciseService
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
 
 class AddExerciseListFragment : Fragment() {
     private var categoryId: String? = null
@@ -37,6 +41,7 @@ class AddExerciseListFragment : Fragment() {
 
         recyclerView.adapter = ExerciseAdapter(exercises, requireContext(), object : ExerciseAdapter.OnItemClickListener {
             override fun onItemClick(exercise: Exercise) {
+                RoutineBuilder.addExercise(exercise)
                 val fragmentManager = parentFragmentManager
                 fragmentManager.beginTransaction().apply {
                     replace(R.id.chooseCategoryFragmentContainer, EditExerciseFragment.newInstance(exercise))
@@ -44,7 +49,8 @@ class AddExerciseListFragment : Fragment() {
                     commit()
                 }
             }
-        })
+        }
+        )
         return view
     }
 
@@ -56,6 +62,7 @@ class AddExerciseListFragment : Fragment() {
             AddExerciseListFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_CATEGORY_ID, categoryId)
+
                 }
             }
     }
