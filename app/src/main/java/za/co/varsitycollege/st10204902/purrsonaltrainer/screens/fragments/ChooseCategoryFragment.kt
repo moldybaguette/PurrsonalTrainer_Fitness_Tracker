@@ -23,12 +23,13 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.CategoryAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.ExerciseService
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.SlideUpPopup
 import java.io.InputStreamReader
 import java.lang.Thread.sleep
 
-class ChooseCategoryFragment : Fragment() {
+class ChooseCategoryFragment() : Fragment() {
 
     private lateinit var categories: MutableList<String>
     private val usersCustomExercises: Map<String, Exercise>?

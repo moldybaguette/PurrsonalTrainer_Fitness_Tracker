@@ -19,8 +19,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.AuthManager
+import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityHomeLoginRegisterBinding
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
@@ -171,22 +173,13 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
                                 // Sign in success
                                 Log.d(TAG, "signInWithCredential:success")
                                 val user = auth.currentUser
-
-                                // Check if user does not exist in the database
-                                val userRef = FirebaseDatabase.getInstance().getReference("users").child(user!!.uid)
-                                userRef.get().addOnCompleteListener { task1 ->
-                                    if (task1.isSuccessful) {
-                                        if (!task1.result.exists()) {
-                                            // If user does not exist, create user in the database
-                                            AuthManager().createUserInRealtimeDatabase(user.uid)
-                                        }
-                                    } else {
-                                        Log.e(TAG, "Failed to check if user exists: ${task.exception?.message}")
-                                    }
+                                UserManager.userManagerScope.launch {
+                                    UserManager.setUpSingleton(user!!.uid)
+                                }.invokeOnCompletion {
+                                    // Navigate to the next screen
+                                    navigateTo(this, HomeActivity::class.java, null)
                                 }
 
-                                // Navigate to the next screen
-                                navigateTo(this, HomeActivity::class.java, null)
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.e(TAG, "signInWithCredential:failure", task.exception)

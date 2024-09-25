@@ -11,11 +11,12 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
 
 class ExerciseAdapter(
     private val exercises: List<Exercise>,
     private val context: Context,
-    private val listener: OnItemClickListener
+    private val listener: OnItemClickListener,
 ) : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>() {
 
     interface OnItemClickListener {

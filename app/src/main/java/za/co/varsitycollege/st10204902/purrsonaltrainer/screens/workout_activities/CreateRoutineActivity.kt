@@ -3,6 +3,7 @@ package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.workout_activit
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -11,10 +12,14 @@ import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.ColorSpinnerAdapter
+import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityCreateRoutineBinding
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.ChooseCategoryFragment
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
 
 class CreateRoutineActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateRoutineBinding
@@ -29,7 +34,28 @@ class CreateRoutineActivity : AppCompatActivity() {
         val doneButton: AppCompatButton = findViewById(R.id.doneButton)
         val originalBackground = doneButton.background
 
+        val txtRoutineName = binding.untitledRoutineTitle
+        val routineColor = binding.colorPickerSpinner
+        val txtRoutineDescription = binding.notes
+
+
+
+
         doneButton.setOnClickListener {
+
+            RoutineBuilder.setRoutineName(txtRoutineName.text.toString())
+            RoutineBuilder.setRoutineColor(routineColor.selectedItem.toString())
+            RoutineBuilder.setRoutineDescription(txtRoutineDescription.text.toString())
+
+            if (RoutineBuilder.hasAnExercise()) {
+                UserManager.addUserRoutine(RoutineBuilder.buildRoutine())
+            }
+            else {
+              // if the user has not added any exercises then show a message to the user
+                Log.d("CreateRoutineActivity", "No exercises added")
+            }
+
+
             doneButton.setBackgroundResource(R.drawable.svg_green_bblbtn_clicked)
             Handler(Looper.getMainLooper()).postDelayed({
                 doneButton.background = originalBackground
