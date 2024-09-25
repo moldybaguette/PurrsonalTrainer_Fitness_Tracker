@@ -40,6 +40,6 @@
         android:orientation="vertical"
         android:layout_marginTop="5dp"
         tools:itemCount="2"
-        tools:listitem="@layout/home_single_workout_item"/>
+        tools:listitem="@layout/item_home_single_workout"/>
 
 </LinearLayout>
