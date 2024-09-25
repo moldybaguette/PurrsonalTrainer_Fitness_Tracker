@@ -56,6 +56,9 @@ object UserManager {
     val userManagerScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
 
+    /**
+     * the types of sets that can be used in a workout
+     */
     val SET_TYPES = listOf("WARMUP", "FAILURE", "DROPSET", "NUMBERED")
 
     //-----------------------------------------------------------//
@@ -112,7 +115,7 @@ object UserManager {
     // User Property Updates
     //-----------------------------------------------------------//
 
-    suspend fun deleteUserDataExceptID(){
+    suspend fun deleteUserDataExceptID() {
         val currentUser = _userFlow.value ?: return
         val userId = currentUser.userID
 
@@ -153,7 +156,7 @@ object UserManager {
             }
             Log.d("UserManager", "User name updated to $newName")
         } else {
-            Log.e("UserManager", "User is not logged in")
+            Log.e("UserManager.updateUserName", "User is not logged in")
         }
     }
 
@@ -166,6 +169,8 @@ object UserManager {
             _userFlow.update { user ->
                 user?.copy(catName = newCatName)
             }
+        } else {
+            Log.e("UserManager.updateCatName", "User is not logged in")
         }
     }
 
@@ -178,6 +183,8 @@ object UserManager {
             _userFlow.update { user ->
                 user?.copy(experiencePoints = newPoints)
             }
+        } else {
+            Log.e("UserManager.updateExperiencePoints", "User is not logged in")
         }
     }
 
@@ -190,6 +197,8 @@ object UserManager {
             _userFlow.update { user ->
                 user?.copy(backgroundURI = newURI)
             }
+        } else {
+            Log.e("UserManager.updateBackgroundURI", "User is not logged in")
         }
     }
 
@@ -202,6 +211,8 @@ object UserManager {
             _userFlow.update { user ->
                 user?.copy(catURI = newURI)
             }
+        } else {
+            Log.e("UserManager.updateCatURI", "User is not logged in")
         }
     }
 
@@ -214,6 +225,8 @@ object UserManager {
             _userFlow.update { user ->
                 user?.copy(milkCoins = newCoins)
             }
+        } else {
+            Log.e("UserManager.updateMilkCoins", "User is not logged in")
         }
     }
 
@@ -230,6 +243,9 @@ object UserManager {
             _userFlow.update { user ->
                 user?.copy(userRoutines = user.userRoutines + (newRoutine.routineID to newRoutine))
             }
+        } else {
+            Log.e("UserManager.addUserRoutine", "User is not logged in")
+
         }
     }
 
@@ -246,6 +262,8 @@ object UserManager {
                 }
                 user!!.copy(userRoutines = user.userRoutines - (routineID))
             }
+        } else {
+            Log.e("UserManager.removeUserRoutine", "User is not logged in")
         }
     }
 
@@ -259,6 +277,8 @@ object UserManager {
             val newRoutine = updatedRoutine.copy(routineID = routineID)
             removeUserRoutine(routineID)
             addUserRoutine(newRoutine)
+        } else {
+            Log.e("UserManager.updateUserRoutine", "User is not logged in")
         }
     }
     //-----------------------------------------------------------//
@@ -274,6 +294,8 @@ object UserManager {
             _userFlow.update { user ->
                 user?.copy(userWorkouts = user.userWorkouts + (newWorkout.workoutID to newWorkout))
             }
+        } else {
+            Log.e("UserManager.addUserWorkout", "User is not logged in")
         }
     }
 
@@ -291,6 +313,8 @@ object UserManager {
                 }
                 user?.copy(userWorkouts = user.userWorkouts - (workoutID))
             }
+        } else {
+            Log.e("UserManager.removeUserWorkout", "User is not logged in")
         }
     }
 
@@ -304,6 +328,8 @@ object UserManager {
             val newWorkout = updatedWorkout.copy(workoutID = workoutID)
             removeUserWorkout(workoutID)
             addUserWorkout(newWorkout)
+        } else {
+            Log.e("UserManager.updateUserWorkout", "User is not logged in")
         }
     }
 
@@ -332,6 +358,8 @@ object UserManager {
                     } ?: it // Return the original user if no update occurred
                 }
             }
+        } else {
+            Log.e("UserManager.addExerciseToWorkout", "User is not logged in")
         }
     }
 
@@ -341,26 +369,31 @@ object UserManager {
      * @param exerciseID The ID of the exercise to remove
      */
     fun removeExerciseFromWorkout(workoutID: String, exerciseID: String) {
-        _userFlow.update { user ->
-            val exercises = user?.userWorkouts?.get(workoutID)?.workoutExercises
-            if (exercises.isNullOrEmpty() || !exercises.containsKey(exerciseID)) {
-                Log.w(
-                    "UserManager",
-                    "the workout or doesn't exist or itn doesn't contain the exercise"
-                )
-                return@update user // Return the user unchanged
-            }
-
-            user.let {
-                val updatedWorkout = it.userWorkouts[workoutID]?.workoutExercises?.minus(exerciseID)
-                updatedWorkout?.let { exercises ->
-                    it.copy(
-                        userWorkouts = it.userWorkouts + (workoutID to it.userWorkouts[workoutID]!!.copy(
-                            workoutExercises = exercises
-                        ))
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                val exercises = user?.userWorkouts?.get(workoutID)?.workoutExercises
+                if (exercises.isNullOrEmpty() || !exercises.containsKey(exerciseID)) {
+                    Log.w(
+                        "UserManager",
+                        "the workout or doesn't exist or itn doesn't contain the exercise"
                     )
-                } ?: it // Return the original user if no update occurred
+                    return@update user // Return the user unchanged
+                }
+
+                user.let {
+                    val updatedWorkout =
+                        it.userWorkouts[workoutID]?.workoutExercises?.minus(exerciseID)
+                    updatedWorkout?.let { exercises ->
+                        it.copy(
+                            userWorkouts = it.userWorkouts + (workoutID to it.userWorkouts[workoutID]!!.copy(
+                                workoutExercises = exercises
+                            ))
+                        )
+                    } ?: it // Return the original user if no update occurred
+                }
             }
+        } else {
+            Log.e("UserManager.removeExerciseFromWorkout", "User is not logged in")
         }
     }
 
@@ -371,14 +404,14 @@ object UserManager {
      * @param updatedExercise The updated exercise to replace the old one
      */
     fun updateExerciseInWorkout(
-        workoutID: String,
-        exerciseID: String,
-        updatedExercise: WorkoutExercise
+        workoutID: String, exerciseID: String, updatedExercise: WorkoutExercise
     ) {
         if (userIsLoggedIn()) {
             val newExercise = updatedExercise.copy(exerciseID = exerciseID)
             removeExerciseFromWorkout(workoutID, exerciseID)
             addExerciseToWorkout(workoutID, newExercise)
+        } else {
+            Log.e("UserManager.updateExerciseInWorkout", "User is not logged in")
         }
     }
 
@@ -391,11 +424,16 @@ object UserManager {
      * @param newExercise The new exercise to add to the user
      */
     fun addUserExercise(newExercise: Exercise) {
-        _userFlow.update { user ->
-            user?.let {
-                val updatedExercises = user.userExercises + (newExercise.exerciseID to newExercise)
-                it.copy(userExercises = updatedExercises)
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                user?.let {
+                    val updatedExercises =
+                        user.userExercises + (newExercise.exerciseID to newExercise)
+                    it.copy(userExercises = updatedExercises)
+                }
             }
+        } else {
+            Log.e("UserManager.addUserExercise", "User is not logged in")
         }
     }
 
@@ -404,18 +442,23 @@ object UserManager {
      * @param exerciseID The ID of the exercise to remove
      */
     fun removeUserExercise(exerciseID: String) {
-        _userFlow.update { user ->
-            val exercises = user?.userExercises
-            if (exercises.isNullOrEmpty() || !exercises.containsKey(exerciseID)) {
-                Log.w(
-                    "UserManager", "user exercises are either empty or the exercise doesn't exist"
-                )
-                return@update user // Return the user unchanged
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                val exercises = user?.userExercises
+                if (exercises.isNullOrEmpty() || !exercises.containsKey(exerciseID)) {
+                    Log.w(
+                        "UserManager",
+                        "user exercises are either empty or the exercise doesn't exist"
+                    )
+                    return@update user // Return the user unchanged
+                }
+                user.let {
+                    val updatedExercises = user.userExercises - (exerciseID)
+                    it.copy(userExercises = updatedExercises)
+                }
             }
-            user.let {
-                val updatedExercises = user.userExercises - (exerciseID)
-                it.copy(userExercises = updatedExercises)
-            }
+        } else {
+            Log.e("UserManager.removeUserExercise", "User is not logged in")
         }
     }
 
@@ -429,6 +472,8 @@ object UserManager {
             val newExercise = updatedExercise.copy(exerciseID = exerciseID)
             removeUserExercise(exerciseID)
             addUserExercise(newExercise)
+        } else {
+            Log.e("UserManager.updateUserExercise", "User is not logged in")
         }
     }
 
@@ -441,12 +486,17 @@ object UserManager {
      * @param newAchievement The new achievement to add to the user
      */
     fun addUserAchievement(newAchievement: UserAchievement) {
-        _userFlow.update { user ->
-            user?.let {
-                val updatedAchievements =
-                    user.userAchievements + (newAchievement.achievementID to newAchievement)
-                it.copy(userAchievements = updatedAchievements)
+        if (userIsLoggedIn()) {
+
+            _userFlow.update { user ->
+                user?.let {
+                    val updatedAchievements =
+                        user.userAchievements + (newAchievement.achievementID to newAchievement)
+                    it.copy(userAchievements = updatedAchievements)
+                }
             }
+        } else {
+            Log.e("UserManager.addUserAchievement", "User is not logged in")
         }
     }
 
@@ -455,22 +505,28 @@ object UserManager {
      * @param achievementID The ID of the achievement to remove
      */
     fun removeUserAchievement(achievementID: String) {
-        _userFlow.update { user ->
-            val achievements = user?.userAchievements
-            if (achievements.isNullOrEmpty() || !achievements.containsKey(achievementID)) {
-                Log.w(
-                    "UserManager",
-                    "User Achievement are empty or null or the achievement doesn't exist"
-                )
-                return@update user // Return the user unchanged
+
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                val achievements = user?.userAchievements
+                if (achievements.isNullOrEmpty() || !achievements.containsKey(achievementID)) {
+                    Log.w(
+                        "UserManager",
+                        "User Achievement are empty or null or the achievement doesn't exist"
+                    )
+                    return@update user // Return the user unchanged
+                }
+                user.let {
+                    val updatedAchievements =
+                        user.userAchievements + (achievementID to user.userAchievements[achievementID]!!)
+                    it.copy(userAchievements = updatedAchievements)
+                }
             }
-            user.let {
-                val updatedAchievements =
-                    user.userAchievements + (achievementID to user.userAchievements[achievementID]!!)
-                it.copy(userAchievements = updatedAchievements)
-            }
+        } else {
+            Log.e("UserManager.removeUserAchievement", "User is not logged in")
         }
     }
+
 
     /**
      * Updates an achievement in the user
@@ -482,6 +538,8 @@ object UserManager {
             val newAchievement = updatedAchievement.copy(achievementID = achievementID)
             removeUserAchievement(achievementID)
             addUserAchievement(newAchievement)
+        } else {
+            Log.e("UserManager.updateUserAchievement", "User is not logged in")
         }
     }
 
@@ -494,11 +552,15 @@ object UserManager {
      * @param newItem The new item to add to the user's inventory
      */
     fun addItemToInventory(newItem: Item) {
-        _userFlow.update { user ->
-            user?.let {
-                val updatedInventory = user.userInventory + (newItem.itemID to newItem)
-                it.copy(userInventory = updatedInventory)
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                user?.let {
+                    val updatedInventory = user.userInventory + (newItem.itemID to newItem)
+                    it.copy(userInventory = updatedInventory)
+                }
             }
+        } else {
+            Log.e("UserManager.addItemToInventory", "User is not logged in")
         }
     }
 
@@ -507,16 +569,20 @@ object UserManager {
      * @param itemID The ID of the item to remove
      */
     fun removeItemFromInventory(itemID: String) {
-        _userFlow.update { user ->
-            val inventory = user?.userInventory
-            if (inventory.isNullOrEmpty() || !inventory.containsKey(itemID)) {
-                Log.w("UserManager", "User Inventory is empty or the item doesn't exist")
-                return@update user // Return the user unchanged
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                val inventory = user?.userInventory
+                if (inventory.isNullOrEmpty() || !inventory.containsKey(itemID)) {
+                    Log.w("UserManager", "User Inventory is empty or the item doesn't exist")
+                    return@update user // Return the user unchanged
+                }
+                user.let {
+                    val updatedInventory = user.userInventory - (itemID)
+                    it.copy(userInventory = updatedInventory)
+                }
             }
-            user.let {
-                val updatedInventory = user.userInventory - (itemID)
-                it.copy(userInventory = updatedInventory)
-            }
+        } else {
+            Log.e("UserManager.removeItemFromInventory", "User is not logged in")
         }
     }
 
@@ -530,6 +596,8 @@ object UserManager {
             val newItem = updatedItem.copy(itemID = itemID)
             removeItemFromInventory(itemID)
             addItemToInventory(newItem)
+        } else {
+            Log.e("UserManager.updateUserItem", "User is not logged in")
         }
     }
 
@@ -542,12 +610,16 @@ object UserManager {
      * @param newBackground The new background to add to the user
      */
     fun addUserBackground(newBackground: UserBackground) {
-        _userFlow.update { user ->
-            user?.let {
-                val updatedBackgrounds =
-                    user.userBackgrounds + (newBackground.backgroundID to newBackground)
-                it.copy(userBackgrounds = updatedBackgrounds)
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                user?.let {
+                    val updatedBackgrounds =
+                        user.userBackgrounds + (newBackground.backgroundID to newBackground)
+                    it.copy(userBackgrounds = updatedBackgrounds)
+                }
             }
+        } else {
+            Log.e("UserManager.addUserBackground", "User is not logged in")
         }
     }
 
@@ -556,16 +628,23 @@ object UserManager {
      * @param backgroundID The ID of the background to remove
      */
     fun removeUserBackground(backgroundID: String) {
-        _userFlow.update { user ->
-            val backgrounds = user?.userBackgrounds
-            if (backgrounds.isNullOrEmpty() || !backgrounds.containsKey(backgroundID)) {
-                Log.w("UserManager", "User Backgrounds are empty or the background doesn't exist")
-                return@update user // Return the user unchanged
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                val backgrounds = user?.userBackgrounds
+                if (backgrounds.isNullOrEmpty() || !backgrounds.containsKey(backgroundID)) {
+                    Log.w(
+                        "UserManager",
+                        "User Backgrounds are empty or the background doesn't exist"
+                    )
+                    return@update user // Return the user unchanged
+                }
+                user.let {
+                    val updatedBackgrounds = user.userBackgrounds - (backgroundID)
+                    it.copy(userBackgrounds = updatedBackgrounds)
+                }
             }
-            user.let {
-                val updatedBackgrounds = user.userBackgrounds - (backgroundID)
-                it.copy(userBackgrounds = updatedBackgrounds)
-            }
+        } else {
+            Log.e("UserManager.removeUserBackground", "User is not logged in")
         }
     }
 
@@ -579,6 +658,8 @@ object UserManager {
             val newBackground = updatedBackground.copy(backgroundID = backgroundID)
             removeUserBackground(backgroundID)
             addUserBackground(newBackground)
+        } else {
+            Log.e("UserManager.updateUserBackground", "User is not logged in")
         }
     }
 
@@ -602,6 +683,8 @@ object UserManager {
                     it.copy(customCategories = updatedCategories)
                 }
             }
+        } else {
+            Log.e("UserManager.addCustomCategory", "User is not logged in")
         }
     }
 
@@ -610,18 +693,24 @@ object UserManager {
      * @param category The category to remove
      */
     fun removeCustomCategory(category: String) {
-        _userFlow.update { user ->
-            val categories = user?.customCategories
-            if (categories.isNullOrEmpty() || !categories.contains(category)) {
-                Log.w("UserManager", "User Custom Categories are empty or the category doesn't exist")
-                return@update user // Return the user unchanged
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                val categories = user?.customCategories
+                if (categories.isNullOrEmpty() || !categories.contains(category)) {
+                    Log.w(
+                        "UserManager",
+                        "User Custom Categories are empty or the category doesn't exist"
+                    )
+                    return@update user // Return the user unchanged
+                }
+                user.let {
+                    val updatedCategories = user.customCategories - category
+                    it.copy(customCategories = updatedCategories)
+                }
             }
-            user.let {
-                val updatedCategories = user.customCategories - category
-                it.copy(customCategories = updatedCategories)
-            }
+        } else {
+            Log.e("UserManager.removeCustomCategory", "User is not logged in")
         }
-
     }
 
     //-----------------------------------------------------------//
