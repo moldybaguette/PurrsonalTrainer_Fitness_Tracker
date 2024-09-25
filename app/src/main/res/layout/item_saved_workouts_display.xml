@@ -36,17 +36,18 @@
 
             <TextView
                 android:id="@+id/workoutTitle"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Leg Day"
                 android:textColor="@color/workout_title"
                 android:textSize="30sp"
-                android:fontFamily="@font/knicknack_medium"/>
+                android:fontFamily="@font/knicknack_medium"
+                android:layout_marginTop="-20dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/workoutExersises"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:itemCount="5"

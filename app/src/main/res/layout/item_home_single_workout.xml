@@ -17,7 +17,7 @@
         android:paddingHorizontal="30dp">
 
         <LinearLayout
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:orientation="vertical"
@@ -72,7 +72,8 @@
                 android:text="Leg Day"
                 android:textColor="@color/workout_title"
                 android:textSize="30sp"
-                android:fontFamily="@font/knicknack_medium"/>
+                android:fontFamily="@font/knicknack_medium"
+                android:layout_marginTop="-10dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/workoutExersises"
