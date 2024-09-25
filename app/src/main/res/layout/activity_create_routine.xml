@@ -74,7 +74,7 @@
         android:layout_marginTop="40dp"
         android:background="@drawable/bg_start_workout_button"
         app:layout_constraintTop_toBottomOf="@id/routineDetailsHeading"
-        tools:listitem="@layout/color_picker_item"
+        tools:listitem="@layout/item_color_picker"
         android:popupBackground="@drawable/bg_start_workout_button"
         tools:itemCount="1"
         android:dropDownWidth="360dp"
@@ -95,15 +95,21 @@
         android:layout_marginStart="40dp"/>
 
     <EditText
-        android:id="@+id/notes"
-        android:layout_width="360dp"
-        android:layout_height="200dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="40dp"
-        android:inputType="textMultiLine"
-        android:background="@drawable/bg_start_workout_button"
-        app:layout_constraintTop_toBottomOf="@id/colorPickerSpinner"/>
+    android:id="@+id/notes"
+    android:layout_width="360dp"
+    android:layout_height="200dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="40dp"
+    android:inputType="textMultiLine"
+    android:background="@drawable/bg_start_workout_button"
+    app:layout_constraintTop_toBottomOf="@id/colorPickerSpinner"
+    android:gravity="top"
+    android:maxLength="250"
+        android:fontFamily="@font/rounded"
+        android:textSize="15dp"
+        android:textColor="@color/hint_text"
+        android:padding="25dp"/>
 
     <TextView
         android:id="@+id/addExercisesHeading"
