@@ -67,7 +67,7 @@ class ChooseCategoryFragment : Fragment() {
                     //get suportfragmentmanager from parent
                     val fragmentManager = parentFragmentManager
                     fragmentManager.beginTransaction().apply {
-                        replace(R.id.chooseCategoryFragmentContainer, AddExerciseListFragment.newInstance(category))
+                        replace(R.id.chooseCategoryFragmentContainer, AddExerciseListFragment.newInstance("category"))
                         addToBackStack(null)
                         commit()
                     }
