@@ -6,6 +6,7 @@ import android.os.Looper
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -35,7 +36,7 @@ class CreateRoutineActivity : AppCompatActivity() {
             }, 400)
         }
 
-        val addExerciseButton: ImageView = findViewById(R.id.addExerciseButton)
+        val addExerciseButton: FrameLayout = findViewById(R.id.addExerciseButton)
         addExerciseButton.setOnClickListener {
             showChooseCategoryFragment()
         }
