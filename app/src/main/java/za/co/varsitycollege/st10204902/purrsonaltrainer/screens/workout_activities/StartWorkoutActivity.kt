@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityStartWorkoutBinding
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
 class StartWorkoutActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStartWorkoutBinding
@@ -14,12 +15,18 @@ class StartWorkoutActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_start_workout)
+        binding = ActivityStartWorkoutBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val makeNewRoutineButton: AppCompatButton = findViewById(R.id.makeNewRoutineButton)
         makeNewRoutineButton.setOnClickListener {
             val intent = Intent(this, CreateRoutineActivity::class.java)
             startActivity(intent)
+        }
+
+        // Navigation to StartEmptyWorkoutActivity
+        binding.startEmptyWorkoutButton.setOnClickListener {
+            navigateTo(this, StartEmptyWorkoutActivity::class.java, null)
         }
     }
 }

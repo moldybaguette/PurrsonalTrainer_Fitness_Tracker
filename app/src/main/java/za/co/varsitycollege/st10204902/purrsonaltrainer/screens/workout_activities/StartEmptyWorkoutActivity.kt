@@ -11,6 +11,7 @@ class StartEmptyWorkoutActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        binding = ActivityStartEmptyWorkoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
     }
