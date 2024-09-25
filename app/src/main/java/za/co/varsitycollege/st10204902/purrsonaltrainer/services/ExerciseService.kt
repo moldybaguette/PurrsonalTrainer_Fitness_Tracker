@@ -50,7 +50,7 @@ class ExerciseService(private val context: Context) {
      * Load all exercises from the JSON file and add users exercises if the user has any
      * @return List<Exercise> - List of all exercises
      */
-    private fun loadObjectsFromJson(): List<Exercise> {
+     fun loadObjectsFromJson(): List<Exercise> {
         // Open the JSON file from assets
         val jsonFile = context.assets.open("globalExercises.json")
         // Use InputStreamReader to read the file
