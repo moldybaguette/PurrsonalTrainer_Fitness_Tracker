@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatButton
 import android.widget.AdapterView
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -96,7 +97,7 @@ class ChooseCategoryFragment() : Fragment() {
     // Example of how to use the SlideUpPopup class
     private fun setupAddCategoryPopup(view: View)
     {
-        val addCategoryButton = view.findViewById<AppCompatButton>(R.id.addCategoryButton)
+        val addCategoryButton = view.findViewById<LinearLayout>(R.id.addCategoryButton)
         val fragmentContainer = requireActivity().findViewById<FrameLayout>(R.id.createCategoryFragmentContainer)
         val dismissArea = requireActivity().findViewById<View>(R.id.createCategoryDismissArea)
 
