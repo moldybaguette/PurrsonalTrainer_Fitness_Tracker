@@ -19,7 +19,9 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.DataWi
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.PasswordReentryFragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
-class AccountDetailsActivity : AppCompatActivity(), PasswordReentryFragment.OnPasswordReentryListener, DataWipeConfirmationFragment.OnDataWipeConfirmationListener {
+class AccountDetailsActivity : AppCompatActivity(),
+    PasswordReentryFragment.OnPasswordReentryListener,
+    DataWipeConfirmationFragment.OnDataWipeConfirmationListener {
     private lateinit var binding: ActivityAccountDetailsBinding
     private lateinit var auth: FirebaseAuth
 
@@ -37,12 +39,20 @@ class AccountDetailsActivity : AppCompatActivity(), PasswordReentryFragment.OnPa
             if (profile.providerId == "google.com") {
                 binding.emailInput.isEnabled = false
                 binding.passwordInput.isEnabled = false
-                Toast.makeText(this, "Google users cannot edit email or password", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this,
+                    "Google users cannot edit email or password",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 
         binding.doneButtonAccountDetails.setOnClickListener { launchPasswordReentryFragment() }
         binding.resetAppButton.setOnClickListener { launchDataWipeConfirmationFragment() }
+        binding.logOutButton.setOnClickListener {
+            auth.signOut()
+            navigateTo(this, MainActivity::class.java, null)
+        }
     }
 
     override fun onPasswordReentered(password: String) {
@@ -58,15 +68,7 @@ class AccountDetailsActivity : AppCompatActivity(), PasswordReentryFragment.OnPa
 
     private fun updateEmailAndPassword() {
         val currentUser = auth.currentUser ?: return
-        val newEmail = binding.emailInput.text.toString()
         val newPassword = binding.passwordInput.text.toString()
-
-        if (newEmail.isNotEmpty() && newEmail != currentUser.email) {
-            currentUser.updateEmail(newEmail).addOnCompleteListener { emailTask ->
-                if (emailTask.isSuccessful) showToast("Email updated")
-                else showToast("Email update failed: ${emailTask.exception?.message}")
-            }
-        }
 
         if (newPassword.isNotEmpty()) {
             currentUser.updatePassword(newPassword).addOnCompleteListener { passwordTask ->
@@ -114,6 +116,7 @@ class AccountDetailsActivity : AppCompatActivity(), PasswordReentryFragment.OnPa
                 binding.popupFragmentContainer.visibility = View.GONE
                 binding.dismissArea.visibility = View.GONE
             }
+
             override fun onAnimationRepeat(animation: Animation?) {}
         })
     }
@@ -124,10 +127,12 @@ class AccountDetailsActivity : AppCompatActivity(), PasswordReentryFragment.OnPa
 
     override fun onDataWipeConfirmed() {
         dismissPopup()
-        lifecycleScope.launch{
+        lifecycleScope.launch {
             UserManager.deleteUserDataExceptID()
         }
     }
 
-    override fun onDataWipeCancelled() { dismissPopup() }
+    override fun onDataWipeCancelled() {
+        dismissPopup()
+    }
 }
