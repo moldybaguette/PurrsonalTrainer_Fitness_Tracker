@@ -72,12 +72,12 @@ class ChooseCategoryFragment() : Fragment() {
         return view
     }
 
-        private fun addUsersCustomCategories(mainCategoryList: MutableList<String>, usersCustomExercises: List<String>): List<String> {
-            usersCustomExercises.forEach {
+        private fun addUsersCustomCategories(mainCategoryList: MutableList<String>, customCategories: List<String>): List<String> {
+            customCategories.forEach {
                 if (!mainCategoryList.contains(it)) {
-                mainCategoryList.add(it)
+                    mainCategoryList.add(it)
+                }
             }
-        }
         return mainCategoryList
     }
 
