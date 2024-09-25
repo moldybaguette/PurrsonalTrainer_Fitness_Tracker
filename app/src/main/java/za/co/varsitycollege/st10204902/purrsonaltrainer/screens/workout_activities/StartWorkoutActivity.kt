@@ -2,6 +2,7 @@ package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.workout_activit
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
@@ -18,7 +19,7 @@ class StartWorkoutActivity : AppCompatActivity() {
         binding = ActivityStartWorkoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val makeNewRoutineButton: AppCompatButton = findViewById(R.id.makeNewRoutineButton)
+        val makeNewRoutineButton: LinearLayout = findViewById(R.id.makeNewRoutineButton)
         makeNewRoutineButton.setOnClickListener {
             val intent = Intent(this, CreateRoutineActivity::class.java)
             startActivity(intent)
