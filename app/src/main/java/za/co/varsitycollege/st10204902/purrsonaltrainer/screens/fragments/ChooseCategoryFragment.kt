@@ -23,6 +23,7 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.CategoryAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.ExerciseService
 import java.io.InputStreamReader
 import java.lang.Thread.sleep
 
@@ -39,6 +40,8 @@ class ChooseCategoryFragment : Fragment() {
     {
         val view = inflater.inflate(R.layout.fragment_choose_category, container, false)
 
+        var exerciseService = ExerciseService(requireContext())
+        categories = exerciseService.defaultCategories.toMutableList()
 
         // Add all the unique exercise categories from the user's custom exercises that don't already exist in the default exercises
         val completeCategoryList = usersCustomExercises?.let {
@@ -49,12 +52,11 @@ class ChooseCategoryFragment : Fragment() {
             recyclerView.layoutManager = LinearLayoutManager(context)
             //print each category
             Log.d("ChooseCategoryFragment", "completeCategoryList: ${completeCategoryList.listIterator()}")
-            recyclerView.adapter = CategoryAdapter(completeCategoryList, requireContext(), object : View.OnClickListener {
-                override fun onClick(v: View?) {
-                    //get suportfragmentmanager from parent
+            recyclerView.adapter = CategoryAdapter(completeCategoryList, requireContext(), object : CategoryAdapter.OnItemClickListener {
+                override fun onItemClick(category: String) {
                     val fragmentManager = parentFragmentManager
                     fragmentManager.beginTransaction().apply {
-                        replace(R.id.chooseCategoryFragmentContainer, AddExerciseListFragment.newInstance("category"))
+                        replace(R.id.chooseCategoryFragmentContainer, AddExerciseListFragment.newInstance(category))
                         addToBackStack(null)
                         commit()
                     }
@@ -67,9 +69,9 @@ class ChooseCategoryFragment : Fragment() {
         return view
     }
 
-    private fun addUsersCustomCategories(mainCategoryList: MutableList<String>, usersCustomExercises: Map<String, Exercise>): List<String> {
-        usersCustomExercises.keys.forEach {
-            if (!mainCategoryList.contains(it)) {
+        private fun addUsersCustomCategories(mainCategoryList: MutableList<String>, usersCustomExercises: Map<String, Exercise>): List<String> {
+            usersCustomExercises.keys.forEach {
+                if (!mainCategoryList.contains(it)) {
                 mainCategoryList.add(it)
             }
         }
