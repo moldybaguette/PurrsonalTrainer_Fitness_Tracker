@@ -1,14 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".screens.fragments.CreateCategoryFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientEditText
+        android:id="@+id/untitledRoutineTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="false"
+        android:text="Create Category"
+        android:inputType="text"
+        android:fontFamily="@font/knicknack_black"
+        android:textSize="34sp"
+        android:layout_gravity="center_horizontal"
+        app:startColor="@color/routine_start_color"
+        app:endColor="@color/routine_end_color"
+        app:strokeColor="@color/sso_gradient_start"
+        app:strokeWidth="8dp"/>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/notesLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="name"
+        android:fontFamily="@font/rounded"
+        android:textSize="25sp"
+        android:textFontWeight="600"
+        android:textColor="@color/hint_text"
+        android:layout_marginStart="20dp"/>
+
+    <EditText
+        android:id="@+id/notes"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:paddingHorizontal="20dp"
+        android:background="@drawable/workout_item_background_shape" />
+
+</LinearLayout>
