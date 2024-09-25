@@ -39,12 +39,7 @@ class CreateRoutineActivity : AppCompatActivity() {
             showChooseCategoryFragment()
         }
 
-        // Color spinner adapter
-        val spinner = binding.colorPickerSpinner
-
-        val colors = mutableListOf("blue", "red", "orange", "yellow", "green", "purple")
-        val adapter = ColorSpinnerAdapter(this, colors)
-        spinner.adapter = adapter
+        setupColorSpinner()
     }
 
     private fun showChooseCategoryFragment() {
@@ -58,5 +53,13 @@ class CreateRoutineActivity : AppCompatActivity() {
             addToBackStack(null)
             commit()
         }
+    }
+
+    private fun setupColorSpinner()
+    {
+        val spinner = binding.colorPickerSpinner
+        val colors = mutableListOf("blue", "red", "orange", "yellow", "green", "purple")
+        val adapter = ColorSpinnerAdapter(this, colors)
+        spinner.adapter = adapter
     }
 }
