@@ -28,7 +28,8 @@ data class User(
     val userExercises: Map<String, Exercise> = emptyMap(),
     val userAchievements: Map<String, UserAchievement> = emptyMap(),
     val userBackgrounds: Map<String, UserBackground> = emptyMap(),
-    val userInventory: Map<String, Item> = emptyMap()
+    val userInventory: Map<String, Item> = emptyMap(),
+    val customCategories: List<String> = emptyList()
 )
 
 // WorkoutExercise class representing an exercise during a workout
@@ -41,7 +42,8 @@ data class WorkoutExercise(
     val reps: Int? = 0,
     val distance: Int? = 0,
     val durationSeconds: Int? = 0,
-    val notes: String = ""
+    val notes: String = "",
+    val setType: String = ""
 )
 
 // Exercise class for storing default and custom exercises
