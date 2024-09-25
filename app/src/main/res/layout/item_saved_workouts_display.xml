@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:layout_marginBottom="7dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/workout_item_background_shape"
+        android:paddingVertical="20dp"
+        android:paddingHorizontal="30dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/workoutDuration"
+                android:layout_marginEnd="10dp"
+                android:backgroundTint="@color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="45 min"
+                android:gravity="end"
+                android:textColor="@color/workout_duration_color"
+                android:fontFamily="@font/rounded"
+                android:textSize="17sp"/>
+
+            <TextView
+                android:id="@+id/workoutTitle"
+                android:layout_marginStart="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Leg Day"
+                android:textColor="@color/workout_title"
+                android:textSize="30sp"
+                android:fontFamily="@font/knicknack_medium"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/workoutExersises"
+                android:layout_marginStart="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="5"
+                tools:listitem="@layout/item_workout_exersise"/>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
