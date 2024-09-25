@@ -30,7 +30,7 @@ class ExerciseAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.component_category_list, parent, false)
+            .inflate(R.layout.item_category_list, parent, false)
         return ExerciseViewHolder(view)
     }
 
