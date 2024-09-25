@@ -5,41 +5,46 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.settings_activities.AccountDetailsActivity">
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#F2F1F1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".screens.settings_activities.AccountDetailsActivity"
+    android:background="@drawable/bg_grey_gradient">
 
     <ImageView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:contentDescription="@string/background"
+    android:scaleType="fitXY"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.0"
+    app:srcCompat="@drawable/bg_cogs"
+    android:alpha="0.5" />
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="@string/background"
-        android:scaleType="centerCrop"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/bg_cogs" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center">
+
 
     <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientTextView
         android:id="@+id/AccountDetailsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="@string/accountDetails"
         android:text="@string/accountDetails"
         android:fontFamily="@font/knicknack_black"
         android:textSize="40sp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         app:startColor="@color/pale_sky_blue"
         app:endColor="@color/deep_cyan_blue"
         app:strokeColor="@color/default_stroke_color"
@@ -49,14 +54,14 @@
         android:id="@+id/emailLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
         android:text="@string/email"
         android:contentDescription="@string/email_text_view"
         android:fontFamily="@font/rounded"
         android:textSize="22sp"
-        android:layout_marginStart="35dp"
+        android:layout_marginStart="-150dp"
         app:layout_constraintTop_toBottomOf="@+id/AccountDetailsTitle"
-        android:textColor="@color/hint_text"/>
+        android:textColor="#6B6B6B"
+        android:layout_marginTop="20dp"/>
 
     <EditText
         android:id="@+id/emailInput"
@@ -68,30 +73,29 @@
         app:layout_constraintTop_toBottomOf="@+id/emailLabel"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
-        android:layout_marginTop="0dp"
         android:background="@drawable/bg_userinput"
         android:textSize="25sp"
         android:hint="@string/email"
         android:textColor="@color/hint_text"
         android:fontFamily="@font/rounded"
         android:paddingVertical="25dp"
-        android:paddingHorizontal="30dp"/>
+        android:paddingHorizontal="30dp"
+        android:layout_marginHorizontal="12dp"/>
 
-    <TextView
-        android:id="@+id/passwordLabel"
-        android:fontFamily="@font/rounded"
-        android:textSize="22sp"
-        android:contentDescription="@string/password_text_view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailInput"
-        android:layout_margin="35dp"
-        android:textColor="@color/hint_text"
-        android:layout_marginStart="35dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/password"/>
+        <TextView
+            android:id="@+id/passwordLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/password"
+            android:contentDescription="@string/email_text_view"
+            android:fontFamily="@font/rounded"
+            android:textSize="22sp"
+            android:layout_marginStart="-130dp"
+            app:layout_constraintTop_toBottomOf="@+id/passwordInput"
+            android:textColor="#6B6B6B"
+            android:layout_marginTop="20dp"/>
 
-    <EditText
+        <EditText
         android:id="@+id/passwordInput"
         android:hint="new password"
         android:layout_width="match_parent"
@@ -102,13 +106,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordLabel"
-        android:layout_marginTop="0dp"
         android:background="@drawable/bg_userinput"
         android:textSize="25sp"
         android:textColor="@color/hint_text"
         android:fontFamily="@font/rounded"
         android:paddingVertical="25dp"
-        android:paddingHorizontal="30dp"/>
+        android:paddingHorizontal="30dp"
+            android:layout_marginHorizontal="12dp"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/resetAppButton"
@@ -183,5 +187,6 @@
         app:layout_constraintBottom_toTopOf="@+id/popupFragmentContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
+    </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
