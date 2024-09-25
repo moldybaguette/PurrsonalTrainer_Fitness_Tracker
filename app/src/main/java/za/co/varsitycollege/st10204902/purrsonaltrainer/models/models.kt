@@ -69,6 +69,7 @@ data class UserBackground(
 data class UserRoutine(
     val routineID: String = CreateID.GenerateID(),
     val name: String = "",
+    val color : String = "",
     val description: String = "",
     val exercises: Map<String, Exercise> = emptyMap()
 )
