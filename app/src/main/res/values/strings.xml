@@ -32,7 +32,10 @@
     <string name="notes">Notes</string>
     <string name="addExercises">Add Exercises</string>
     <string name="addExercise">Add Exercise</string>
-<string name="workoutType">Workout Type</string>
+    <string name="workoutType">Workout Type</string>
+    <string name="startTime">Start Time:</string>
+    <string name="endTime">End Time:</string>
+    <string name="bodyWeight">Body Weight:</string>
 
     <string-array name="set_type_options">
         <item>W</item>
