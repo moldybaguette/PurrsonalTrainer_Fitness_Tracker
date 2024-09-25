@@ -91,6 +91,7 @@ class ChooseCategoryFragment : Fragment() {
     {
         val addCategoryButton = view.findViewById<AppCompatButton>(R.id.addCategoryButton)
         val fragmentContainer = requireActivity().findViewById<FrameLayout>(R.id.createCategoryFragmentContainer)
+        val dismissArea = requireActivity().findViewById<View>(R.id.createCategoryDismissArea)
 
         // Preset the CreateCategoryFragment
         parentFragmentManager.beginTransaction().apply {
@@ -100,8 +101,19 @@ class ChooseCategoryFragment : Fragment() {
         }
 
         // Setting up onclicks to show/ dismiss popup
-        addCategoryButton.setOnClickListener {
-            fragmentContainer.visibility = View.VISIBLE
-        }
+        addCategoryButton.setOnClickListener { showCreateCategoryPopup(fragmentContainer, dismissArea) }
+        dismissArea.setOnClickListener { dismissCreateCategoryPopup(fragmentContainer, dismissArea) }
+    }
+
+    private fun showCreateCategoryPopup(fragmentContainer: FrameLayout, dismissArea: View)
+    {
+        fragmentContainer.visibility = View.VISIBLE
+        dismissArea.visibility = View.VISIBLE
+    }
+
+    private fun dismissCreateCategoryPopup(fragmentContainer: FrameLayout, dismissArea: View)
+    {
+        fragmentContainer.visibility = View.GONE
+        dismissArea.visibility = View.GONE
     }
 }
