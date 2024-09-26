@@ -1,9 +1,11 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
@@ -13,8 +15,8 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.CreateRoutineEx
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutSet
 
 class RoutineSetsAdapter(
-    private val sets: List<WorkoutSet>,
-    private val context: Context
+    private val sets: MutableList<WorkoutSet>,
+    private val context: Context,
 ) : RecyclerView.Adapter<RoutineSetsAdapter.RoutineSetsViewHolder>()
 {
     class RoutineSetsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -59,10 +61,10 @@ class RoutineSetsAdapter(
         // previousWeight
         // weightInput
         if (set.weight != null)
-            holder.weightInput.setText(set.weight)
+            holder.weightInput.setText(set.weight.toString())
         // repsInput
         if (set.reps != null)
-            holder.repsInput.setText(set.reps)
+            holder.repsInput.setText(set.reps.toString())
     }
 
     override fun getItemCount(): Int

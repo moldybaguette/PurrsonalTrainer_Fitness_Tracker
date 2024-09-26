@@ -12,21 +12,27 @@ import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.ColorSpinnerAdapter
+import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.CreateRoutineExercisesAdapter
+import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.OnSetsUpdatedListener
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityCreateRoutineBinding
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutExercise
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutSet
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.ChooseCategoryFragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.ExerciseAddedListener
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
+import java.util.Date
 
-class CreateRoutineActivity : AppCompatActivity(), ExerciseAddedListener
+class CreateRoutineActivity : AppCompatActivity(), ExerciseAddedListener, OnSetsUpdatedListener
 {
     private lateinit var binding: ActivityCreateRoutineBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +49,8 @@ class CreateRoutineActivity : AppCompatActivity(), ExerciseAddedListener
 
         // Subscribing this activity to the ExerciseAddedListener for the RoutineBuilder
         RoutineBuilder.addExerciseAddedListener(this)
-
+        // Check for existing exercises
+        this.onExerciseAdded()
 
         doneButton.setOnClickListener {
 
@@ -64,6 +71,9 @@ class CreateRoutineActivity : AppCompatActivity(), ExerciseAddedListener
             Handler(Looper.getMainLooper()).postDelayed({
                 doneButton.background = originalBackground
             }, 400)
+
+            // Navigating back to home activity
+            navigateTo(this, HomeActivity::class.java, null)
         }
 
         val addExerciseButton: FrameLayout = findViewById(R.id.addExerciseButton)
@@ -98,8 +108,35 @@ class CreateRoutineActivity : AppCompatActivity(), ExerciseAddedListener
     /**
      * Code run when an exercise has been added to the RoutineBuilder
      */
-    override fun onExerciseAdded(exercise: WorkoutExercise)
+    override fun onExerciseAdded()
     {
-        TODO("Not yet implemented")
+        if (RoutineBuilder.hasAnExercise()) {
+            try
+            {
+                val recyclerView = binding.routineAddedExercises
+                val userExercises = RoutineBuilder.exercises.values.toMutableList()
+                val adapter = CreateRoutineExercisesAdapter(userExercises, this)
+                adapter.addSetUpdatedListener(this)
+                recyclerView.adapter = adapter
+                recyclerView.layoutManager = LinearLayoutManager(this)
+            }
+            catch (e: Exception)
+            {
+                Log.e("Failed to get exercises", e.toString())
+            }
+        }
+    }
+
+    override fun onSetsUpdated(exerciseID: String, set: WorkoutSet)
+    {
+        UserManager.addWorkoutSetToWorkoutExerciseInRoutine(RoutineBuilder.routineID ,exerciseID, set)
+        val newSets = RoutineBuilder.exercises[exerciseID]?.sets?.plus(set.workoutSetID to set)
+
+        if (newSets != null)
+        {
+            val oldExercise = RoutineBuilder.exercises[exerciseID]
+            val newExercise = WorkoutExercise(exerciseID, oldExercise?.exerciseName!!, oldExercise.category, newSets, Date(), oldExercise.notes, oldExercise.measurementType  )
+            RoutineBuilder.addWorkoutExercise(newExercise)
+        }
     }
 }

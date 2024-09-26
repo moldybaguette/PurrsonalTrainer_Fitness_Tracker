@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
@@ -18,18 +17,12 @@ enum class SetType
     DROP
 }
 
-interface OnSetTypeChosenListener
-{
-    fun onSetTypeChosen(setType: SetType)
-}
 
 class SetTypeSpinnerAdapter(
     private val context: Context,
-    private val setTypes: List<SetType>
+    private val setTypes: List<SetType>,
 ) : ArrayAdapter<SetType>(context, 0, setTypes)
 {
-    private var normalSetCounter = 1
-
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View
     {
         return createViewFromResource(position, convertView, parent, false)
@@ -51,9 +44,8 @@ class SetTypeSpinnerAdapter(
         {
             SetType.NORMAL ->
             {
-                textView.text = "$normalSetCounter"
+                textView.text = "N"
                 textView.setTextColor(ContextCompat.getColor(context, R.color.normalSet))
-                normalSetCounter++
             }
             SetType.WARMUP ->
             {

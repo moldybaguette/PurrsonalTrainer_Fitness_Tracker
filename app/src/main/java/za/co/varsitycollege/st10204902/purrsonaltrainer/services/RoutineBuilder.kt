@@ -8,7 +8,7 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutSet
 import java.util.Date
 
 interface ExerciseAddedListener {
-    fun onExerciseAdded(exercise: WorkoutExercise)
+    fun onExerciseAdded()
 }
 
 /**
@@ -94,15 +94,27 @@ object RoutineBuilder {
             val tempExerciseID = exercise.exerciseID
             val tempExerciseName = exercise.exerciseName
             val tempCategory = exercise.category
-            val tempNotes = exercise.notes
+            var tempNotes = exercise.notes
+            if (!exercise.isCustom)
+            {
+                tempNotes = ""
+            }
             val tempMeasurementType = exercise.measurementType
             val tempSets = mapOf<String, WorkoutSet>()
             val workoutExercise = WorkoutExercise(tempExerciseID, tempExerciseName, tempCategory, tempSets , Date(), tempNotes, tempMeasurementType)
             exercises[tempExerciseID] = workoutExercise
 
             // Notifying subscribers that an exercise has been added
-            notifyExerciseAdded(workoutExercise)
+            notifyExerciseAdded()
         }
+    }
+    fun addWorkoutExercise(workoutExercise: WorkoutExercise)
+    {
+        val tempExerciseID = workoutExercise.exerciseID
+        exercises[tempExerciseID] = workoutExercise
+
+        // Notifying subscribers that an exercise has been added
+        notifyExerciseAdded()
     }
 
     /**
@@ -114,7 +126,11 @@ object RoutineBuilder {
         val tempExerciseID = exercise.exerciseID
         val tempExerciseName = exercise.exerciseName
         val tempCategory = exercise.category
-        val tempNotes = exercise.notes
+        var tempNotes = exercise.notes
+        if (!exercise.isCustom)
+        {
+            tempNotes = ""
+        }
         val tempSets = mapOf<String, WorkoutSet>()
         return WorkoutExercise(tempExerciseID, tempExerciseName, tempCategory, tempSets , Date(), tempNotes)
     }
@@ -147,11 +163,11 @@ object RoutineBuilder {
     /**
      * Notifies subscribers that an exercise has been added
      */
-    private fun notifyExerciseAdded(exercise: WorkoutExercise)
+    private fun notifyExerciseAdded()
     {
         for (listener in exerciseAddedListeners)
         {
-            listener.onExerciseAdded(exercise)
+            listener.onExerciseAdded()
         }
     }
 }
