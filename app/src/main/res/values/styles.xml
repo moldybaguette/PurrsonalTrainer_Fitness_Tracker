@@ -24,13 +24,8 @@
         <item name="colorOnSecondary">#E0F7FA</item> <!-- Very Light Teal -->
         <item name="colorSurface">@color/white</item> <!-- Lightest Teal -->
         <item name="colorOnSurface">#65CBD0</item>
-
-
-
-
         <item name="colorError">#FFCDD2</item>
-<item name="colorOnError">#D32F2F</item>
+        <item name="colorOnError">#D32F2F</item>
         <item name="fontFamily">@font/knicknack_medium</item>
     </style>
-
 </resources>

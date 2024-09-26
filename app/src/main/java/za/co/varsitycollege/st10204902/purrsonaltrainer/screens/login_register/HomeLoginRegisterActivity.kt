@@ -63,12 +63,12 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
         val originalBackgroundRegister = binding.registerButton.background //getting the original background of the button
         binding.registerButton.setOnClickListener {
             soundManager.playSound()
-            navigateTo(this, RegisterActivity::class.java, null)
             binding.registerButton.setBackgroundResource(R.drawable.svg_purple_bblbtn_clicked) // Set the background to the clicked background
             Handler(Looper.getMainLooper()).postDelayed({
                 binding.registerButton.background =
                     originalBackgroundRegister // Restore the original background after the delay
             }, 200) // Delay in milliseconds
+            navigateTo(this, RegisterActivity::class.java, null)
         }
 
         val originalBackgroundLogin = binding.loginButton.background
@@ -82,16 +82,12 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
                     originalBackgroundLogin // Restore the original background after the delay
             }, 200) // Delay in milliseconds
         }
+
+
         binding.googleSignInButton.setOnClickListener() {
             soundManager.playSound()
             signInWithGoogle()
         }
-
-        //onclick listeners
-        binding.registerButton.setOnClickListener {
-            navigateTo(this, RegisterActivity::class.java, null)
-        }
-
         binding.loginDismissArea.setOnClickListener { dismissLoginPopup() }
     }
 
