@@ -1,6 +1,7 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivitySettingsBinding
@@ -26,6 +27,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         binding.catSettingsButton.setOnClickListener(){
+            Toast.makeText(this, "Cat Settings is not yet implemented", Toast.LENGTH_SHORT).show()
             navigateTo(this, CatSettingsActivity::class.java, null)
         }
         
