@@ -1,0 +1,62 @@
+package za.co.varsitycollege.st10204902.purrsonaltrainer.adapters
+
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import za.co.varsitycollege.st10204902.purrsonaltrainer.R
+import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.CreateRoutineExercisesAdapter.CreateRoutineExercisesViewHolder
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutExercise
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutSet
+
+class WorkoutExercisesAdapter(
+    private val exercises: List<WorkoutExercise>,
+    private val context: Context
+) : RecyclerView.Adapter<WorkoutExercisesAdapter.WorkoutExercisesViewHolder>()
+{
+    class WorkoutExercisesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    {
+        val exerciseName = itemView.findViewById<TextView>(R.id.exerciseName)
+        val notes = itemView.findViewById<EditText>(R.id.notesEditText)
+        val workoutSets = itemView.findViewById<RecyclerView>(R.id.workoutSetsList)
+        val addSetButton = itemView.findViewById<AppCompatButton>(R.id.addSetButton)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkoutExercisesViewHolder
+    {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.component_exercisedetails_tracking, parent, false)
+        return WorkoutExercisesViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: WorkoutExercisesViewHolder, position: Int)
+    {
+        val exercise = exercises[position]
+
+        // Binding exerciseName
+        holder.exerciseName.text = exercise.exerciseName
+
+        // Binding initial notes to exercise notes
+        holder.notes.setText(exercise.notes)
+
+        // Binding routineSets
+        val setsList = exercise.sets.values.toMutableList()
+        val adapter = WorkoutSetsAdapter(setsList, context)
+        holder.workoutSets.adapter = adapter
+        holder.workoutSets.layoutManager = LinearLayoutManager(context)
+
+        // Add set Onclick
+        holder.addSetButton.setOnClickListener {
+        }
+    }
+
+    override fun getItemCount(): Int
+    {
+        return exercises.count()
+    }
+}

@@ -1,15 +1,20 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.adapters
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.CategoryAdapter.CategoryViewHolder
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.workout_activities.StartEmptyWorkoutActivity
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
 /**
  * Interface for handling item click events in the routine list.
@@ -33,7 +38,7 @@ interface OnRoutineItemClickListener {
 class RoutineListAdapter(
     private val routines: List<UserRoutine>,
     private val context: Context,
-    private val listener: OnRoutineItemClickListener
+    private val listener: OnRoutineItemClickListener,
 ) : RecyclerView.Adapter<RoutineListAdapter.RoutineViewHolder>() {
 
     /**
@@ -44,6 +49,7 @@ class RoutineListAdapter(
     class RoutineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val routineTitle: TextView = itemView.findViewById(R.id.routineTitle)
         val routineExerciseView: RecyclerView = itemView.findViewById(R.id.routineExercises)
+        val routineLayout = itemView.findViewById<LinearLayout>(R.id.routineLayout)
     }
 
     /**
@@ -72,6 +78,14 @@ class RoutineListAdapter(
         holder.routineTitle.text = routine.name
         holder.routineExerciseView.layoutManager = LinearLayoutManager(context)
         holder.routineExerciseView.adapter = RoutineExerciseListAdapter(routine.exercises.values.toList(), context)
+
+        // Navigating to start workout
+        holder.routineLayout.setOnClickListener {
+            // Adding routineID for which the workout will be created
+            val bundle = Bundle()
+            bundle.putString("routineID", routine.routineID)
+            navigateTo(context, StartEmptyWorkoutActivity::class.java, bundle)
+        }
     }
 
     /**
