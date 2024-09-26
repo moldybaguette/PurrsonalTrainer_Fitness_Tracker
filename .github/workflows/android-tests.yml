@@ -90,14 +90,12 @@ jobs:
             app/build/test-results/testDebugUnitTest/
             app/build/reports/tests/testDebugUnitTest/index.html
 
-      # Step 14: Publish Unit Test Results
-      - name: Publish Unit Test Results
-        uses: dorny/test-reporter@v1.2.0  # Updated to a specific version
-        if: always()
+      # Step 14: Upload Test Results
+      - name: Upload Test Results
+        uses: actions/upload-test-report@v1
         with:
-          name: Unit Tests
           path: app/build/test-results/testDebugUnitTest/*.xml
-          reporter: "junit-xml"  # Added quotes
+          report_name: Unit Tests
 
   instrumented-tests:
     needs: unit-tests
@@ -108,14 +106,12 @@ jobs:
         uses: actions/checkout@v3
 
       # Step 2: Set up JDK 17
-      - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
 
       # Step 3: Set up Android SDK using the correct action
-      - name: Setup Android SDK
         uses: android-actions/setup-android@v2
         with:
           api-level: 33
@@ -123,11 +119,9 @@ jobs:
           components: platform-tools,build-tools-33.0.0
 
       # Step 4: Add platform tools to PATH using the recommended method
-      - name: Add platform tools to PATH
         run: echo "${ANDROID_SDK_ROOT}/platform-tools" >> $GITHUB_PATH
 
       # Step 5: Cache Gradle dependencies
-      - name: Cache Gradle dependencies
         uses: actions/cache@v3
         with:
           path: |
@@ -138,7 +132,6 @@ jobs:
             ${{ runner.os }}-gradle-
 
       # Step 6: Cache Android SDK
-      - name: Cache Android SDK
         uses: actions/cache@v3
         with:
           path: $ANDROID_SDK_ROOT
@@ -147,23 +140,18 @@ jobs:
             ${{ runner.os }}-android-sdk-
 
       # Step 7: Create Gradle directory if it doesn't exist
-      - name: Create Gradle Directory
         run: mkdir -p ~/.gradle
 
       # Step 8: Enable Gradle Daemon
-      - name: Enable Gradle Daemon
         run: echo "org.gradle.daemon=true" >> ~/.gradle/gradle.properties
 
       # Step 9: Download dependencies
-      - name: Download Dependencies
         run: ./gradlew dependencies
 
       # Step 10: Build the project
-      - name: Build with Gradle
         run: ./gradlew assembleDebug
 
       # Step 11: Set up Android Emulator for Instrumented Tests
-      - name: Set up Android Emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 33
@@ -176,7 +164,6 @@ jobs:
           timeout: 600
 
       # Step 12: Set up Firebase Credentials
-      - name: Set up Firebase Credentials
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
@@ -184,15 +171,12 @@ jobs:
           echo "GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase_credentials.json" >> $GITHUB_ENV
 
       # Step 13: Run Instrumented Tests
-      - name: Run Instrumented Tests
         run: ./gradlew connectedDebugAndroidTest
 
       # Step 14: List Instrumented Test Results (for debugging)
-      - name: List Instrumented Test Results
         run: ls -la app/build/test-results/androidTest/connected/
 
       # Step 15: Upload Instrumented Test Artifacts
-      - name: Upload Instrumented Test Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: instrumented-test-artifacts
@@ -200,11 +184,8 @@ jobs:
             app/build/test-results/androidTest/connected/
             app/build/reports/androidTests/connected/index.html
 
-      # Step 16: Publish Instrumented Test Results
-      - name: Publish Instrumented Test Results
-        uses: dorny/test-reporter@v1.2.0  # Updated to a specific version
-        if: always()
+      # Step 16: Upload Test Results
+        uses: actions/upload-test-report@v1
         with:
-          name: Instrumented Tests
           path: app/build/test-results/androidTest/connected/*.xml
-          reporter: "junit"  # Added quotes
+          report_name: Instrumented Tests
