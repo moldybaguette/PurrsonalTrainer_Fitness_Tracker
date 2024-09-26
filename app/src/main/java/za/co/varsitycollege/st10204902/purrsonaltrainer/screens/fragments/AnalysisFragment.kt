@@ -1,31 +1,31 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.anychart.AnyChart
 import com.anychart.AnyChartView
 import com.anychart.chart.common.dataentry.DataEntry
+import com.anychart.chart.common.listener.Event
+import com.anychart.chart.common.listener.ListenersInterface
 import com.anychart.charts.Pie
+import com.google.android.material.datepicker.MaterialDatePicker
+import za.co.varsitycollege.st10204902.purrsonaltrainer.R
+import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.AnalysisBreakdownAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.FragmentAnalysisBinding
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.CategoryAnalysis
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.User
-import com.google.android.material.datepicker.MaterialDatePicker
-import za.co.varsitycollege.st10204902.purrsonaltrainer.R
-import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.AnalysisBreakdownAdapter
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+
 
 class AnalysisFragment : Fragment() {
     private var _binding: FragmentAnalysisBinding? = null
@@ -33,6 +33,8 @@ class AnalysisFragment : Fragment() {
 
     private lateinit var analysisBreakdownAdapter: AnalysisBreakdownAdapter
     private var categoryAnalysisList: List<CategoryAnalysis> = emptyList()
+
+    private var explodedSlice: Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,11 +46,14 @@ class AnalysisFragment : Fragment() {
         // Initialize RecyclerView
         setupRecyclerView()
 
-        val defaultStartDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse("2024-01-01")?: Date(0)
-        val defaultEndDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse("2024-12-31") ?: Date()
+        val defaultStartDate =
+            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse("2024-01-01") ?: Date(0)
+        val defaultEndDate =
+            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse("2024-12-31") ?: Date()
 
         val sdfDisplay = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        binding.displayDateRangeSelected.text = "${sdfDisplay.format(defaultStartDate)} - ${sdfDisplay.format(defaultEndDate)}"
+        binding.displayDateRangeSelected.text =
+            "${sdfDisplay.format(defaultStartDate)} - ${sdfDisplay.format(defaultEndDate)}"
 
         // Initial chart and adapter setup with default date range
         UserManager.user?.let { user ->
@@ -72,7 +77,38 @@ class AnalysisFragment : Fragment() {
 
         // Pie chart setup
         pie.title("Set Distribution")
-        pie.labels().position("outside")
+
+        // Enable animation
+        pie.animation(true)
+        pie.legend().enabled(false)
+        pie.labels().enabled(true)
+        pie.tooltip().enabled(false)
+        pie.animation().duration(1500)
+
+        // Mapping from category name to slice index
+        val categoryToIndexMap = categoryAnalysisList.mapIndexed { index, categoryAnalysis ->
+            categoryAnalysis.categoryName to index
+        }.toMap()
+
+
+        val customColors = listOf(
+            R.color.categoryPink,
+            R.color.categoryLightYellow,
+            R.color.categoryLightBlue,
+            R.color.categoryRed,
+            R.color.categoryGreen2,
+            R.color.categoryOrange1,
+            R.color.categoryOrange2,
+            R.color.categoryYellow,
+            R.color.categoryBlue,
+            R.color.categoryDarkBlue,
+            R.color.categoryPurple,
+            R.color.categoryGreen1,
+        )
+
+        pie.palette(customColors.map {
+            String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(requireContext(), it))
+        }.toTypedArray())
 
         anyChartPie.setChart(pie)
 
@@ -112,6 +148,29 @@ class AnalysisFragment : Fragment() {
             }
             pie.data(mutableDataEntries)
         }
+
+        // Configure labels and tooltips
+        configureLabels(pie)
+        configureToolTips(pie)
+    }
+
+
+    private fun configureLabels(pie: com.anychart.charts.Pie) {
+        val labels = pie.labels()
+        labels.position("outside")
+        labels.format("{%x}: {%value}")
+        labels.fontColor("black")
+        labels.fontSize(12)
+        labels.fontWeight("bold")
+    }
+
+    private fun configureToolTips(pie: com.anychart.charts.Pie) {
+        val toolTips = pie.tooltip()
+        toolTips.titleFormat("{%x}")
+        toolTips.format("{%value}")
+        toolTips.fontColor("black")
+        toolTips.fontSize(18)
+        toolTips.fontWeight("bold")
     }
 
     // Gets the dates from the date range picker
@@ -175,7 +234,6 @@ class AnalysisFragment : Fragment() {
         // Update the chart
         setupChart(binding.anyChartPie)
     }
-
 
     private fun calculateExerciseDistribution(
         user: User,
