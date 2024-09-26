@@ -9,6 +9,7 @@ import android.widget.EditText
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatSpinner
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
+import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.ExerciseTypeSpinnerAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
@@ -24,6 +25,7 @@ private var catagoryID: String? = null
  */
 class CreateExerciseFragment : Fragment() {
     private var exercise: Exercise? = null
+    private var spinnerItemList = listOf("Reps & Weight", "Time & Distance", "Time")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +43,7 @@ class CreateExerciseFragment : Fragment() {
 
         val title = view.findViewById<EditText>(R.id.exerciseTitle)
         val workoutType = view.findViewById<AppCompatSpinner>(R.id.workoutTypeSpinner)
+        workoutType.adapter = ExerciseTypeSpinnerAdapter(requireContext(), spinnerItemList)
         val notes = view.findViewById<EditText>(R.id.notes)
         val doneBTN = view.findViewById<AppCompatButton>(R.id.doneButton)
 
@@ -92,9 +95,11 @@ class CreateExerciseFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(exersise: Exercise?, catagoryID: String) =
+        fun newInstance(exercise: Exercise?, catagoryID: String) =
             CreateExerciseFragment().apply {
                 arguments = Bundle().apply {
+                    putParcelable("exercise", exercise)
+                    putString("catagoryID", catagoryID)
                 }
             }
     }
