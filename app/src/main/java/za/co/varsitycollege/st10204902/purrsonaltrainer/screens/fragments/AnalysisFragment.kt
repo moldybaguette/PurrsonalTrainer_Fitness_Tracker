@@ -78,15 +78,19 @@ class AnalysisFragment : Fragment() {
 
         openDatePickerButton.setOnClickListener {
             val dateRangePicker = MaterialDatePicker.Builder.dateRangePicker()
-                .setTitleText("Select a date range")
-                //Here is where i would link the custom style when the time comes
-                //She looks ugly still because i am IN THE TRENCHES with the custom style, but i'm working on it :)
+                .setTitleText("SELECT A DATE RANGE")
+                .setTheme(R.style.CalendarTheme)
+                .setSelection(
+                    androidx.core.util.Pair(
+                        MaterialDatePicker.thisMonthInUtcMilliseconds(),
+                        MaterialDatePicker.todayInUtcMilliseconds()
+                    )
+                )
                 .build()
 
             dateRangePicker.show(parentFragmentManager, "dateRangePicker")
 
             dateRangePicker.addOnPositiveButtonClickListener { selection ->
-                // Handle the date range selection
                 val startDate = selection.first
                 val endDate = selection.second
 
@@ -98,13 +102,9 @@ class AnalysisFragment : Fragment() {
                 displayDateRangeSelected.text = dateRangeText
 
                 Log.d("AnalysisFragment", "Selected date range: $dateRangeText")
-                // Output Example: Selected date range: 1725148800000 to 1725667200000
-                // Date range selected: 1 September 2024 - 7 September 2024
-                // Included the output example to demonstrate how the date is saved from the date picker
             }
         }
     }
-
 
     private fun calculateExerciseDistribution(
         user: User,
