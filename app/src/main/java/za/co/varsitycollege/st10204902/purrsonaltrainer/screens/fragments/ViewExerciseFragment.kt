@@ -1,6 +1,7 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -44,6 +45,9 @@ class ViewExerciseFragment : Fragment() {
             categoryLabel.text = exercise!!.category
             exerciseDescription.findViewById<TextView>(R.id.exerciseDescriptionText).text = exercise!!.notes
         }
+        else{
+            Log.d("ViewExerciseFragment", "Exercise is null")
+        }
 
         return view
     }
@@ -53,6 +57,7 @@ class ViewExerciseFragment : Fragment() {
         fun newInstance(exersise: Exercise) =
             ViewExerciseFragment().apply {
                 arguments = Bundle().apply {
+                    exercise = exersise
                 }
             }
     }

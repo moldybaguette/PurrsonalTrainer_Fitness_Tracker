@@ -43,6 +43,12 @@ class AddExerciseListFragment : Fragment() {
         val addCategoryButton = view.findViewById<LinearLayout>(R.id.addCategoryButton)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
+        recyclerView.adapter = ExerciseAdapter(displayedExerciseList, requireContext(), object : ExerciseAdapter.OnItemClickListener{
+            override fun onItemClick(exercise: Exercise) {
+                RoutineBuilder.addExercise(exercise)
+            }
+        },categoryId, parentFragmentManager)
+
         //onclick listener for the add category button
         addCategoryButton.setOnClickListener {
             val fragmentManager = parentFragmentManager
@@ -65,47 +71,13 @@ class AddExerciseListFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                recyclerView.adapter = ExerciseAdapter(displayedExerciseList, requireContext(), object : ExerciseAdapter.OnItemClickListener {
+                recyclerView.adapter = ExerciseAdapter(displayedExerciseList, requireContext(), object : ExerciseAdapter.OnItemClickListener{
                     override fun onItemClick(exercise: Exercise) {
                         RoutineBuilder.addExercise(exercise)
-                        if(exercise.isCustom){
-                            val fragmentManager = parentFragmentManager
-                            fragmentManager.beginTransaction().apply {
-                                replace(R.id.chooseCategoryFragmentContainer, CreateExerciseFragment.newInstance(exercise,
-                                    categoryId!!
-                                ))
-                                addToBackStack(null)
-                                commit()
-                            }
-                        }
-                        else{
-                            val fragmentManager = parentFragmentManager
-                            fragmentManager.beginTransaction().apply {
-                                replace(R.id.chooseCategoryFragmentContainer, ViewExerciseFragment.newInstance(exercise))
-                                addToBackStack(null)
-                                commit()
-                            }
-                        }
-
                     }
-                }
-                )
+                },categoryId, parentFragmentManager)
             }
         })
-
-
-        recyclerView.adapter = ExerciseAdapter(displayedExerciseList, requireContext(), object : ExerciseAdapter.OnItemClickListener {
-            override fun onItemClick(exercise: Exercise) {
-                RoutineBuilder.addExercise(exercise)
-                val fragmentManager = parentFragmentManager
-                fragmentManager.beginTransaction().apply {
-                    replace(R.id.chooseCategoryFragmentContainer, ViewExerciseFragment.newInstance(exercise))
-                    addToBackStack(null)
-                    commit()
-                }
-            }
-        }
-        )
         return view
     }
 
@@ -117,7 +89,6 @@ class AddExerciseListFragment : Fragment() {
             AddExerciseListFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_CATEGORY_ID, categoryId)
-
                 }
             }
     }
