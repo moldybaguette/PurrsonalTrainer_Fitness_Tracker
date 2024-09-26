@@ -92,7 +92,7 @@ class ChooseCategoryFragment() : Fragment() {
                                     fragmentManager.beginTransaction().apply {
                                         replace(
                                             R.id.chooseCategoryFragmentContainer,
-                                            EditExerciseFragment.newInstance(exercise)
+                                            ViewExerciseFragment.newInstance(exercise)
                                         )
                                         addToBackStack(null)
                                         commit()
