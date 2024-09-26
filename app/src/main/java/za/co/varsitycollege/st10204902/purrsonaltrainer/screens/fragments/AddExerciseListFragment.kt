@@ -1,7 +1,6 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments
 
 import android.os.Bundle
-import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.fragment.app.Fragment
@@ -12,11 +11,8 @@ import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
-import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.CategoryAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.ExerciseAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.User
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.ExerciseService
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
 
@@ -43,7 +39,18 @@ class AddExerciseListFragment : Fragment() {
         val txtSearch = view.findViewById<EditText>(R.id.searchInput)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.exercisesRecycler)
+        val addCategoryButton = view.findViewById<EditText>(R.id.addCategoryButton)
         recyclerView.layoutManager = LinearLayoutManager(context)
+
+        //onclick listener for the add category button
+        addCategoryButton.setOnClickListener {
+            val fragmentManager = parentFragmentManager
+            fragmentManager.beginTransaction().apply {
+                replace(R.id.chooseCategoryFragmentContainer, CreateExerciseFragment.newInstance(null, categoryId!!))
+                addToBackStack(null)
+                commit()
+            }
+        }
 
         txtSearch.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -60,12 +67,25 @@ class AddExerciseListFragment : Fragment() {
                 recyclerView.adapter = ExerciseAdapter(displayedExerciseList, requireContext(), object : ExerciseAdapter.OnItemClickListener {
                     override fun onItemClick(exercise: Exercise) {
                         RoutineBuilder.addExercise(exercise)
-                        val fragmentManager = parentFragmentManager
-                        fragmentManager.beginTransaction().apply {
-                            replace(R.id.chooseCategoryFragmentContainer, EditExerciseFragment.newInstance(exercise))
-                            addToBackStack(null)
-                            commit()
+                        if(exercise.isCustom){
+                            val fragmentManager = parentFragmentManager
+                            fragmentManager.beginTransaction().apply {
+                                replace(R.id.chooseCategoryFragmentContainer, CreateExerciseFragment.newInstance(exercise,
+                                    categoryId!!
+                                ))
+                                addToBackStack(null)
+                                commit()
+                            }
                         }
+                        else{
+                            val fragmentManager = parentFragmentManager
+                            fragmentManager.beginTransaction().apply {
+                                replace(R.id.chooseCategoryFragmentContainer, ViewExerciseFragment.newInstance(exercise))
+                                addToBackStack(null)
+                                commit()
+                            }
+                        }
+
                     }
                 }
                 )
@@ -78,7 +98,7 @@ class AddExerciseListFragment : Fragment() {
                 RoutineBuilder.addExercise(exercise)
                 val fragmentManager = parentFragmentManager
                 fragmentManager.beginTransaction().apply {
-                    replace(R.id.chooseCategoryFragmentContainer, EditExerciseFragment.newInstance(exercise))
+                    replace(R.id.chooseCategoryFragmentContainer, ViewExerciseFragment.newInstance(exercise))
                     addToBackStack(null)
                     commit()
                 }
