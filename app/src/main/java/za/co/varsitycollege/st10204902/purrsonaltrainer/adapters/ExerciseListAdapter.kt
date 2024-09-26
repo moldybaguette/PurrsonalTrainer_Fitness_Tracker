@@ -12,11 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.CreateExerciseFragment
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.ViewExerciseFragment
 
 class ExerciseAdapter(
     private val exercises: List<Exercise>,
     private val context: Context,
     private val listener: OnItemClickListener,
+    private val categoryId: String?,
+    private val fragmentManager: androidx.fragment.app.FragmentManager,
 ) : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>() {
 
     interface OnItemClickListener {
@@ -47,8 +51,27 @@ class ExerciseAdapter(
 
         if(exercise.isCustom) {
             holder.exerciseIcon.setImageResource(R.drawable.svg_custom_exercise)
+            holder.exerciseIcon.setOnClickListener {
+                fragmentManager.beginTransaction().apply {
+                    replace(R.id.chooseCategoryFragmentContainer, CreateExerciseFragment.newInstance(exercise,
+                        exercise.category
+                    ))
+                    addToBackStack(null)
+                    commit()
+                }
+            }
         } else {
             holder.exerciseIcon.setImageResource(R.drawable.svg_saved_exercise_info)
+            holder.exerciseIcon.setOnClickListener {
+                fragmentManager.beginTransaction().apply {
+                    replace(
+                        R.id.chooseCategoryFragmentContainer,
+                        ViewExerciseFragment.newInstance(exercise)
+                    )
+                    addToBackStack(null)
+                    commit()
+                }
+            }
         }
 
         // Define color palette for exercises

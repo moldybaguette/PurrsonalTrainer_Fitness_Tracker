@@ -12,7 +12,9 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.ExerciseTypeSpinnerAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.workout_activities.CreateRoutineActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
 
 private var exercise: Exercise? = null
@@ -65,6 +67,7 @@ class CreateExerciseFragment : Fragment() {
                 )
                 UserManager.addUserExercise(newExercise)
                 RoutineBuilder.addExercise(newExercise)
+                navigateTo(requireContext(), CreateRoutineActivity::class.java, null)
             }else{
                 val newExercise = Exercise(
                     exerciseName = title.text.toString(),
@@ -76,17 +79,21 @@ class CreateExerciseFragment : Fragment() {
                 )
                 if(exercise!!.exerciseName != newExercise.exerciseName) {
                     UserManager.updateUserExercise(exercise!!.exerciseID, newExercise)
+                    var editedExercise = UserManager.user?.userExercises?.get(exercise!!.exerciseID)
+                    RoutineBuilder.addExercise(editedExercise!!)
                 }
                 if(exercise!!.notes != newExercise.notes) {
                     UserManager.updateUserExercise(exercise!!.exerciseID, newExercise)
+                    var editedExercise = UserManager.user?.userExercises?.get(exercise!!.exerciseID)
+                    RoutineBuilder.addExercise(editedExercise!!)
                 }
                 // if they change the measurement type update the exercise
                 if(exercise!!.measurementType != newExercise.measurementType) {
                     UserManager.updateUserExercise(exercise!!.exerciseID, newExercise)
+                    var editedExercise = UserManager.user?.userExercises?.get(exercise!!.exerciseID)
+                    RoutineBuilder.addExercise(editedExercise!!)
                 }
-
-
-                //TODO: Update the exercise in the routine
+                navigateTo(requireContext(), CreateRoutineActivity::class.java, null)
             }
         }
 

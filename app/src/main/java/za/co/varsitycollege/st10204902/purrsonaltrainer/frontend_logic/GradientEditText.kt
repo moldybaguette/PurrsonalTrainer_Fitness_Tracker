@@ -6,6 +6,7 @@ import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Shader
 import android.util.AttributeSet
+import android.view.MotionEvent
 import androidx.appcompat.widget.AppCompatEditText
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 
@@ -51,6 +52,11 @@ class GradientEditText @JvmOverloads constructor(
         strokePaint.isAntiAlias = true
 
         setPadding(strokeWidth.toInt(), strokeWidth.toInt(), strokeWidth.toInt(), strokeWidth.toInt())
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        // Ensure the superclass method is called
+        return super.onTouchEvent(event)
     }
 
     override fun onDraw(canvas: Canvas) {

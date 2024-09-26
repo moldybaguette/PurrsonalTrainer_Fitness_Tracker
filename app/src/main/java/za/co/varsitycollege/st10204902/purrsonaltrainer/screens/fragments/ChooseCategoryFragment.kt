@@ -98,7 +98,7 @@ class ChooseCategoryFragment() : Fragment() {
                                         commit()
                                     }
                                 }
-                            }
+                            },categoryId = null, parentFragmentManager
                         )
                     }
                 }
