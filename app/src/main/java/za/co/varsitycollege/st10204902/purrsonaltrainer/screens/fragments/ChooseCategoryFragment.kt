@@ -59,6 +59,7 @@ class ChooseCategoryFragment() : Fragment() {
         } ?: categories
 
         val fullListOfCategoryExercises = exerciseService.loadObjectsFromJson()
+        exerciseService.updateExerciseService()
         var displayedExerciseList = fullListOfCategoryExercises
         val recyclerView: RecyclerView = view.findViewById(R.id.categoryRecycler)
 
