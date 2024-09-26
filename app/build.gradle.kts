@@ -77,7 +77,7 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.picasso:picasso:2.71828")
-    implementation ("com.google.android.material:material:1.9.0")
+    implementation ("com.google.android.material:material:1.10.0")
 
     // Use Firebase BOM for managing Firebase dependencies
     implementation(platform("com.google.firebase:firebase-bom:31.5.0"))

@@ -31,7 +31,8 @@
                 android:fontFamily="@font/knicknack_medium"
                 android:gravity="center_horizontal"
                 android:text="@string/analysis"
-                android:textColor="@color/bright_teal"
+                app:startColor="@color/pale_sky_blue"
+                app:endColor="@color/deep_cyan_blue"
                 android:textSize="50sp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="40dp" />
