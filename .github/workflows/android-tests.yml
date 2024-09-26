@@ -10,6 +10,12 @@ on:
       - main
       - dev
 
+# Step a: Define permissions to allow creating check runs
+permissions:
+  actions: read
+  contents: read
+  checks: write
+
 jobs:
   unit-tests:
     runs-on: ubuntu-latest
@@ -90,9 +96,9 @@ jobs:
             app/build/test-results/testDebugUnitTest/
             app/build/reports/tests/testDebugUnitTest/index.html
 
-      # Step 14: Publish Unit Test Results with dorny/test-reporter
+      # Step 14: Publish Unit Test Results with dorny/test-reporter@v2
       - name: Publish Unit Test Results
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v2
         if: always()
         with:
           name: Unit Tests
@@ -203,9 +209,9 @@ jobs:
             app/build/test-results/androidTest/connected/
             app/build/reports/androidTests/connected/index.html
 
-      # Step 16: Publish Instrumented Test Results with dorny/test-reporter
+      # Step 16: Publish Instrumented Test Results with dorny/test-reporter@v2
       - name: Publish Instrumented Test Results
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v2
         if: always()
         with:
           name: Instrumented Tests
