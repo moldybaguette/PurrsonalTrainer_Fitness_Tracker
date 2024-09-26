@@ -57,6 +57,9 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
     implementation("androidx.biometric:biometric:1.1.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -74,6 +77,7 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.picasso:picasso:2.71828")
+    implementation ("com.google.android.material:material:1.9.0")
 
     // Use Firebase BOM for managing Firebase dependencies
     implementation(platform("com.google.firebase:firebase-bom:31.5.0"))
