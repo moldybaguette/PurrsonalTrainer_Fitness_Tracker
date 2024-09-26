@@ -453,6 +453,30 @@ object UserManager {
         }
     }
 
+    fun addWorkoutSetToWorkoutExerciseInRoutine(routineID: String, exerciseID:String, newSet: WorkoutSet)
+    {
+        if (userIsLoggedIn())
+        {
+            user.let {
+                val updatedRoutine = it?.userRoutines?.get(routineID)?.exercises?.get(exerciseID)?.sets?.plus(newSet.workoutSetID to newSet)
+                updatedRoutine?.let { sets ->
+                    it?.let {
+                        val updatedRoutineExercises = it.userRoutines[routineID]?.exercises?.get(exerciseID)?.copy(sets = sets)
+                        it.copy(
+                            userRoutines = it.userRoutines + (routineID to it.userRoutines[routineID]!!.copy(
+                                exercises = it.userRoutines[routineID]!!.exercises + (exerciseID to updatedRoutineExercises!!)
+                            ))
+                        )
+                    }
+                }
+            }
+        }
+        else
+        {
+            Log.e("UserManager.addWorkoutSetToWorkoutExerciseInRoutine", "User is not logged in")
+        }
+    }
+
     /**
      * Removes a set from an exercise
      * @param workoutID The ID of the workout containing the exercise
