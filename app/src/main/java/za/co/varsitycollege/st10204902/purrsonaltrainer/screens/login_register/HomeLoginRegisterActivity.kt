@@ -173,8 +173,10 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
                                 // Sign in success
                                 Log.d(TAG, "signInWithCredential:success")
                                 val user = auth.currentUser
+                                val authManager = AuthManager()
+                                authManager.createUserInRealtimeDatabase(user!!.uid)
                                 UserManager.userManagerScope.launch {
-                                    UserManager.setUpSingleton(user!!.uid)
+                                    UserManager.setUpSingleton(user.uid)
                                 }.invokeOnCompletion {
                                     // Navigate to the next screen
                                     navigateTo(this, HomeActivity::class.java, null)
@@ -194,9 +196,6 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
             }
         }
     }
-
-
-
 
     private fun populateLoginFragment() {
         this.supportFragmentManager.beginTransaction().apply {

@@ -35,7 +35,7 @@ object UserManager {
     /**
      * The path to the users in the Firebase Realtime Database
      */
-    private const val USERS_PATH = "users"
+    const val USERS_PATH = "users"
 
     /**
      * A MutableStateFlow that holds the current user

@@ -1,7 +1,11 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.backend
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.User
@@ -58,34 +62,49 @@ class AuthManager(val auth: FirebaseAuth = FirebaseAuth.getInstance()) {
      * @return The user's unique ID
      */
     fun createUserInRealtimeDatabase(userID: String): String {
-
-        val userObject = User(
-            userID,
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            emptyMap(),
-            emptyMap(),
-            emptyMap(),
-            emptyMap(),
-            emptyMap(),
-            emptyMap()
-        )
-        UserManager.userManagerScope.launch {
-            val task =
-                database.reference.child("users").child(userID).setValue(userObject)
-            task.addOnCompleteListener { task1 ->
-                if (task1.isSuccessful) {
-                    println("User added to Realtime Database successfully")
+        val databaseReference = FirebaseDatabase.getInstance().getReference(UserManager.USERS_PATH).child(userID)
+        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // User ID exists in the database, no need to create a new user
+                    Log.d("AuthManager", "User already exists in the database.")
                 } else {
-                    println("Failed to add user to Realtime Database: ${task.exception?.message}")
+                    // User ID does not exist, create a new user
+                    val userObject = User(
+                        userID,
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        emptyMap(),
+                        emptyMap(),
+                        emptyMap(),
+                        emptyMap(),
+                        emptyMap(),
+                        emptyMap()
+                    )
+                    UserManager.userManagerScope.launch {
+                        val task =
+                            database.reference.child("users").child(userID).setValue(userObject)
+                        task.addOnCompleteListener { task1 ->
+                            if (task1.isSuccessful) {
+                                println("User added to Realtime Database successfully")
+                            } else {
+                                println("Failed to add user to Realtime Database: ${task.exception?.message}")
+                            }
+                        }
+                    }
+
                 }
+
             }
-        }
-        return userObject.userID
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.e("AuthManager", "Database error: ${databaseError.message}")
+            }
+        })
+        return userID
     }
 //--------------------------------------------------------------//
 }
