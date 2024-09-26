@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatSpinner
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
@@ -37,10 +39,10 @@ class CreateExerciseFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_create_exercise, container, false)
 
-        var title = view.findViewById<EditText>(R.id.exerciseTitle)
-        var workoutType = view.findViewById<EditText>(R.id.workoutTypeSpinner)
-        var notes = view.findViewById<EditText>(R.id.notes)
-        var doneBTN = view.findViewById<EditText>(R.id.doneButton)
+        val title = view.findViewById<EditText>(R.id.exerciseTitle)
+        val workoutType = view.findViewById<AppCompatSpinner>(R.id.workoutTypeSpinner)
+        val notes = view.findViewById<EditText>(R.id.notes)
+        val doneBTN = view.findViewById<AppCompatButton>(R.id.doneButton)
 
         if (exercise != null) {
             title.setText(exercise!!.exerciseName)
@@ -55,7 +57,7 @@ class CreateExerciseFragment : Fragment() {
                     category = catagoryID!!,
                     notes = notes.text.toString(),
                     // set measurement type based on spinner
-                    measurementType = workoutType.text.toString(),
+                    measurementType = workoutType.selectedItem.toString(),
                     isCustom = true
                 )
                 UserManager.addUserExercise(newExercise)
@@ -63,10 +65,10 @@ class CreateExerciseFragment : Fragment() {
             }else{
                 val newExercise = Exercise(
                     exerciseName = title.text.toString(),
-                    category = workoutType.text.toString(),
+                    category = workoutType.selectedItem.toString(),
                     notes = notes.text.toString(),
                     // set measurement type based on spinner
-                    measurementType = workoutType.text.toString(),
+                    measurementType = workoutType.selectedItem.toString(),
                     isCustom = true
                 )
                 if(exercise!!.exerciseName != newExercise.exerciseName) {
