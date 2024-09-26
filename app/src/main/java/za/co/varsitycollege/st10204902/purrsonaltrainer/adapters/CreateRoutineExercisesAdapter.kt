@@ -41,6 +41,7 @@ class CreateRoutineExercisesAdapter(
         holder.notes.setText(exercise.notes)
 
         // Binding routineSets
+
     }
 
     override fun getItemCount(): Int
