@@ -50,19 +50,23 @@ class CreateExerciseFragment : Fragment() {
 
         doneBTN.setOnClickListener {
             if(exercise == null){
-                var newExercise = Exercise(
+                val newExercise = Exercise(
                     exerciseName = title.text.toString(),
                     category = catagoryID!!,
                     notes = notes.text.toString(),
+                    // set measurement type based on spinner
+                    measurementType = workoutType.text.toString(),
                     isCustom = true
                 )
                 UserManager.addUserExercise(newExercise)
                 RoutineBuilder.addExercise(newExercise)
             }else{
-                var newExercise = Exercise(
+                val newExercise = Exercise(
                     exerciseName = title.text.toString(),
                     category = workoutType.text.toString(),
                     notes = notes.text.toString(),
+                    // set measurement type based on spinner
+                    measurementType = workoutType.text.toString(),
                     isCustom = true
                 )
                 if(exercise!!.exerciseName != newExercise.exerciseName) {
@@ -71,6 +75,12 @@ class CreateExerciseFragment : Fragment() {
                 if(exercise!!.notes != newExercise.notes) {
                     UserManager.updateUserExercise(exercise!!.exerciseID, newExercise)
                 }
+                // if they change the measurement type update the exercise
+                if(exercise!!.measurementType != newExercise.measurementType) {
+                    UserManager.updateUserExercise(exercise!!.exerciseID, newExercise)
+                }
+
+
                 //TODO: Update the exercise in the routine
             }
         }
