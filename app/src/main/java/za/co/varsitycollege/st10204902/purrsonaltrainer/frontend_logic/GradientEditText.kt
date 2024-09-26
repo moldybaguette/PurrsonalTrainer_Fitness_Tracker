@@ -19,9 +19,9 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.R
  * @param defStyleAttr An attribute in the current theme that contains a reference to a style resource that supplies default values for the view.
  */
 class GradientEditText @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    private val context: Context,
+    private val attrs: AttributeSet? = null,
+    private val defStyleAttr: Int = 0
 ) : AppCompatEditText(context, attrs, defStyleAttr) {
 
     private val strokePaint = Paint()
@@ -39,6 +39,39 @@ class GradientEditText @JvmOverloads constructor(
             try {
                 startColor = getColor(R.styleable.GradientTextView_startColor, context.getColor(R.color.default_start_color))
                 endColor = getColor(R.styleable.GradientTextView_endColor, context.getColor(R.color.default_end_color))
+                strokeColor = getColor(R.styleable.GradientTextView_strokeColor, context.getColor(R.color.default_stroke_color))
+                strokeWidth = getDimension(R.styleable.GradientTextView_strokeWidth, 30f)
+            } finally {
+                recycle()
+            }
+        }
+
+        val shader = LinearGradient(
+            0f, 0f, 0f, textSize,
+            intArrayOf(startColor, endColor),
+            floatArrayOf(0.50f, 1.0f),
+            Shader.TileMode.CLAMP
+        )
+        paint.shader = shader
+
+        strokePaint.style = Paint.Style.STROKE
+        strokePaint.strokeWidth = strokeWidth
+        strokePaint.color = strokeColor
+        strokePaint.isAntiAlias = true
+
+        setPadding(strokeWidth.toInt(), strokeWidth.toInt(), strokeWidth.toInt(), strokeWidth.toInt())
+    }
+
+    fun reInitialiseComponent(startColour: Int, endColour: Int)
+    {
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.GradientTextView,
+            0, 0
+        ).apply {
+            try {
+                startColor = getColor(R.styleable.GradientTextView_startColor, context.getColor(startColour))
+                endColor = getColor(R.styleable.GradientTextView_endColor, context.getColor(endColour))
                 strokeColor = getColor(R.styleable.GradientTextView_strokeColor, context.getColor(R.color.default_stroke_color))
                 strokeWidth = getDimension(R.styleable.GradientTextView_strokeWidth, 30f)
             } finally {

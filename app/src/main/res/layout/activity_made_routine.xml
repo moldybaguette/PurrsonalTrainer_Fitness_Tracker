@@ -36,7 +36,7 @@
             android:gravity="center">
 
             <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientEditText
-                android:id="@+id/untitledRoutineTitle"
+                android:id="@+id/routineTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="false"
@@ -45,8 +45,6 @@
                 android:fontFamily="@font/knicknack_black"
                 android:textSize="45sp"
                 android:layout_marginTop="40dp"
-                app:startColor="@color/untitled_routine_start_color"
-                app:endColor="@color/untitled_routine_end_color"
                 app:strokeColor="@color/default_stroke_color"
                 app:strokeWidth="15dp"/>
 
@@ -138,34 +136,33 @@
                 android:layout_marginStart="-70dp"
                 android:layout_marginTop="20dp"/>
 
-         <FrameLayout
-    android:id="@+id/addExerciseButton"
-    android:layout_width="360dp"
-    android:layout_height="80dp"
-    android:background="@drawable/bg_start_workout_button"
-    android:layout_marginTop="5dp"
-             android:layout_marginBottom="30dp">
+            <FrameLayout
+                android:id="@+id/addExerciseButton"
+                android:layout_width="360dp"
+                android:layout_height="80dp"
+                android:background="@drawable/bg_start_workout_button"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="30dp">
 
-    <ImageView
-        android:id="@+id/addExerciseIcon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_gravity="center_vertical|start"
-        android:layout_marginStart="40dp"
-        android:src="@drawable/isco_add" />
+                <ImageView
+                    android:id="@+id/addExerciseIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical|start"
+                    android:layout_marginStart="40dp"
+                    android:src="@drawable/isco_add" />
 
-    <TextView
-        android:id="@+id/addExerciseText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/addExercise"
-        android:fontFamily="@font/rounded"
-        android:textColor="@color/hint_text"
-        android:textSize="25sp"
-        android:textAllCaps="false" />
-</FrameLayout>
-
+                <TextView
+                    android:id="@+id/addExerciseText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/addExercise"
+                    android:fontFamily="@font/rounded"
+                    android:textColor="@color/hint_text"
+                    android:textSize="25sp"
+                    android:textAllCaps="false" />
+            </FrameLayout>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
