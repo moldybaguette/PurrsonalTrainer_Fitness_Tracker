@@ -58,9 +58,12 @@ class AddExerciseListFragment : Fragment() {
         val addCategoryButton = view.findViewById<LinearLayout>(R.id.addCategoryButton)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
+        exerciseService.updateExerciseService()
+
         recyclerView.adapter = ExerciseAdapter(displayedExerciseList, requireContext(), object : ExerciseAdapter.OnItemClickListener{
             override fun onItemClick(exercise: Exercise) {
                 RoutineBuilder.addExercise(exercise)
+                exerciseService.updateExerciseService()
                 requireActivity().findViewById<FrameLayout>(R.id.chooseCategoryFragmentContainer).visibility = View.GONE
             }
        },categoryId, parentFragmentManager)
@@ -88,6 +91,7 @@ class AddExerciseListFragment : Fragment() {
                 recyclerView.adapter = ExerciseAdapter(displayedExerciseList, requireContext(), object : ExerciseAdapter.OnItemClickListener{
                     override fun onItemClick(exercise: Exercise) {
                         RoutineBuilder.addExercise(exercise)
+                        exerciseService.updateExerciseService()
                         requireActivity().findViewById<FrameLayout>(R.id.chooseCategoryFragmentContainer).visibility = View.GONE
                     }
                 },categoryId, parentFragmentManager)
