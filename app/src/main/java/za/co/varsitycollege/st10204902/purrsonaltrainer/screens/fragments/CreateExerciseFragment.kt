@@ -6,7 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatSpinner
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
+import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.ExerciseTypeSpinnerAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
@@ -22,6 +25,7 @@ private var catagoryID: String? = null
  */
 class CreateExerciseFragment : Fragment() {
     private var exercise: Exercise? = null
+    private var spinnerItemList = listOf("Reps & Weight", "Time & Distance", "Time")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,10 +41,11 @@ class CreateExerciseFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_create_exercise, container, false)
 
-        var title = view.findViewById<EditText>(R.id.exerciseTitle)
-        var workoutType = view.findViewById<EditText>(R.id.workoutTypeSpinner)
-        var notes = view.findViewById<EditText>(R.id.notes)
-        var doneBTN = view.findViewById<EditText>(R.id.doneButton)
+        val title = view.findViewById<EditText>(R.id.exerciseTitle)
+        val workoutType = view.findViewById<AppCompatSpinner>(R.id.workoutTypeSpinner)
+        workoutType.adapter = ExerciseTypeSpinnerAdapter(requireContext(), spinnerItemList)
+        val notes = view.findViewById<EditText>(R.id.notes)
+        val doneBTN = view.findViewById<AppCompatButton>(R.id.doneButton)
 
         if (exercise != null) {
             title.setText(exercise!!.exerciseName)
@@ -50,19 +55,23 @@ class CreateExerciseFragment : Fragment() {
 
         doneBTN.setOnClickListener {
             if(exercise == null){
-                var newExercise = Exercise(
+                val newExercise = Exercise(
                     exerciseName = title.text.toString(),
                     category = catagoryID!!,
                     notes = notes.text.toString(),
+                    // set measurement type based on spinner
+                    measurementType = workoutType.selectedItem.toString(),
                     isCustom = true
                 )
                 UserManager.addUserExercise(newExercise)
                 RoutineBuilder.addExercise(newExercise)
             }else{
-                var newExercise = Exercise(
+                val newExercise = Exercise(
                     exerciseName = title.text.toString(),
-                    category = workoutType.text.toString(),
+                    category = workoutType.selectedItem.toString(),
                     notes = notes.text.toString(),
+                    // set measurement type based on spinner
+                    measurementType = workoutType.selectedItem.toString(),
                     isCustom = true
                 )
                 if(exercise!!.exerciseName != newExercise.exerciseName) {
@@ -71,6 +80,12 @@ class CreateExerciseFragment : Fragment() {
                 if(exercise!!.notes != newExercise.notes) {
                     UserManager.updateUserExercise(exercise!!.exerciseID, newExercise)
                 }
+                // if they change the measurement type update the exercise
+                if(exercise!!.measurementType != newExercise.measurementType) {
+                    UserManager.updateUserExercise(exercise!!.exerciseID, newExercise)
+                }
+
+
                 //TODO: Update the exercise in the routine
             }
         }
@@ -80,9 +95,10 @@ class CreateExerciseFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(exersise: Exercise?, catagoryID: String) =
+        fun newInstance(exercise: Exercise?, catagoryID: String) =
             CreateExerciseFragment().apply {
                 arguments = Bundle().apply {
+                    putString("catagoryID", catagoryID)
                 }
             }
     }

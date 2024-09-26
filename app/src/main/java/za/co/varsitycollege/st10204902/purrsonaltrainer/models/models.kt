@@ -54,6 +54,7 @@ data class Exercise(
     val exerciseName: String = "",
     val category: String = "",
     val notes: String = "",
+    val measurementType: String = "",
     val isCustom: Boolean = false
 )
 
