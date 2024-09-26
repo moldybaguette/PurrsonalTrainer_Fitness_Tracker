@@ -1,5 +1,6 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,46 +18,79 @@ import com.anychart.chart.common.dataentry.DataEntry
 import com.anychart.charts.Pie
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.FragmentAnalysisBinding
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.CategoryAnalysis
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.User
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import com.google.android.material.datepicker.MaterialDatePicker
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.AnalysisBreakdownAdapter
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class AnalysisFragment : Fragment() {
     private var _binding: FragmentAnalysisBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var analysisBreakdownAdapter: AnalysisBreakdownAdapter
+    private var categoryAnalysisList: List<CategoryAnalysis> = emptyList()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         Log.d("AnalysisFragment", "onCreateView")
         _binding = FragmentAnalysisBinding.inflate(inflater, container, false)
 
-        recyclerSetup()
+        // Initialize RecyclerView
+        setupRecyclerView()
 
-        setupChart(binding.anyChartPie)
+        val defaultStartDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse("2024-01-01")?: Date(0)
+        val defaultEndDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse("2024-12-31") ?: Date()
+
+        val sdfDisplay = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        binding.displayDateRangeSelected.text = "${sdfDisplay.format(defaultStartDate)} - ${sdfDisplay.format(defaultEndDate)}"
+
+        // Initial chart and adapter setup with default date range
+        UserManager.user?.let { user ->
+            updateAnalysis(user, defaultStartDate, defaultEndDate)
+        }
 
         setupDatePicker()
-
         return binding.root
+    }
+
+    private fun setupRecyclerView() {
+        analysisBreakdownAdapter = AnalysisBreakdownAdapter(categoryAnalysisList)
+        binding.analysisBreakdownRecycler.apply {
+            adapter = analysisBreakdownAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
     }
 
     private fun setupChart(anyChartPie: AnyChartView) {
         val pie: Pie = AnyChart.pie()
 
-        // pie setup
+        // Pie chart setup
         pie.title("Set Distribution")
         pie.labels().position("outside")
 
         anyChartPie.setChart(pie)
 
-        UserManager.user?.let {
-            val data = calculateExerciseDistribution(it, "2024-01-01", "2024-12-31")
-            println("Data: $data")
+        UserManager.user?.let { user ->
+            // Use selected date range
+            val selectedDateRange = binding.displayDateRangeSelected.text.toString().split(" - ")
+            if (selectedDateRange.size != 2) {
+                Log.w("AnalysisFragment", "Invalid date range format")
+                return
+            }
+
+            val sdfInput = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val startDate = sdfInput.parse(selectedDateRange[0]) ?: Date(0)
+            val endDate = sdfInput.parse(selectedDateRange[1]) ?: Date()
+
+            val data = calculateExerciseDistribution(user, startDate, endDate)
+            Log.d("AnalysisFragment", "Data: $data")
+
             val dataEntries = data.map { (category, count) ->
                 object : DataEntry() {
                     init {
@@ -64,6 +99,7 @@ class AnalysisFragment : Fragment() {
                     }
                 }
             }
+
             val mutableDataEntries: MutableList<DataEntry> = dataEntries.toMutableList()
 
             if (mutableDataEntries.isEmpty()) {
@@ -78,60 +114,85 @@ class AnalysisFragment : Fragment() {
         }
     }
 
-    //Gets the dates from the date range picker
+    // Gets the dates from the date range picker
     private fun setupDatePicker() {
-        val openDatePickerButton = binding.root.findViewById<LinearLayout>(R.id.openDatePickerButton)
-        val displayDateRangeSelected = binding.root.findViewById<TextView>(R.id.displayDateRangeSelected)
+        val openDatePickerButton = binding.openDatePickerButton
+        val displayDateRangeSelected = binding.displayDateRangeSelected
 
         openDatePickerButton.setOnClickListener {
             val dateRangePicker = MaterialDatePicker.Builder.dateRangePicker()
                 .setTitleText("SELECT A DATE RANGE")
                 .setTheme(R.style.CalendarTheme)
-                .setSelection(
-                    androidx.core.util.Pair(
-                        MaterialDatePicker.thisMonthInUtcMilliseconds(),
-                        MaterialDatePicker.todayInUtcMilliseconds()
-                    )
-                )
                 .build()
 
             dateRangePicker.show(parentFragmentManager, "dateRangePicker")
 
             dateRangePicker.addOnPositiveButtonClickListener { selection ->
-                val startDate = selection.first
-                val endDate = selection.second
+                val startDateMillis = selection.first
+                val endDateMillis = selection.second
 
                 val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                val formattedStartDate = sdf.format(Date(startDate))
-                val formattedEndDate = sdf.format(Date(endDate))
+                val formattedStartDate = sdf.format(Date(startDateMillis))
+                val formattedEndDate = sdf.format(Date(endDateMillis))
 
                 val dateRangeText = "$formattedStartDate - $formattedEndDate"
                 displayDateRangeSelected.text = dateRangeText
 
                 Log.d("AnalysisFragment", "Selected date range: $dateRangeText")
+
+                // Update chart and adapter based on the new date range
+                UserManager.user?.let { user ->
+                    updateAnalysis(user, Date(startDateMillis), Date(endDateMillis))
+                }
             }
         }
     }
 
+    private fun updateAnalysis(user: User, startDate: Date, endDate: Date) {
+        val categoryCounts = calculateExerciseDistribution(user, startDate, endDate)
+        val totalSets = categoryCounts.values.sum().toFloat()
+
+        categoryAnalysisList = categoryCounts.entries.mapIndexed { index, entry ->
+            val category = entry.key
+            val count = entry.value
+            CategoryAnalysis(
+                categoryName = category,
+                setCount = count,
+                percentage = if (totalSets > 0) (count / totalSets) * 100 else 0f,
+                color = getColorForCategory(index) // Pass the index directly
+            )
+        }
+
+        if (categoryAnalysisList.isEmpty()) {
+            binding.noDataTextView.visibility = View.VISIBLE
+        } else {
+            binding.noDataTextView.visibility = View.GONE
+        }
+
+        // Update the RecyclerView adapter
+        analysisBreakdownAdapter.updateData(categoryAnalysisList)
+
+        // Update the chart
+        setupChart(binding.anyChartPie)
+    }
+
+
     private fun calculateExerciseDistribution(
         user: User,
-        startDate: String,
-        endDate: String
+        startDate: Date,
+        endDate: Date
     ): Map<String, Int> {
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val start = sdf.parse(startDate)
-        val end = sdf.parse(endDate)
         val categoryCount = mutableMapOf<String, Int>()
 
         user.userWorkouts.values.forEach { workout ->
-            workout.workoutExercises.values.forEach { exercise ->
-                if (isWithinDateRange(workout.date, start, end)) {
+            if (isWithinDateRange(workout.date, startDate, endDate)) {
+                workout.workoutExercises.values.forEach { exercise ->
+                    val sets = exercise.sets.values.size
                     categoryCount[exercise.category] =
-                        categoryCount.getOrDefault(exercise.category, 0) + 1
+                        categoryCount.getOrDefault(exercise.category, 0) + sets
                 }
             }
         }
-
         return categoryCount
     }
 
@@ -139,13 +200,22 @@ class AnalysisFragment : Fragment() {
         return date in start..end
     }
 
-    private fun recyclerSetup() {
-        // Initialize the adapter with an empty list
-        AnalysisBreakdownAdapter = AnalysisBreakdownAdapter(categoryAnalysisList)
-        binding.analysisBreakdownRecycler.apply {
-            adapter = AnalysisBreakdownAdapter
-            layoutManager = LinearLayoutManager(context)
-        }
+    private fun getColorForCategory(position: Int): Int {
+        val colors = listOf(
+            R.color.categoryPink,
+            R.color.categoryLightYellow,
+            R.color.categoryLightBlue,
+            R.color.categoryRed,
+            R.color.categoryGreen2,
+            R.color.categoryOrange1,
+            R.color.categoryOrange2,
+            R.color.categoryYellow,
+            R.color.categoryBlue,
+            R.color.categoryDarkBlue,
+            R.color.categoryPurple,
+            R.color.categoryGreen1,
+        )
+        return colors[position % colors.size] // Ensure position is within bounds
     }
 
     override fun onDestroyView() {
