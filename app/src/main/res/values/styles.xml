@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- res/values/styles.xml -->
 <resources>
     <style name="SpinnerText" parent="android:Widget.TextView.SpinnerItem">
         <item name="android:textSize">16sp</item>
@@ -12,4 +10,6 @@
         <item name="android:fontFamily">@font/knicknack_medium</item>
         <item name="android:textColor">@color/hint_text</item>
     </style>
+
+
 </resources>

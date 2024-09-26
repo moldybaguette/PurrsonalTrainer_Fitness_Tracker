@@ -5,6 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.anychart.AnyChart
 import com.anychart.AnyChartView
@@ -16,6 +19,8 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.models.User
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.google.android.material.datepicker.MaterialDatePicker
+import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 
 class AnalysisFragment : Fragment() {
     private var _binding: FragmentAnalysisBinding? = null
@@ -28,13 +33,14 @@ class AnalysisFragment : Fragment() {
         Log.d("AnalysisFragment", "onCreateView")
         _binding = FragmentAnalysisBinding.inflate(inflater, container, false)
         setupChart(binding.anyChartPie)
+        setupDatePicker()
         return binding.root
     }
 
     private fun setupChart(anyChartPie: AnyChartView) {
         val pie: Pie = AnyChart.pie()
 
-        //pie setup
+        // pie setup
         pie.title("Set Distribution")
         pie.labels().position("outside")
 
@@ -63,7 +69,40 @@ class AnalysisFragment : Fragment() {
             }
             pie.data(mutableDataEntries)
         }
+    }
 
+    //Gets the dates from the date range picker
+    private fun setupDatePicker() {
+        val openDatePickerButton = binding.root.findViewById<LinearLayout>(R.id.openDatePickerButton)
+        val displayDateRangeSelected = binding.root.findViewById<TextView>(R.id.displayDateRangeSelected)
+
+        openDatePickerButton.setOnClickListener {
+            val dateRangePicker = MaterialDatePicker.Builder.dateRangePicker()
+                .setTitleText("Select a date range")
+                //Here is where i would link the custom style when the time comes
+                //She looks ugly still because i am IN THE TRENCHES with the custom style, but i'm working on it :)
+                .build()
+
+            dateRangePicker.show(parentFragmentManager, "dateRangePicker")
+
+            dateRangePicker.addOnPositiveButtonClickListener { selection ->
+                // Handle the date range selection
+                val startDate = selection.first
+                val endDate = selection.second
+
+                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val formattedStartDate = sdf.format(Date(startDate))
+                val formattedEndDate = sdf.format(Date(endDate))
+
+                val dateRangeText = "$formattedStartDate - $formattedEndDate"
+                displayDateRangeSelected.text = dateRangeText
+
+                Log.d("AnalysisFragment", "Selected date range: $dateRangeText")
+                // Output Example: Selected date range: 1725148800000 to 1725667200000
+                // Date range selected: 1 September 2024 - 7 September 2024
+                // Included the output example to demonstrate how the date is saved from the date picker
+            }
+        }
     }
 
 
@@ -92,7 +131,6 @@ class AnalysisFragment : Fragment() {
     private fun isWithinDateRange(date: Date, start: Date, end: Date): Boolean {
         return date in start..end
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
