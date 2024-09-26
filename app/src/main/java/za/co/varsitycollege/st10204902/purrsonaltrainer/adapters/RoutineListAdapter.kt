@@ -11,30 +11,61 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.CategoryAdapter.CategoryViewHolder
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
 
+/**
+ * Interface for handling item click events in the routine list.
+ */
 interface OnRoutineItemClickListener {
+    /**
+     * Called when a routine item is clicked.
+     *
+     * @param routine The clicked UserRoutine object.
+     */
     fun onItemClick(routine: UserRoutine)
 }
 
+/**
+ * Adapter class for displaying a list of user routines in a RecyclerView.
+ *
+ * @property routines The list of UserRoutine objects to display.
+ * @property context The context in which the adapter is used.
+ * @property listener The listener for handling item click events.
+ */
 class RoutineListAdapter(
     private val routines: List<UserRoutine>,
     private val context: Context,
     private val listener: OnRoutineItemClickListener
-) : RecyclerView.Adapter<RoutineListAdapter.RoutineViewHolder>()
-{
+) : RecyclerView.Adapter<RoutineListAdapter.RoutineViewHolder>() {
+
+    /**
+     * ViewHolder class for holding the views of a routine item.
+     *
+     * @param itemView The view of the routine item.
+     */
     class RoutineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val routineTitle = itemView.findViewById<TextView>(R.id.routineTitle)
-        val routineExerciseView = itemView.findViewById<RecyclerView>(R.id.routineExercises)
+        val routineTitle: TextView = itemView.findViewById(R.id.routineTitle)
+        val routineExerciseView: RecyclerView = itemView.findViewById(R.id.routineExercises)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoutineViewHolder
-    {
+    /**
+     * Creates a new ViewHolder for a routine item.
+     *
+     * @param parent The parent ViewGroup.
+     * @param viewType The type of the view.
+     * @return A new RoutineViewHolder.
+     */
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoutineViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_saved_workouts_display, parent, false)
         return RoutineViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: RoutineViewHolder, position: Int)
-    {
+    /**
+     * Binds the data to the views of a routine item.
+     *
+     * @param holder The RoutineViewHolder.
+     * @param position The position of the item in the list.
+     */
+    override fun onBindViewHolder(holder: RoutineViewHolder, position: Int) {
         val routine = routines[position]
 
         // Routine title
@@ -43,8 +74,12 @@ class RoutineListAdapter(
         holder.routineExerciseView.adapter = RoutineExerciseListAdapter(routine.exercises.values.toList(), context)
     }
 
-    override fun getItemCount(): Int
-    {
+    /**
+     * Returns the total number of items in the list.
+     *
+     * @return The total number of items.
+     */
+    override fun getItemCount(): Int {
         return routines.count()
     }
 }

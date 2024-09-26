@@ -14,6 +14,9 @@ import org.junit.runner.RunWith
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.User
 import java.util.*
 
+/**
+ * Test class for AuthManager, handling user registration, login, and SSO.
+ */
 @RunWith(AndroidJUnit4::class)
 class AuthManagerTest {
 
@@ -28,11 +31,17 @@ class AuthManagerTest {
     // To store the created user for cleanup
     private var createdUserUid: String? = null
 
+    /**
+     * Sets up the test environment before each test.
+     */
     @Before
     fun setUp() {
         authManager = AuthManager()
     }
 
+    /**
+     * Tests user registration functionality.
+     */
     @Test
     fun testRegisterUser() = runBlocking {
         val result = authManager.registerUser(testEmail, testPassword)
@@ -54,6 +63,9 @@ class AuthManagerTest {
         assertEquals("User ID should match", uid, createdUserUid)
     }
 
+    /**
+     * Tests user login functionality.
+     */
     @Test
     fun testLoginUser() = runBlocking {
         // First, register the user
@@ -74,42 +86,9 @@ class AuthManagerTest {
         assertEquals("Login User ID should match registered User ID", uid, loginUid)
     }
 
-    @Test
-    fun testLoginWithSSO() = runBlocking {
-        // Note: Testing SSO requires a valid GoogleSignInAccount, which is non-trivial in tests.
-        // This test is a placeholder and should be implemented with proper Google Sign-In setup.
-
-        // Example:
-        /*
-        val googleAccount: GoogleSignInAccount = getTestGoogleSignInAccount()
-        val result = authManager.loginWithSSO(googleAccount)
-        assertTrue("SSO Login should be successful", result.isSuccess)
-        val uid = result.getOrNull()
-        assertNotNull("User ID should not be null", uid)
-        */
-
-        // Since setting up a GoogleSignInAccount is out of scope, we'll skip actual implementation.
-        assertTrue("SSO Login test is not implemented.", true)
-    }
-
-    @Test
-    fun testRegisterWithSSO() = runBlocking {
-        // Similar to testLoginWithSSO, registering with SSO requires a valid GoogleSignInAccount.
-
-        // Example:
-        /*
-        val googleAccount: GoogleSignInAccount = getTestGoogleSignInAccount()
-        val result = authManager.registerWithSSO(googleAccount)
-        assertTrue("SSO Registration should be successful", result.isSuccess)
-        val uid = result.getOrNull()
-        assertNotNull("User ID should not be null", uid)
-        createdUserUid = uid
-        */
-
-        // Since setting up a GoogleSignInAccount is out of scope, we'll skip actual implementation.
-        assertTrue("SSO Registration test is not implemented.", true)
-    }
-
+    /**
+     * Cleans up the test environment after each test.
+     */
     @After
     fun tearDown() {
         runBlocking {

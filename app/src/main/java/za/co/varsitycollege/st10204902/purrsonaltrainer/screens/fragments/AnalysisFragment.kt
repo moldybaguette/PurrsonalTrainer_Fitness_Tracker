@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -22,10 +21,20 @@ import java.util.Locale
 import com.google.android.material.datepicker.MaterialDatePicker
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 
+/**
+ * Fragment for displaying analysis data using a pie chart.
+ */
 class AnalysisFragment : Fragment() {
     private var _binding: FragmentAnalysisBinding? = null
     private val binding get() = _binding!!
 
+    /**
+     * Called to have the fragment instantiate its user interface view.
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+     * @return Return the View for the fragment's UI, or null.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,6 +46,10 @@ class AnalysisFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Sets up the pie chart with data.
+     * @param anyChartPie The AnyChartView to display the pie chart.
+     */
     private fun setupChart(anyChartPie: AnyChartView) {
         val pie: Pie = AnyChart.pie()
 
@@ -71,7 +84,9 @@ class AnalysisFragment : Fragment() {
         }
     }
 
-    //Gets the dates from the date range picker
+    /**
+     * Sets up the date range picker and handles date selection.
+     */
     private fun setupDatePicker() {
         val openDatePickerButton = binding.root.findViewById<LinearLayout>(R.id.openDatePickerButton)
         val displayDateRangeSelected = binding.root.findViewById<TextView>(R.id.displayDateRangeSelected)
@@ -106,6 +121,13 @@ class AnalysisFragment : Fragment() {
         }
     }
 
+    /**
+     * Calculates the distribution of exercises within a date range.
+     * @param user The user whose exercise data is being analyzed.
+     * @param startDate The start date of the range in yyyy-MM-dd format.
+     * @param endDate The end date of the range in yyyy-MM-dd format.
+     * @return A map of exercise categories to their counts.
+     */
     private fun calculateExerciseDistribution(
         user: User,
         startDate: String,
@@ -128,10 +150,20 @@ class AnalysisFragment : Fragment() {
         return categoryCount
     }
 
+    /**
+     * Checks if a date is within a specified range.
+     * @param date The date to check.
+     * @param start The start date of the range.
+     * @param end The end date of the range.
+     * @return True if the date is within the range, false otherwise.
+     */
     private fun isWithinDateRange(date: Date, start: Date, end: Date): Boolean {
         return date in start..end
     }
 
+    /**
+     * Called when the view previously created by onCreateView has been detached from the fragment.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -19,7 +19,6 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.AuthManager
@@ -29,9 +28,10 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.SoundMana
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
+/**
+ * Activity for handling home login and registration.
+ */
 class HomeLoginRegisterActivity : AppCompatActivity() {
-
-
 
     // THIS IS THE FIRST PAGE IN UI FLOW
     private lateinit var binding: ActivityHomeLoginRegisterBinding
@@ -42,12 +42,10 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var soundManager: SoundManager
 
-
-    //-----------------------------------------------------------//
-    //                          METHODS                          //
-    //-----------------------------------------------------------//
-
-    //TODO Check that the multiple button logic works, need to implement the navigation to check that this logic works.
+    /**
+     * Called when the activity is first created.
+     * @param savedInstanceState If the activity is being re-created from a previous saved state, this is the state.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeLoginRegisterBinding.inflate(layoutInflater)
@@ -62,7 +60,6 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
 
         soundManager = SoundManager(this, R.raw.custom_tap_sound)
 
-
         val originalBackgroundRegister = binding.registerButton.background //getting the original background of the button
         binding.registerButton.setOnClickListener {
             soundManager.playSound()
@@ -73,7 +70,6 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
                     originalBackgroundRegister // Restore the original background after the delay
             }, 200) // Delay in milliseconds
         }
-
 
         val originalBackgroundLogin = binding.loginButton.background
         // Binding show and dismiss popup for login
@@ -99,6 +95,9 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
         binding.loginDismissArea.setOnClickListener { dismissLoginPopup() }
     }
 
+    /**
+     * Sets up the One Tap sign-in client and request.
+     */
     private fun oneTapSetup() {
         oneTapClient = Identity.getSignInClient(this)
         signInRequest = BeginSignInRequest.builder()
@@ -118,9 +117,9 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
             .build()
     }
 
-    // Login Popup Methods
-    //-----------------------------------------------------------//
-
+    /**
+     * Shows the login popup with an animation.
+     */
     private fun showLoginPopup() {
         val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
         binding.loginFragmentContainer.startAnimation(slideUp)
@@ -128,6 +127,9 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
         binding.loginDismissArea.visibility = View.VISIBLE
     }
 
+    /**
+     * Dismisses the login popup with an animation.
+     */
     private fun dismissLoginPopup() {
         val slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down)
         binding.loginFragmentContainer.startAnimation(slideDown)
@@ -142,11 +144,11 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
 
             override fun onAnimationRepeat(animation: Animation?) {}
         })
-
-
-
     }
 
+    /**
+     * Initiates the Google sign-in process.
+     */
     private fun signInWithGoogle() {
         oneTapClient.beginSignIn(signInRequest)
             .addOnSuccessListener { result ->
@@ -165,7 +167,12 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
             }
     }
 
-
+    /**
+     * Handles the result from the Google sign-in intent.
+     * @param requestCode The request code passed to startIntentSenderForResult.
+     * @param resultCode The result code returned by the child activity.
+     * @param data An Intent that carries the result data.
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQ_ONE_TAP) {
@@ -206,6 +213,9 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Populates the login fragment.
+     */
     private fun populateLoginFragment() {
         this.supportFragmentManager.beginTransaction().apply {
             replace(binding.loginFragmentContainer.id, LoginFragment())
@@ -214,6 +224,9 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Called when the activity is destroyed.
+     */
     override fun onDestroy() {
         super.onDestroy()
         soundManager.release()

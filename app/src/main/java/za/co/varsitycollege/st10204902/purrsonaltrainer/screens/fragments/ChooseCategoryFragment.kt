@@ -28,17 +28,26 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.SlideUpPopup
 import java.io.InputStreamReader
 
+/**
+ * Fragment for choosing an exercise category.
+ */
 class ChooseCategoryFragment() : Fragment() {
 
     private lateinit var categories: MutableList<String>
     private val usersCustomCategories: List<String>?
         get() = UserManager.user?.customCategories
 
+    /**
+     * Called to have the fragment instantiate its user interface view.
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+     * @return Return the View for the fragment's UI, or null.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View?
-    {
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_choose_category, container, false)
         var exerciseService = ExerciseService(requireContext())
         categories = exerciseService.defaultCategories.toMutableList()
@@ -56,20 +65,18 @@ class ChooseCategoryFragment() : Fragment() {
 
         txtSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
+                // No action needed before text changes
             }
-
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 displayedExerciseList = exerciseService.searchExercises(s.toString(), fullListOfCategoryExercises)
-
             }
 
             override fun afterTextChanged(s: Editable?) {
                 if (s != null) {
                     if (s.length == 0) {
                         recyclerView.layoutManager = LinearLayoutManager(context)
-                        //print each category
+                        // Print each category
                         Log.d("ChooseCategoryFragment", "completeCategoryList: ${completeCategoryList.listIterator()}")
                         recyclerView.adapter = CategoryAdapter(completeCategoryList, requireContext(), object : CategoryAdapter.OnItemClickListener {
                             override fun onItemClick(category: String) {
@@ -105,21 +112,19 @@ class ChooseCategoryFragment() : Fragment() {
             }
         })
 
-
-
-            recyclerView.layoutManager = LinearLayoutManager(context)
-            //print each category
-            Log.d("ChooseCategoryFragment", "completeCategoryList: ${completeCategoryList.listIterator()}")
-            recyclerView.adapter = CategoryAdapter(completeCategoryList, requireContext(), object : CategoryAdapter.OnItemClickListener {
-                override fun onItemClick(category: String) {
-                    val fragmentManager = parentFragmentManager
-                    fragmentManager.beginTransaction().apply {
-                        replace(R.id.chooseCategoryFragmentContainer, AddExerciseListFragment.newInstance(category))
-                        addToBackStack(null)
-                        commit()
-                    }
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        // Print each category
+        Log.d("ChooseCategoryFragment", "completeCategoryList: ${completeCategoryList.listIterator()}")
+        recyclerView.adapter = CategoryAdapter(completeCategoryList, requireContext(), object : CategoryAdapter.OnItemClickListener {
+            override fun onItemClick(category: String) {
+                val fragmentManager = parentFragmentManager
+                fragmentManager.beginTransaction().apply {
+                    replace(R.id.chooseCategoryFragmentContainer, AddExerciseListFragment.newInstance(category))
+                    addToBackStack(null)
+                    commit()
                 }
-            })
+            }
+        })
 
         // Add category navigation code
         setupAddCategoryPopup(view)
@@ -127,15 +132,26 @@ class ChooseCategoryFragment() : Fragment() {
         return view
     }
 
-        private fun addUsersCustomCategories(mainCategoryList: MutableList<String>, customCategories: List<String>): List<String> {
-            customCategories.forEach {
-                if (!mainCategoryList.contains(it)) {
-                    mainCategoryList.add(it)
-                }
+    /**
+     * Adds the user's custom categories to the main category list if they don't already exist.
+     * @param mainCategoryList The main list of categories.
+     * @param customCategories The user's custom categories.
+     * @return The updated list of categories.
+     */
+    private fun addUsersCustomCategories(mainCategoryList: MutableList<String>, customCategories: List<String>): List<String> {
+        customCategories.forEach {
+            if (!mainCategoryList.contains(it)) {
+                mainCategoryList.add(it)
             }
+        }
         return mainCategoryList
     }
 
+    /**
+     * Loads exercises mapped by category from a JSON file.
+     * @param jsonFileName The name of the JSON file.
+     * @return A list of exercise categories.
+     */
     private suspend fun loadExercisesMappedByCategory(jsonFileName: String): List<String> {
         return CoroutineScope(Dispatchers.IO).async {
             val gson = Gson()
@@ -149,14 +165,16 @@ class ChooseCategoryFragment() : Fragment() {
         }.await()
     }
 
-    // Example of how to use the SlideUpPopup class
-    private fun setupAddCategoryPopup(view: View)
-    {
+    /**
+     * Sets up the popup for adding a new category.
+     * @param view The view to attach the popup to.
+     */
+    private fun setupAddCategoryPopup(view: View) {
         val addCategoryButton = view.findViewById<LinearLayout>(R.id.addCategoryButton)
         val fragmentContainer = requireActivity().findViewById<FrameLayout>(R.id.createCategoryFragmentContainer)
         val dismissArea = requireActivity().findViewById<View>(R.id.createCategoryDismissArea)
 
-        // setup popup
+        // Setup popup
         val fragment = CreateCategoryFragment()
         val popup = SlideUpPopup(parentFragmentManager, fragmentContainer, dismissArea, fragment, requireContext())
         addCategoryButton.setOnClickListener { popup.showPopup() }

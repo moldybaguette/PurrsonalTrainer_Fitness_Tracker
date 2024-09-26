@@ -6,7 +6,9 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutExercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutSet
 import java.util.Date
-
+/**
+ * Builder class for creating a routine
+ */
 object RoutineBuilder {
     //-----------------------------------------------------------//
     //                          PROPERTIES                       //
@@ -90,6 +92,11 @@ object RoutineBuilder {
         }
     }
 
+    /**
+     * Removes an exercise from the routine being built
+     * @param exercise The exercise to remove
+     * @return Boolean - True if the exercise was removed, false if not
+     */
     fun convertToWorkoutExercise(exercise: Exercise): WorkoutExercise {
         val tempExerciseID = exercise.exerciseID
         val tempExerciseName = exercise.exerciseName
