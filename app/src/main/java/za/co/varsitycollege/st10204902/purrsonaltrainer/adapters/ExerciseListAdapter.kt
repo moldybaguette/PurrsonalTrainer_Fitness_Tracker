@@ -45,6 +45,12 @@ class ExerciseAdapter(
             holder.itemView.setBackgroundColor(Color.WHITE)
         }
 
+        if(exercise.isCustom) {
+            holder.exerciseIcon.setImageResource(R.drawable.svg_custom_exercise)
+        } else {
+            holder.exerciseIcon.setImageResource(R.drawable.svg_saved_exercise_info)
+        }
+
         // Define color palette for exercises
         val colors = listOf(
             ContextCompat.getColor(holder.itemView.context, R.color.categoryPink),
