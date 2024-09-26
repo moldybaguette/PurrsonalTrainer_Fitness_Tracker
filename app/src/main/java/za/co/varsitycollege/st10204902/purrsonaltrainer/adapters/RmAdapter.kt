@@ -7,7 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 
-class RmAdapter(private val rmList: List<String>):RecyclerView.Adapter<RmAdapter.RmViewHolder>() {
+class RmAdapter(private val rmList: List<String>) : RecyclerView.Adapter<RmAdapter.RmViewHolder>() {
+
     class RmViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val rmTextView: TextView = itemView.findViewById(R.id.rmTextView)
     }
@@ -21,7 +22,5 @@ class RmAdapter(private val rmList: List<String>):RecyclerView.Adapter<RmAdapter
         holder.rmTextView.text = rmList[position]
     }
 
-    override fun getItemCount(): Int {
-        return rmList.size
-    }
+    override fun getItemCount(): Int = rmList.size
 }

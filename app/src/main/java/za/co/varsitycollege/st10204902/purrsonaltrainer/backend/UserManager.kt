@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Item
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.User
@@ -22,6 +23,8 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserWorkout
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutExercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutSet
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
+import java.util.Date
 
 
 object UserManager {
@@ -787,6 +790,183 @@ object UserManager {
             Log.e("UserManager.removeCustomCategory", "User is not logged in")
         }
     }
+
+    /**
+     * Populates the user with sample data including multiple workouts,
+     * each with several exercises and sets with varying reps and weights.
+     *
+     * **Note**: This method is intended for testing purposes only.
+     * Remove or disable it in production builds.
+     */
+    suspend fun populateAllFields() {
+        withContext(Dispatchers.IO) {
+            try {
+                // Ensure the user is logged in
+                val currentUser = user ?: throw Exception("User is not logged in")
+
+                // Step 1: Create Sample Exercises
+                val exerciseBenchPress = Exercise(
+                    exerciseID = CreateID.GenerateID(),
+                    exerciseName = "Bench Press",
+                    category = "Chest",
+                    notes = "Primary chest exercise",
+                    measurementType = "Weight",
+                    isCustom = false
+                )
+                val exerciseSquat = Exercise(
+                    exerciseID = CreateID.GenerateID(),
+                    exerciseName = "Squat",
+                    category = "Legs",
+                    notes = "Primary leg exercise",
+                    measurementType = "Weight",
+                    isCustom = false
+                )
+                val exerciseDeadlift = Exercise(
+                    exerciseID = CreateID.GenerateID(),
+                    exerciseName = "Deadlift",
+                    category = "Back",
+                    notes = "Primary back exercise",
+                    measurementType = "Weight",
+                    isCustom = false
+                )
+
+                // Add exercises to UserManager
+                addUserExercise(exerciseBenchPress)
+                addUserExercise(exerciseSquat)
+                addUserExercise(exerciseDeadlift)
+
+                // Step 2: Create Sample Workouts
+                val workoutMonday = UserWorkout(
+                    workoutID = CreateID.GenerateID(),
+                    name = "Monday Workout",
+                    workoutExercises = emptyMap(),
+                    durationSeconds = 3600, // 1 hour
+                    date = Date()
+                )
+
+                val workoutWednesday = UserWorkout(
+                    workoutID = CreateID.GenerateID(),
+                    name = "Wednesday Workout",
+                    workoutExercises = emptyMap(),
+                    durationSeconds = 3600, // 1 hour
+                    date = Date()
+                )
+
+                // Add sets to Bench Press
+                val bpSet1 = WorkoutSet(
+                    workoutSetID = CreateID.GenerateID(),
+                    weight = 100,
+                    reps = 8,
+                    setType = "Standard"
+                )
+                val bpSet2 = WorkoutSet(
+                    workoutSetID = CreateID.GenerateID(),
+                    weight = 105,
+                    reps = 6,
+                    setType = "Standard"
+                )
+                val bpSet3 = WorkoutSet(
+                    workoutSetID = CreateID.GenerateID(),
+                    weight = 110,
+                    reps = 4,
+                    setType = "Standard"
+                )
+
+                // Add workouts to UserManager
+                addUserWorkout(workoutMonday)
+                addUserWorkout(workoutWednesday)
+
+                addExerciseToWorkout(workoutMonday.workoutID, RoutineBuilder.convertToWorkoutExercise(exerciseBenchPress))
+                addExerciseToWorkout(workoutMonday.workoutID, RoutineBuilder.convertToWorkoutExercise(exerciseSquat))
+                addExerciseToWorkout(workoutWednesday.workoutID, RoutineBuilder.convertToWorkoutExercise(exerciseDeadlift))
+
+                // Add sets to Bench Press exercise
+                addWorkoutSetToWorkoutExercise(workoutMonday.workoutID, exerciseBenchPress.exerciseID, bpSet1)
+                addWorkoutSetToWorkoutExercise(workoutMonday.workoutID, exerciseBenchPress.exerciseID, bpSet2)
+                addWorkoutSetToWorkoutExercise(workoutMonday.workoutID, exerciseBenchPress.exerciseID, bpSet3)
+
+
+
+                // Add sets to Squat
+                val squatSet1 = WorkoutSet(
+                    workoutSetID = CreateID.GenerateID(),
+                    weight = 150,
+                    reps = 10,
+                    setType = "Standard"
+                )
+                val squatSet2 = WorkoutSet(
+                    workoutSetID = CreateID.GenerateID(),
+                    weight = 160,
+                    reps = 8,
+                    setType = "Standard"
+                )
+                val squatSet3 = WorkoutSet(
+                    workoutSetID = CreateID.GenerateID(),
+                    weight = 170,
+                    reps = 6,
+                    setType = "Standard"
+                )
+
+                // Add sets to Squat exercise
+                addWorkoutSetToWorkoutExercise(workoutMonday.workoutID, exerciseSquat.exerciseID, squatSet1)
+                addWorkoutSetToWorkoutExercise(workoutMonday.workoutID, exerciseSquat.exerciseID, squatSet2)
+                addWorkoutSetToWorkoutExercise(workoutMonday.workoutID, exerciseSquat.exerciseID, squatSet3)
+
+                // Add sets to Deadlift
+                val dlSet1 = WorkoutSet(
+                    workoutSetID = CreateID.GenerateID(),
+                    weight = 180,
+                    reps = 5,
+                    setType = "Standard"
+                )
+                val dlSet2 = WorkoutSet(
+                    workoutSetID = CreateID.GenerateID(),
+                    weight = 190,
+                    reps = 3,
+                    setType = "Standard"
+                )
+                val dlSet3 = WorkoutSet(
+                    workoutSetID = CreateID.GenerateID(),
+                    weight = 200,
+                    reps = 1,
+                    setType = "Standard"
+                )
+
+                // Add sets to Deadlift exercise
+                addWorkoutSetToWorkoutExercise(workoutWednesday.workoutID, exerciseDeadlift.exerciseID, dlSet1)
+                addWorkoutSetToWorkoutExercise(workoutWednesday.workoutID, exerciseDeadlift.exerciseID, dlSet2)
+                addWorkoutSetToWorkoutExercise(workoutWednesday.workoutID, exerciseDeadlift.exerciseID, dlSet3)
+
+
+
+                // Add sets to Bench Press exercise
+                val wbSet1 = WorkoutSet(
+                    workoutSetID = CreateID.GenerateID(),
+                    weight = 95,
+                    reps = 10,
+                    setType = "Standard"
+                )
+                val wbSet2 = WorkoutSet(
+                    workoutSetID = CreateID.GenerateID(),
+                    weight = 100,
+                    reps = 8,
+                    setType = "Standard"
+                )
+
+                // Add sets to Bench Press in Wednesday Workout
+                addWorkoutSetToWorkoutExercise(workoutWednesday.workoutID, exerciseBenchPress.exerciseID, wbSet1)
+                addWorkoutSetToWorkoutExercise(workoutWednesday.workoutID, exerciseBenchPress.exerciseID, wbSet2)
+
+                Log.i("UserManager.populateAllFields", "Sample data populated successfully.")
+
+            } catch (e: Exception) {
+                Log.e("UserManager.populateAllFields", "Error populating sample data: ${e.message}")
+            }
+        }
+
+    }
+
+
 
     //-----------------------------------------------------------//
     // Synchronization Methods

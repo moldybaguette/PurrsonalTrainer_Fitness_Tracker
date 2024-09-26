@@ -88,6 +88,15 @@ object RoutineBuilder {
         }
     }
 
+    fun convertToWorkoutExercise(exercise: Exercise): WorkoutExercise {
+        val tempExerciseID = exercise.exerciseID
+        val tempExerciseName = exercise.exerciseName
+        val tempCategory = exercise.category
+        val tempNotes = exercise.notes
+        val tempSets = mapOf<String, WorkoutSet>()
+        return WorkoutExercise(tempExerciseID, tempExerciseName, tempCategory, tempSets , Date(), tempNotes)
+    }
+
     /**
      * Builds the routine and resets the builder
      * @return UserRoutine - The routine that was built

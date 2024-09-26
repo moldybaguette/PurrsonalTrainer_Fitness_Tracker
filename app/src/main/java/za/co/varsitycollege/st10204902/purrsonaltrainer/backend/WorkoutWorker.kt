@@ -9,7 +9,7 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserWorkout
  * @property usersWorkouts A map of user workouts keyed by workout ID.
  */
 class WorkoutWorker(
-    private val usersWorkouts: Map<String, UserWorkout>
+    public val usersWorkouts: Map<String, UserWorkout>
 ) {
 
     fun getMaxRepsPerExercise(exerciseID: String): Int {
@@ -55,6 +55,8 @@ class WorkoutWorker(
         }
         return exerciseRMs
     }
+
+
 
 
     /**
