@@ -82,28 +82,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="kg"
+            android:text="Distance in m"
             android:fontFamily="@font/rounded"
             android:gravity="center"
             android:textSize="15sp"
             android:textColor="#C3C3C3"/>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="reps"
-            android:fontFamily="@font/rounded"
-            android:gravity="center"
-            android:textSize="15sp"
-            android:textColor="#C3C3C3"/>
     </LinearLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/item_detail_display_reps"
+        tools:listitem="@layout/item_detail_display_distance"
         android:layout_marginHorizontal="12dp"
         tools:itemCount="1"/>
 
