@@ -22,14 +22,28 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
+/**
+ * A fragment that handles user login.
+ */
 class LoginFragment : Fragment() {
 
+    /**
+     * Called to do initial creation of the fragment.
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
         }
     }
 
+    /**
+     * Called to have the fragment instantiate its user interface view.
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+     * @return Return the View for the fragment's UI, or null.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,6 +52,11 @@ class LoginFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
+    /**
+     * Called immediately after onCreateView has returned, but before any saved state has been restored in to the view.
+     * @param view The View returned by onCreateView.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -58,6 +77,11 @@ class LoginFragment : Fragment() {
         }
     }
 
+    /**
+     * Logs in the user with the provided email and password.
+     * @param email The user's email.
+     * @param password The user's password.
+     */
     private fun LoginUser(email: String, password: String) {
         var authManager = AuthManager()
         CoroutineScope(Dispatchers.IO).launch {
@@ -74,7 +98,7 @@ class LoginFragment : Fragment() {
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
-                            Toast.makeText(requireContext(), "Error setting up user", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Error setting up user", Toast.LENGTH_SHORT).show()
                     }
                 }
             } else {
@@ -87,11 +111,15 @@ class LoginFragment : Fragment() {
     }
 
     companion object {
+        /**
+         * Use this factory method to create a new instance of this fragment using the provided parameters.
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment LoginFragment.
+         */
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             LoginFragment().apply {
             }
     }
-
-
 }

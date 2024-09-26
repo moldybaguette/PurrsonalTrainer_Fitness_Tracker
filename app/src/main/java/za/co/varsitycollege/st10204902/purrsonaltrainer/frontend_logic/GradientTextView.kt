@@ -10,6 +10,14 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 
+/**
+ * A custom TextView with gradient text and stroke.
+ *
+ * @constructor Creates a GradientTextView with the specified attributes.
+ * @param context The context in which the TextView is used.
+ * @param attrs The attributes of the XML tag that is inflating the view.
+ * @param defStyleAttr An attribute in the current theme that contains a reference to a style resource that supplies default values for the view.
+ */
 class GradientTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -58,6 +66,10 @@ class GradientTextView @JvmOverloads constructor(
         setPadding(strokeWidth.toInt(), strokeWidth.toInt(), strokeWidth.toInt(), strokeWidth.toInt())
     }
 
+    /**
+     * Draws the text with gradient and stroke.
+     * @param canvas The canvas on which the background will be drawn.
+     */
     override fun onDraw(canvas: Canvas) {
         val text = text.toString()
         val x = ((width - paint.measureText(text)) / 2)

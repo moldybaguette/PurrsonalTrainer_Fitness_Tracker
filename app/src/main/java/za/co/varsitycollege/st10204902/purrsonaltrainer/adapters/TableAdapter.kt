@@ -1,4 +1,3 @@
-// TableAdapter.kt
 package za.co.varsitycollege.st10204902.purrsonaltrainer.adapters
 
 import android.graphics.Typeface
@@ -15,6 +14,12 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ItemLabelCel
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.CellType
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.TableCell
 
+/**
+ * Adapter class for displaying table data in a RecyclerView.
+ *
+ * @property tableData The list of TableCell objects representing the table data.
+ * @property spanCount The number of columns in the table.
+ */
 class TableAdapter(private val tableData: List<TableCell>,
                    private val spanCount: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -24,15 +29,33 @@ class TableAdapter(private val tableData: List<TableCell>,
         private const val TYPE_DATA = 2
     }
 
-    // ViewHolder for Header Cells
+    /**
+     * ViewHolder class for header cells.
+     *
+     * @property binding The binding object for the header cell layout.
+     */
     inner class HeaderViewHolder(val binding: ItemHeaderCellBinding) : RecyclerView.ViewHolder(binding.root)
 
-    // ViewHolder for Label Cells
+    /**
+     * ViewHolder class for label cells.
+     *
+     * @property binding The binding object for the label cell layout.
+     */
     inner class LabelViewHolder(val binding: ItemLabelCellBinding) : RecyclerView.ViewHolder(binding.root)
 
-    // ViewHolder for Data Cells
+    /**
+     * ViewHolder class for data cells.
+     *
+     * @property binding The binding object for the data cell layout.
+     */
     inner class DataViewHolder(val binding: ItemDataCellBinding) : RecyclerView.ViewHolder(binding.root)
 
+    /**
+     * Returns the view type of the item at the given position.
+     *
+     * @param position The position of the item within the adapter's data set.
+     * @return The view type of the item at the given position.
+     */
     override fun getItemViewType(position: Int): Int {
         return when (tableData[position].type) {
             CellType.HEADER -> TYPE_HEADER
@@ -41,6 +64,13 @@ class TableAdapter(private val tableData: List<TableCell>,
         }
     }
 
+    /**
+     * Creates a new ViewHolder for the given view type.
+     *
+     * @param parent The parent ViewGroup into which the new view will be added.
+     * @param viewType The view type of the new view.
+     * @return A new ViewHolder that holds a view of the given view type.
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when(viewType) {
             TYPE_HEADER -> {
@@ -59,6 +89,12 @@ class TableAdapter(private val tableData: List<TableCell>,
         }
     }
 
+    /**
+     * Binds the data to the ViewHolder at the given position.
+     *
+     * @param holder The ViewHolder to bind data to.
+     * @param position The position of the item within the adapter's data set.
+     */
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val cell = tableData[position]
 
@@ -92,5 +128,10 @@ class TableAdapter(private val tableData: List<TableCell>,
         }
     }
 
+    /**
+     * Returns the total number of items in the data set held by the adapter.
+     *
+     * @return The total number of items in the data set.
+     */
     override fun getItemCount(): Int = tableData.size
 }

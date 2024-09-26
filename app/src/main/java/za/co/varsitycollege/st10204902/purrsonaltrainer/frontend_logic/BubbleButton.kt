@@ -8,6 +8,14 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 
+/**
+ * A custom button with a gradient background and customizable text.
+ *
+ * @constructor Creates a BubbleButton with the specified attributes.
+ * @param context The context in which the button is used.
+ * @param attrs The attributes of the XML tag that is inflating the view.
+ * @param defStyleAttr An attribute in the current theme that contains a reference to a style resource that supplies default values for the view.
+ */
 class BubbleButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

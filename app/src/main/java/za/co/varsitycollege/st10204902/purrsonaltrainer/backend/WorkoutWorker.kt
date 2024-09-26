@@ -9,9 +9,15 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserWorkout
  * @property usersWorkouts A map of user workouts keyed by workout ID.
  */
 class WorkoutWorker(
-    public val usersWorkouts: Map<String, UserWorkout>
+    val usersWorkouts: Map<String, UserWorkout>
 ) {
 
+    /**
+     * Gets the maximum number of reps performed for a specific exercise across all workouts.
+     *
+     * @param exerciseID The ID of the exercise.
+     * @return The maximum number of reps.
+     */
     fun getMaxRepsPerExercise(exerciseID: String): Int {
         var maxReps = 0
         for (workout in usersWorkouts) {
@@ -27,7 +33,13 @@ class WorkoutWorker(
         }
         return maxReps
     }
-    // returns a Map of Rep number to the weight lifted for that rep number
+
+    /**
+     * Calculates the one-rep max (1RM) for each rep range for a specific exercise.
+     *
+     * @param exerciseID The ID of the exercise.
+     * @return A map where the key is the number of reps and the value is the weight lifted.
+     */
     fun calculateRMsPerExercise(exerciseID: String): Map<Int, Int> {
         val exerciseRMs = mutableMapOf<Int, Int>()
 
@@ -55,9 +67,6 @@ class WorkoutWorker(
         }
         return exerciseRMs
     }
-
-
-
 
     /**
      * Calculates the total number of sets across all workouts.

@@ -20,12 +20,20 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.DataWi
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.PasswordReentryFragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
+/**
+ * Activity for managing account details.
+ */
 class AccountDetailsActivity : AppCompatActivity(),
     PasswordReentryFragment.OnPasswordReentryListener,
     DataWipeConfirmationFragment.OnDataWipeConfirmationListener {
+
     private lateinit var binding: ActivityAccountDetailsBinding
     private lateinit var auth: FirebaseAuth
 
+    /**
+     * Called when the activity is starting.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -64,8 +72,10 @@ class AccountDetailsActivity : AppCompatActivity(),
         }
     }
 
-
-
+    /**
+     * Called when the password is re-entered.
+     * @param password The re-entered password.
+     */
     override fun onPasswordReentered(password: String) {
         dismissPopup()
         val currentUser = auth.currentUser ?: return showToast("Current password is required")
@@ -77,6 +87,9 @@ class AccountDetailsActivity : AppCompatActivity(),
         }
     }
 
+    /**
+     * Updates the email and password of the current user.
+     */
     private fun updateEmailAndPassword() {
         val currentUser = auth.currentUser ?: return
         val newPassword = binding.passwordInput.text.toString()
@@ -92,6 +105,9 @@ class AccountDetailsActivity : AppCompatActivity(),
         navigateTo(this, MainActivity::class.java, null)
     }
 
+    /**
+     * Launches the Password Reentry Fragment.
+     */
     private fun launchPasswordReentryFragment() {
         showPopup()
         supportFragmentManager.beginTransaction().apply {
@@ -101,6 +117,9 @@ class AccountDetailsActivity : AppCompatActivity(),
         }
     }
 
+    /**
+     * Launches the Data Wipe Confirmation Fragment.
+     */
     private fun launchDataWipeConfirmationFragment() {
         showPopup()
         supportFragmentManager.beginTransaction().apply {
@@ -110,6 +129,9 @@ class AccountDetailsActivity : AppCompatActivity(),
         }
     }
 
+    /**
+     * Shows the popup fragment container with an animation.
+     */
     private fun showPopup() {
         val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
         binding.popupFragmentContainer.startAnimation(slideUp)
@@ -118,6 +140,9 @@ class AccountDetailsActivity : AppCompatActivity(),
         binding.dismissArea.setOnClickListener { dismissPopup() }
     }
 
+    /**
+     * Dismisses the popup fragment container with an animation.
+     */
     private fun dismissPopup() {
         val slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down)
         binding.popupFragmentContainer.startAnimation(slideDown)
@@ -132,10 +157,17 @@ class AccountDetailsActivity : AppCompatActivity(),
         })
     }
 
+    /**
+     * Shows a toast message.
+     * @param message The message to be shown in the toast.
+     */
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
+    /**
+     * Called when data wipe is confirmed.
+     */
     override fun onDataWipeConfirmed() {
         dismissPopup()
         lifecycleScope.launch {
@@ -143,6 +175,9 @@ class AccountDetailsActivity : AppCompatActivity(),
         }
     }
 
+    /**
+     * Called when data wipe is cancelled.
+     */
     override fun onDataWipeCancelled() {
         dismissPopup()
     }
