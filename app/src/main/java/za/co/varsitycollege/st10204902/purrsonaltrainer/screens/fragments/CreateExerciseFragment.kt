@@ -13,12 +13,13 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.ExerciseTypeSpi
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.workout_activities.CreateRoutineActivity
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.ExerciseService
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
 
 private var exercise: Exercise? = null
-private var catagoryID: String? = null
+private var category: String? = null
 
 /**
  * A simple [Fragment] subclass.
@@ -26,13 +27,16 @@ private var catagoryID: String? = null
  * create an instance of this fragment.
  */
 class CreateExerciseFragment : Fragment() {
-    private var exercise: Exercise? = null
     private var spinnerItemList = listOf("Reps & Weight", "Time & Distance", "Time")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-
+            category = it.getString("catagoryID")
+            val exerciseID = it.getString("exerciseID")
+            if (exerciseID != null) {
+                exercise = UserManager.user?.userExercises?.get(exerciseID)
+            }
         }
     }
 
@@ -49,9 +53,10 @@ class CreateExerciseFragment : Fragment() {
         val notes = view.findViewById<EditText>(R.id.notes)
         val doneBTN = view.findViewById<AppCompatButton>(R.id.doneButton)
 
+        //EDITING A EXERCISE
         if (exercise != null) {
             title.setText(exercise!!.exerciseName)
-            //TODO: Change to get type of work out
+            workoutType.setSelection(spinnerItemList.indexOf(exercise!!.measurementType))
             notes.setText(exercise!!.notes)
         }
 
@@ -59,7 +64,7 @@ class CreateExerciseFragment : Fragment() {
             if(exercise == null){
                 val newExercise = Exercise(
                     exerciseName = title.text.toString(),
-                    category = catagoryID!!,
+                    category = category!!,
                     notes = notes.text.toString(),
                     // set measurement type based on spinner
                     measurementType = workoutType.selectedItem.toString(),
@@ -102,10 +107,15 @@ class CreateExerciseFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(exercise: Exercise?, catagoryID: String) =
+        fun newInstance(exerciseID: String?, categoryName: String?) =
             CreateExerciseFragment().apply {
                 arguments = Bundle().apply {
-                    putString("catagoryID", catagoryID)
+                    if (categoryName != null) {
+                        putString("catagoryID", categoryName)
+                    }
+                    if (exerciseID != null) {
+                        putString("exerciseID", exerciseID)
+                    }
                 }
             }
     }

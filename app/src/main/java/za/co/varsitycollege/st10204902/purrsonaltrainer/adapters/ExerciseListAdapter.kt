@@ -53,7 +53,7 @@ class ExerciseAdapter(
             holder.exerciseIcon.setImageResource(R.drawable.svg_custom_exercise)
             holder.exerciseIcon.setOnClickListener {
                 fragmentManager.beginTransaction().apply {
-                    replace(R.id.chooseCategoryFragmentContainer, CreateExerciseFragment.newInstance(exercise,
+                    replace(R.id.chooseCategoryFragmentContainer, CreateExerciseFragment.newInstance(exercise.exerciseID,
                         exercise.category
                     ))
                     addToBackStack(null)
