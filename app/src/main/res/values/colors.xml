@@ -82,4 +82,19 @@
     <color name="warmupSet">#FED06F</color>
     <color name="failureSet">#FE562D</color>
     <color name="dropSet">#1E97B9</color>
+
+    <!-- User Color gradients -->
+    <color name="blue_start">#B2F0FF</color>
+    <color name="blue_end">#32A4C6</color>
+    <color name="red_start">#FFC1C6</color>
+    <color name="red_end">#FF562F</color>
+    <color name="orange_start">#F78D37</color>
+    <color name="orange_end">#FB6A0F</color>
+    <color name="yellow_start">#FED070</color>
+    <color name="yellow_end">#F2A815</color>
+    <color name="green_start">#ACCE82</color>
+    <color name="green_end">#60851C</color>
+    <color name="purple_start">#B6ABE3</color>
+    <color name="purple_end">#5B45B4</color>
+
 </resources>

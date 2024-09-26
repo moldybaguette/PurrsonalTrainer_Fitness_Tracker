@@ -26,9 +26,6 @@ class StartEmptyWorkoutActivity : AppCompatActivity() {
 
         // Setup for exercises in this workout
         setupExercises()
-
-
-
     }
 
     private fun setupExercises()

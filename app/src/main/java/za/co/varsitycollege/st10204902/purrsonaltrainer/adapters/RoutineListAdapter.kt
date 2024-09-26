@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.CategoryAdapter.CategoryViewHolder
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.workout_activities.MadeRoutineActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.workout_activities.StartEmptyWorkoutActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
@@ -84,7 +85,7 @@ class RoutineListAdapter(
             // Adding routineID for which the workout will be created
             val bundle = Bundle()
             bundle.putString("routineID", routine.routineID)
-            navigateTo(context, StartEmptyWorkoutActivity::class.java, bundle)
+            navigateTo(context, MadeRoutineActivity::class.java, bundle)
         }
     }
 
