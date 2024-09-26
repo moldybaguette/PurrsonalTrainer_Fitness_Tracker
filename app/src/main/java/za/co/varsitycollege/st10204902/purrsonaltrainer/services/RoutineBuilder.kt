@@ -5,6 +5,10 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutExercise
 
+interface ExerciseAddedListener {
+    fun onExerciseAdded(exercise: WorkoutExercise)
+}
+
 object RoutineBuilder {
     //-----------------------------------------------------------//
     //                          PROPERTIES                       //
@@ -33,6 +37,11 @@ object RoutineBuilder {
      * The color of the routine being built
      */
     var color: String = ""
+
+    /**
+     * List of subscribers to be notified when an exercise is added
+     */
+    private val exerciseAddedListeners = mutableListOf<ExerciseAddedListener>()
 
     //-----------------------------------------------------------//
     //                          METHODS                          //
@@ -81,7 +90,11 @@ object RoutineBuilder {
             val tempExerciseName = exercise.exerciseName
             val tempCategory = exercise.category
             val tempNotes = exercise.notes
-            exercises[tempExerciseID] = WorkoutExercise(tempExerciseID, tempExerciseName, tempCategory, 0, 0, 0, 0, tempNotes, "")
+            val workoutExercise = WorkoutExercise(tempExerciseID, tempExerciseName, tempCategory, 0, 0, 0, 0, tempNotes, "")
+            exercises[tempExerciseID] = workoutExercise
+
+            // Notifying subscribers that an exercise has been added
+            notifyExerciseAdded(workoutExercise)
         }
     }
 
@@ -98,6 +111,27 @@ object RoutineBuilder {
         color = ""
         return newRoutine
     }
+
+
+    // Exercise Added Methods
     //-----------------------------------------------------------//
+    /**
+     * Adds a listener to the exerciseAddedListeners
+     */
+    fun addExerciseAddedListener(listener: ExerciseAddedListener)
+    {
+        exerciseAddedListeners.add(listener)
+    }
+
+    /**
+     * Notifies subscribers that an exercise has been added
+     */
+    private fun notifyExerciseAdded(exercise: WorkoutExercise)
+    {
+        for (listener in exerciseAddedListeners)
+        {
+            listener.onExerciseAdded(exercise)
+        }
+    }
 }
 //------------------------***EOF***-----------------------------//
