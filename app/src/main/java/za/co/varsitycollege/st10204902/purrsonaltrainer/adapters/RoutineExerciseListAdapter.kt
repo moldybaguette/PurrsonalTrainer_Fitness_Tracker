@@ -33,25 +33,8 @@ class RoutineExerciseListAdapter(
         val exercise = exercises[position]
         val name = exercise.exerciseName
 
-        if (exercise.distance == 0)
-        {
-            val reps = exercise.reps.toString()
-            holder.exerciseText.text = "${reps}x ${name}"
-        }
-        else
-        {
-            val duration = exercise.durationSeconds ?: 0
-            // Convert seconds to hours and minutes
-            val hours = duration / 3600
-            val minutes = (duration % 3600) / 60
-
-            // Handle singular/plural for hours and minutes
-            val hoursText = if (hours == 1) "$hours hour" else "$hours hours"
-            val minutesText = if (minutes == 1) "$minutes min" else "$minutes mins"
-
-            // Format the text
-            holder.exerciseText.text = "$hoursText, $minutesText, $name"
-        }
+        val sets = exercise.sets.toString()
+        holder.exerciseText.text = "${sets}x ${name}"
     }
 
     override fun getItemCount(): Int
