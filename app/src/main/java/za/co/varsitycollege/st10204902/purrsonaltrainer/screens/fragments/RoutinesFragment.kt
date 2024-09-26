@@ -37,12 +37,15 @@ class RoutinesFragment : Fragment(), OnRoutineItemClickListener {
 
         try
         {
-            // Routines adapter setup
-            val routinesList = view.findViewById<RecyclerView>(R.id.routinesRecyclerView)
-            routinesList.layoutManager = LinearLayoutManager(requireContext())
-            routinesList.adapter = RoutineListAdapter(UserManager.user!!.userRoutines.values.toList(), requireContext(), this)
+            if (UserManager.user != null && UserManager.user!!.userRoutines.isNotEmpty())
+            {
+                // Routines adapter setup
+                val routinesList = view.findViewById<RecyclerView>(R.id.routinesRecyclerView)
+                routinesList.layoutManager = LinearLayoutManager(requireContext())
+                routinesList.adapter = RoutineListAdapter(UserManager.user!!.userRoutines.values.toList(), requireContext(), this)
+            }
         } catch (e: Exception) {
-            Log.e("ERROR loading routines", e.message.toString())
+            Log.e("ERROR loading routines", e.toString())
         }
         return view
     }
