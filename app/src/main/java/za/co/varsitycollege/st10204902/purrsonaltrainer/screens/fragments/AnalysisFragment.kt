@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.anychart.AnyChart
 import com.anychart.AnyChartView
 import com.anychart.chart.common.dataentry.DataEntry
@@ -20,6 +22,7 @@ import java.util.Date
 import java.util.Locale
 import com.google.android.material.datepicker.MaterialDatePicker
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
+import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.AnalysisBreakdownAdapter
 
 /**
  * Fragment for displaying analysis data using a pie chart.
@@ -41,8 +44,13 @@ class AnalysisFragment : Fragment() {
     ): View {
         Log.d("AnalysisFragment", "onCreateView")
         _binding = FragmentAnalysisBinding.inflate(inflater, container, false)
+
+        recyclerSetup()
+
         setupChart(binding.anyChartPie)
+
         setupDatePicker()
+
         return binding.root
     }
 
@@ -159,6 +167,15 @@ class AnalysisFragment : Fragment() {
      */
     private fun isWithinDateRange(date: Date, start: Date, end: Date): Boolean {
         return date in start..end
+    }
+
+    private fun recyclerSetup() {
+        // Initialize the adapter with an empty list
+        AnalysisBreakdownAdapter = AnalysisBreakdownAdapter(categoryAnalysisList)
+        binding.analysisBreakdownRecycler.apply {
+            adapter = AnalysisBreakdownAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
     }
 
     /**
