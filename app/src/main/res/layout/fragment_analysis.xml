@@ -62,7 +62,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="--"
+                    android:text=""
                     android:fontFamily="@font/rounded"
                     android:textColor="#D4D4D4"
                     android:textSize="17sp"
@@ -88,6 +88,7 @@
                 android:background="@drawable/bg_start_workout_button"
                 />
 
+            <!-- RecyclerView for Analysis Breakdown -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/analysisBreakdownRecycler"
                 android:layout_width="match_parent"
@@ -95,6 +96,18 @@
                 android:layout_marginTop="16dp"
                 tools:listitem="@layout/item_analysis_info"
                 tools:itemCount="10"/>
+
+            <!-- No Data TextView -->
+            <TextView
+                android:id="@+id/noDataTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No data available for the selected date range."
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp" />
 
         </LinearLayout>
     </ScrollView>
