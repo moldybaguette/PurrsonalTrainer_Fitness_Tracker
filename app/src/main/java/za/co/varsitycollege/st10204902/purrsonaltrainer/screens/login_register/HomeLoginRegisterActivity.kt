@@ -9,6 +9,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -24,6 +25,7 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.AuthManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityHomeLoginRegisterBinding
+import za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.SoundManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
@@ -38,6 +40,8 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
     private val TAG = "GoogleSignIn"
     private val REQ_ONE_TAP = 2
     private lateinit var auth: FirebaseAuth
+    private lateinit var soundManager: SoundManager
+
 
     //-----------------------------------------------------------//
     //                          METHODS                          //
@@ -48,6 +52,7 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeLoginRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
         auth = Firebase.auth
 
         oneTapSetup()
@@ -55,10 +60,12 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
         // Apply login fragment before hand
         populateLoginFragment()
 
+        soundManager = SoundManager(this, R.raw.custom_tap_sound)
 
-        val originalBackgroundRegister =
-            binding.registerButton.background //getting the original background of the button
+
+        val originalBackgroundRegister = binding.registerButton.background //getting the original background of the button
         binding.registerButton.setOnClickListener {
+            soundManager.playSound()
             navigateTo(this, RegisterActivity::class.java, null)
             binding.registerButton.setBackgroundResource(R.drawable.svg_purple_bblbtn_clicked) // Set the background to the clicked background
             Handler(Looper.getMainLooper()).postDelayed({
@@ -71,6 +78,7 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
         val originalBackgroundLogin = binding.loginButton.background
         // Binding show and dismiss popup for login
         binding.loginButton.setOnClickListener {
+            soundManager.playSound()
             showLoginPopup()
             binding.loginButton.setBackgroundResource(R.drawable.svg_orange_bblbtn_clicked) // Set the background to the clicked background
             Handler(Looper.getMainLooper()).postDelayed({
@@ -79,6 +87,7 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
             }, 200) // Delay in milliseconds
         }
         binding.googleSignInButton.setOnClickListener() {
+            soundManager.playSound()
             signInWithGoogle()
         }
 
@@ -203,6 +212,11 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
             addToBackStack(null)
             commit()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        soundManager.release()
     }
 }
 //------------------------***EOF***-----------------------------//
