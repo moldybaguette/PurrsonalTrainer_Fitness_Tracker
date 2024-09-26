@@ -62,10 +62,15 @@ class ExerciseAdapter(
             }
         } else {
             holder.exerciseIcon.setImageResource(R.drawable.svg_saved_exercise_info)
-            fragmentManager.beginTransaction().apply {
-                replace(R.id.chooseCategoryFragmentContainer, ViewExerciseFragment.newInstance(exercise))
-                addToBackStack(null)
-                commit()
+            holder.exerciseIcon.setOnClickListener {
+                fragmentManager.beginTransaction().apply {
+                    replace(
+                        R.id.chooseCategoryFragmentContainer,
+                        ViewExerciseFragment.newInstance(exercise)
+                    )
+                    addToBackStack(null)
+                    commit()
+                }
             }
         }
 
