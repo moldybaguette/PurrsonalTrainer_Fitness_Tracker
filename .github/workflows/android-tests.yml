@@ -22,7 +22,7 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'  # Updated from 'adopt' to 'temurin'
+          distribution: 'temurin'
           java-version: '17'
 
       # Step 3: Set up Android SDK using the correct action
@@ -69,13 +69,17 @@ jobs:
       - name: Download Dependencies
         run: ./gradlew dependencies
 
-      # Step 11: Build the project
+      # Step 10: Build the project
       - name: Build with Gradle
         run: ./gradlew assembleDebug
 
-      # Step 12: Run Unit Tests
+      # Step 11: Run Unit Tests
       - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest
+
+      # Step 12: List Unit Test Results (for debugging)
+      - name: List Unit Test Results
+        run: ls -la app/build/test-results/testDebugUnitTest/
 
       # Step 13: Upload Unit Test Artifacts
       - name: Upload Unit Test Artifacts
@@ -88,12 +92,12 @@ jobs:
 
       # Step 14: Publish Unit Test Results
       - name: Publish Unit Test Results
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v1.2.0  # Updated to a specific version
         if: always()
         with:
           name: Unit Tests
           path: app/build/test-results/testDebugUnitTest/*.xml
-          reporter: junit
+          reporter: "junit"  # Added quotes
 
   instrumented-tests:
     needs: unit-tests
@@ -183,7 +187,11 @@ jobs:
       - name: Run Instrumented Tests
         run: ./gradlew connectedDebugAndroidTest
 
-      # Step 14: Upload Instrumented Test Artifacts
+      # Step 14: List Instrumented Test Results (for debugging)
+      - name: List Instrumented Test Results
+        run: ls -la app/build/test-results/androidTest/connected/
+
+      # Step 15: Upload Instrumented Test Artifacts
       - name: Upload Instrumented Test Artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -192,11 +200,11 @@ jobs:
             app/build/test-results/androidTest/connected/
             app/build/reports/androidTests/connected/index.html
 
-      # Step 15: Publish Instrumented Test Results
+      # Step 16: Publish Instrumented Test Results
       - name: Publish Instrumented Test Results
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v1.2.0  # Updated to a specific version
         if: always()
         with:
           name: Instrumented Tests
           path: app/build/test-results/androidTest/connected/*.xml
-          reporter: junit
+          reporter: "junit"  # Added quotes
