@@ -98,7 +98,6 @@ class CreateExerciseFragment : Fragment() {
         fun newInstance(exercise: Exercise?, catagoryID: String) =
             CreateExerciseFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable("exercise", exercise)
                     putString("catagoryID", catagoryID)
                 }
             }
