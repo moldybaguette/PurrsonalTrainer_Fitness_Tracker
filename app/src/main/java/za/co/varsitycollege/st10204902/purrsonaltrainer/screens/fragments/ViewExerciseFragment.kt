@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ScrollView
+import android.widget.TextView
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
+import za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientEditText
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
 
 
@@ -30,7 +33,19 @@ class ViewExerciseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_view_exercise, container, false)
+        val view = inflater.inflate(R.layout.fragment_view_exercise, container, false)
+
+        var exerciseTitle = view.findViewById<GradientEditText>(R.id.exerciseTitle)
+        var categoryLabel = view.findViewById<TextView>(R.id.categoryLabel)
+        var exerciseDescription = view.findViewById<ScrollView>(R.id.exerciseDescription)
+
+        if (exercise != null) {
+            exerciseTitle.setText(exercise!!.exerciseName)
+            categoryLabel.text = exercise!!.category
+            exerciseDescription.findViewById<TextView>(R.id.exerciseDescriptionText).text = exercise!!.notes
+        }
+
+        return view
     }
 
     companion object {
