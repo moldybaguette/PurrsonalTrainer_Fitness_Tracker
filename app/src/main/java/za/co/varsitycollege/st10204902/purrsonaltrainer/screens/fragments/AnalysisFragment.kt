@@ -75,8 +75,6 @@ class AnalysisFragment : Fragment() {
     private fun setupChart(anyChartPie: AnyChartView) {
         val pie: Pie = AnyChart.pie()
 
-        // Pie chart setup
-        pie.title("Set Distribution")
 
         // Enable animation
         pie.animation(true)
@@ -149,11 +147,20 @@ class AnalysisFragment : Fragment() {
             pie.data(mutableDataEntries)
         }
 
-        // Configure labels and tooltips
+        // Configure labels,title and tooltips
         configureLabels(pie)
         configureToolTips(pie)
+        configureTitle(pie)
     }
 
+    private fun configureTitle(pie: com.anychart.charts.Pie) {
+        pie.title().enabled(true)
+        pie.title().text("Set Distribution")
+        pie.title().fontColor("black")
+        pie.title().fontSize(24)
+        pie.title().fontWeight("bold")
+        pie.title().fontFamily("")
+    }
 
     private fun configureLabels(pie: com.anychart.charts.Pie) {
         val labels = pie.labels()
