@@ -1,27 +1,20 @@
+// RecordsFragment.kt
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments
 
-import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TableRow
-import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.launch
-import za.co.varsitycollege.st10204902.purrsonaltrainer.R
-import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.RmAdapter
+import androidx.recyclerview.widget.GridLayoutManager
+import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.TableAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
-import kotlinx.coroutines.flow.collectLatest
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.WorkoutWorker
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.FragmentRecordsBinding
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.*
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.CellType
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.TableCell
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.User
 
 class RecordsFragment : Fragment() {
     private var _binding: FragmentRecordsBinding? = null
@@ -50,17 +43,30 @@ class RecordsFragment : Fragment() {
         // Determine the maximum reps achieved across all exercises
         val maxRM = getGlobalMaxRepCount(user)
 
-        // Generate RM labels in RecyclerView
-        generateRMRows(maxRM)
+        // Get unique exercise names
+        val exerciseNames = exerciseWeightsMap.keys.toList()
 
-        // Populate the TableLayout with weights data
-        populateExerciseTable(user, maxRM)
+        // Prepare table data
+        val tableData = prepareTableData(maxRM, exerciseNames)
 
-        // Synchronize scrolling
-        synchronizeScrolling()
+        // Set up RecyclerView with GridLayoutManager
+        val spanCount = exerciseNames.size + 1 // +1 for RM labels
+        val gridLayoutManager = GridLayoutManager(context, spanCount)
+        binding.tableRecyclerView.layoutManager = gridLayoutManager
+
+        // Set fixed size for performance
+        binding.tableRecyclerView.setHasFixedSize(true)
+
+        // Set up the adapter with spanCount
+        val tableAdapter = TableAdapter(tableData, spanCount)
+        binding.tableRecyclerView.adapter = tableAdapter
+
+        // Optional: Improve performance by disabling nested scrolling
+        binding.tableRecyclerView.isNestedScrollingEnabled = false
 
         return binding.root
     }
+
 
     /**
      * Processes user workout data to map each exercise to its reps and corresponding weights.
@@ -118,124 +124,29 @@ class RecordsFragment : Fragment() {
     }
 
     /**
-     * Generates RM labels and sets up the RecyclerView.
+     * Prepares the table data for the adapter.
      */
-    private fun generateRMRows(maxRM: Int) {
-        val rmList = mutableListOf<String>()
-        rmList.add("Rep Max") // Header for RM column
+    private fun prepareTableData(maxRM: Int, exerciseNames: List<String>): List<TableCell> {
+        val tableData = mutableListOf<TableCell>()
 
-        // Populate RM labels from 1 RM to maxRM RM
+        // Header Row
+        tableData.add(TableCell(CellType.HEADER, "Rep Max")) // Top-left corner
+        for (exercise in exerciseNames) {
+            tableData.add(TableCell(CellType.HEADER, exercise))
+        }
+
+        // RM Rows
         for (rm in 1..maxRM) {
-            rmList.add("$rm RM")
+            tableData.add(TableCell(CellType.LABEL, "$rm RM"))
+            for (exercise in exerciseNames) {
+                val weight = exerciseWeightsMap[exercise]?.get(rm)
+                val displayText = if (weight != null) "$weight kg" else "---"
+                tableData.add(TableCell(CellType.DATA, displayText))
+            }
         }
 
-        // Set up the RecyclerView with the adapter
-        val rmRecyclerView = binding.rmColumn
-        val rmAdapter = RmAdapter(rmList)
-        rmRecyclerView.adapter = rmAdapter
-        rmRecyclerView.layoutManager = LinearLayoutManager(context)
+        return tableData
     }
-
-    /**
-     * Populates the TableLayout with the weights lifted per exercise aligned with RM labels.
-     */
-    private fun populateExerciseTable(user: User, maxRM: Int) {
-        val exerciseTable = binding.exerciseTable
-
-        // Get custom font
-        val customFont = ResourcesCompat.getFont(requireContext(), R.font.knicknack_medium)
-
-        // Create header row with exercise names
-        val headerRow = TableRow(context).apply {
-            layoutParams = TableRow.LayoutParams(
-                TableRow.LayoutParams.WRAP_CONTENT,
-                48 // Fixed height to match RecyclerView items
-            )
-            setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.listGrey))
-        }
-
-        // Extract unique exercise names from processed data to avoid duplication
-        val exerciseNames = exerciseWeightsMap.keys
-
-        // Log exercise names for debugging
-        Log.d("RecordsFragment", "Unique Exercise Names: $exerciseNames")
-
-        // Add exercise names to header row
-        for (exerciseName in exerciseNames) {
-            val textView = TextView(context).apply {
-                text = exerciseName
-                setPadding(16, 16, 16, 16)
-                textSize = 18f
-                setTypeface(customFont, Typeface.BOLD)
-            }
-            headerRow.addView(textView)
-        }
-        exerciseTable.addView(headerRow)
-
-        // Create rows for each RM label
-        val rmLabels = mutableListOf<String>()
-        rmLabels.add("Rep Max")
-        for (rm in 1..maxRM) {
-            rmLabels.add("$rm RM")
-        }
-
-        for (rmLabel in rmLabels) {
-            val tableRow = TableRow(context).apply {
-                layoutParams = TableRow.LayoutParams(
-                    TableRow.LayoutParams.WRAP_CONTENT,
-                    48 // Fixed height to match RecyclerView items
-                )
-            }
-
-            for (exerciseName in exerciseNames) {
-                val weightAchieved = when (rmLabel) {
-                    "Rep Max" -> {
-                        // For "Rep Max", display the maximum weight achieved for the exercise
-                        workoutWorker.getTotalWeightPerExercise(
-                            workoutWorker.usersWorkouts.keys.firstOrNull { workoutID ->
-                                workoutWorker.usersWorkouts[workoutID]?.workoutExercises?.values?.any {
-                                    it.exerciseName == exerciseName
-                                } ?: false
-                            } ?: ""
-                        ).let { if (it > 0) "$it kg" else "N/A" }
-                    }
-                    else -> {
-                        // For "1 RM" to "maxRM RM", display the weight for that rep count
-                        val rmNumber = rmLabel.replace(" RM", "").toIntOrNull() ?: 0
-                        exerciseWeightsMap[exerciseName]?.get(rmNumber)?.let {
-                            "$it kg"
-                        } ?: "N/A"
-                    }
-                }
-
-                val textView = TextView(context).apply {
-                    text = weightAchieved
-                    setPadding(16, 16, 16, 16)
-                    textSize = 16f
-                }
-                tableRow.addView(textView)
-            }
-
-            exerciseTable.addView(tableRow)
-        }
-
-        // Log the populated table for debugging
-        Log.d("RecordsFragment", "Exercise Table populated with weights.")
-    }
-
-    /**
-     * Synchronizes the scrolling between RecyclerView and TableLayout's ScrollView.
-     */
-    private fun synchronizeScrolling() {
-        binding.rmColumn.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                binding.horizontalScrollView.scrollBy(0, dy)
-            }
-        })
-    }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()
