@@ -113,7 +113,7 @@
 <androidx.recyclerview.widget.RecyclerView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:listitem="@layout/item_set_detail"
+    tools:listitem="@layout/item_detail_tracking_reps"
     android:layout_marginHorizontal="12dp"
     tools:itemCount="1"/>
 
