@@ -39,7 +39,7 @@
                 android:id="@+id/untitledRoutineTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="false"
+                android:singleLine="true"
                 android:text="Routine Name"
                 android:inputType="text"
                 android:fontFamily="@font/knicknack_black"
@@ -48,7 +48,9 @@
                 app:startColor="@color/untitled_routine_start_color"
                 app:endColor="@color/untitled_routine_end_color"
                 app:strokeColor="@color/default_stroke_color"
-                app:strokeWidth="15dp"/>
+                app:strokeWidth="15dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"/>
 
             <TextView
                 android:id="@+id/routineDetailsHeading"
