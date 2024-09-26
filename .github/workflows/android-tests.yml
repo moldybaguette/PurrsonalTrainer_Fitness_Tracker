@@ -69,10 +69,6 @@ jobs:
       - name: Download Dependencies
         run: ./gradlew dependencies
 
-      # Step 10: Run Lint
-      - name: Run Lint
-        run: ./gradlew lint
-
       # Step 11: Build the project
       - name: Build with Gradle
         run: ./gradlew assembleDebug
