@@ -1,16 +1,15 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
+import android.widget.EditText
 import android.widget.FrameLayout
-import androidx.appcompat.widget.AppCompatButton
-import android.widget.AdapterView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,21 +18,20 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.CategoryAdapter
+import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.ExerciseAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.ExerciseService
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.SlideUpPopup
 import java.io.InputStreamReader
-import java.lang.Thread.sleep
 
 class ChooseCategoryFragment() : Fragment() {
 
     private lateinit var categories: MutableList<String>
-    private val usersCustomExercises: List<String>?
+    private val usersCustomCategories: List<String>?
         get() = UserManager.user?.customCategories
 
     override fun onCreateView(
@@ -42,16 +40,73 @@ class ChooseCategoryFragment() : Fragment() {
     ): View?
     {
         val view = inflater.inflate(R.layout.fragment_choose_category, container, false)
-
         var exerciseService = ExerciseService(requireContext())
         categories = exerciseService.defaultCategories.toMutableList()
 
         // Add all the unique exercise categories from the user's custom exercises that don't already exist in the default exercises
-        val completeCategoryList = usersCustomExercises?.let {
+        val completeCategoryList = usersCustomCategories?.let {
             addUsersCustomCategories(categories, it)
         } ?: categories
 
-            val recyclerView: RecyclerView = view.findViewById(R.id.categoryRecycler)
+        val fullListOfCategoryExercises = exerciseService.loadObjectsFromJson()
+        var displayedExerciseList = fullListOfCategoryExercises
+        val recyclerView: RecyclerView = view.findViewById(R.id.categoryRecycler)
+
+        val txtSearch = view.findViewById<EditText>(R.id.searchInput)
+
+        txtSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                displayedExerciseList = exerciseService.searchExercises(s.toString(), fullListOfCategoryExercises)
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s != null) {
+                    if (s.length == 0) {
+                        recyclerView.layoutManager = LinearLayoutManager(context)
+                        //print each category
+                        Log.d("ChooseCategoryFragment", "completeCategoryList: ${completeCategoryList.listIterator()}")
+                        recyclerView.adapter = CategoryAdapter(completeCategoryList, requireContext(), object : CategoryAdapter.OnItemClickListener {
+                            override fun onItemClick(category: String) {
+                                val fragmentManager = parentFragmentManager
+                                fragmentManager.beginTransaction().apply {
+                                    replace(R.id.chooseCategoryFragmentContainer, AddExerciseListFragment.newInstance(category))
+                                    addToBackStack(null)
+                                    commit()
+                                }
+                            }
+                        })
+                    } else {
+                        recyclerView.adapter = ExerciseAdapter(
+                            displayedExerciseList,
+                            requireContext(),
+                            object : ExerciseAdapter.OnItemClickListener {
+                                override fun onItemClick(exercise: Exercise) {
+                                    RoutineBuilder.addExercise(exercise)
+                                    val fragmentManager = parentFragmentManager
+                                    fragmentManager.beginTransaction().apply {
+                                        replace(
+                                            R.id.chooseCategoryFragmentContainer,
+                                            ViewExerciseFragment.newInstance(exercise)
+                                        )
+                                        addToBackStack(null)
+                                        commit()
+                                    }
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+        })
+
+
+
             recyclerView.layoutManager = LinearLayoutManager(context)
             //print each category
             Log.d("ChooseCategoryFragment", "completeCategoryList: ${completeCategoryList.listIterator()}")
@@ -72,12 +127,12 @@ class ChooseCategoryFragment() : Fragment() {
         return view
     }
 
-        private fun addUsersCustomCategories(mainCategoryList: MutableList<String>, usersCustomExercises: List<String>): List<String> {
-            usersCustomExercises.forEach {
+        private fun addUsersCustomCategories(mainCategoryList: MutableList<String>, customCategories: List<String>): List<String> {
+            customCategories.forEach {
                 if (!mainCategoryList.contains(it)) {
-                mainCategoryList.add(it)
+                    mainCategoryList.add(it)
+                }
             }
-        }
         return mainCategoryList
     }
 
