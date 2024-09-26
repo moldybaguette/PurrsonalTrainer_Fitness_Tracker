@@ -18,7 +18,7 @@ interface OnSetsUpdatedListener
     fun onSetsUpdated(exerciseID: String, set: WorkoutSet)
 }
 
-class CreateRoutineExercisesAdapter(
+open class CreateRoutineExercisesAdapter(
     private val exercises: List<WorkoutExercise>,
     private val context: Context
 ) : RecyclerView.Adapter<CreateRoutineExercisesAdapter.CreateRoutineExercisesViewHolder>()
