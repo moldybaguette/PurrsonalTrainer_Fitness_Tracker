@@ -54,11 +54,11 @@ class WorkoutWorker(
                     for (set in exercise.sets.values) {
                         if (set.reps != null && set.weight != null) {
                             if (exerciseRMs.containsKey(set.reps)) {
-                                if (exerciseRMs[set.reps]!! < set.weight) {
-                                    exerciseRMs[set.reps] = set.weight
+                                if (exerciseRMs[set.reps]!! < set.weight!!) {
+                                    exerciseRMs[set.reps!!] = set.weight!!
                                 }
                             } else {
-                                exerciseRMs[set.reps] = set.weight
+                                exerciseRMs[set.reps!!] = set.weight!!
                             }
                         }
                     }

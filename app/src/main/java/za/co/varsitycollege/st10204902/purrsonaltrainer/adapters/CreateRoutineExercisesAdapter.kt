@@ -15,7 +15,7 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutSet
 
 interface OnSetsUpdatedListener
 {
-    fun onSetsUpdated(exerciseID: String, set: WorkoutSet)
+    fun onSetsUpdated(exerciseID: String, sets: MutableList<WorkoutSet>)
 }
 
 class CreateRoutineExercisesAdapter(
@@ -62,7 +62,7 @@ class CreateRoutineExercisesAdapter(
             setsList.add(setToBeAdded)
             adapter.notifyItemInserted(setsList.count() - 1)
             // Notify set to be added in Activity
-            notifySetsUpdated(exercise.exerciseID, setToBeAdded)
+            notifySetsUpdated(exercise.exerciseID, setsList)
         }
     }
 
@@ -79,11 +79,11 @@ class CreateRoutineExercisesAdapter(
     /**
      * Notifies subscribers that a set has been added
      */
-    private fun notifySetsUpdated(exerciseID: String, set: WorkoutSet)
+    private fun notifySetsUpdated(exerciseID: String, sets: MutableList<WorkoutSet>)
     {
         for (listener in setsUpdatedListeners)
         {
-            listener.onSetsUpdated(exerciseID, set)
+            listener.onSetsUpdated(exerciseID, sets)
         }
     }
 }

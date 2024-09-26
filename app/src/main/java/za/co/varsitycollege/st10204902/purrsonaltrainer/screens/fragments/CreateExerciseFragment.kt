@@ -13,7 +13,6 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.ExerciseTypeSpi
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.workout_activities.CreateRoutineActivity
-import za.co.varsitycollege.st10204902.purrsonaltrainer.services.ExerciseService
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
