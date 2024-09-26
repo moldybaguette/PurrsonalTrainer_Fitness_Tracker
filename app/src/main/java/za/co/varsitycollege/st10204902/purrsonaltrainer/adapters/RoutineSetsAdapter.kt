@@ -30,7 +30,7 @@ class RoutineSetsAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoutineSetsViewHolder
     {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_set_detail_display, parent, false)
+            .inflate(R.layout.item_detail_display_reps, parent, false)
         return RoutineSetsViewHolder(view)
     }
 
