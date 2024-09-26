@@ -82,7 +82,7 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
                     originalBackgroundLogin // Restore the original background after the delay
             }, 200) // Delay in milliseconds
         }
-
+        
         val originalBackgroundGoogle = binding.googleSignInButton.background
         binding.googleSignInButton.setOnClickListener() {
             soundManager.playSound()

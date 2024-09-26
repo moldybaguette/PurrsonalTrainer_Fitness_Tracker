@@ -5,39 +5,35 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
-import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.ColorSpinnerAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.CreateRoutineExercisesAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.OnSetsUpdatedListener
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityCreateRoutineBinding
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutExercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutSet
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.ChooseCategoryFragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.ExerciseAddedListener
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.SetBuilder
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 import java.util.Date
 
-class CreateRoutineActivity : AppCompatActivity(), ExerciseAddedListener, OnSetsUpdatedListener
-{
+class CreateRoutineActivity : AppCompatActivity(), ExerciseAddedListener, OnSetsUpdatedListener {
     private lateinit var binding: ActivityCreateRoutineBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding =  ActivityCreateRoutineBinding.inflate(layoutInflater)
+        binding = ActivityCreateRoutineBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val doneButton: AppCompatButton = findViewById(R.id.doneButton)
@@ -46,6 +42,7 @@ class CreateRoutineActivity : AppCompatActivity(), ExerciseAddedListener, OnSets
         val txtRoutineName = binding.untitledRoutineTitle
         val routineColor = binding.colorPickerSpinner
         val txtRoutineDescription = binding.notes
+
 
         // Subscribing this activity to the ExerciseAddedListener for the RoutineBuilder
         RoutineBuilder.addExerciseAddedListener(this)
@@ -60,9 +57,8 @@ class CreateRoutineActivity : AppCompatActivity(), ExerciseAddedListener, OnSets
 
             if (RoutineBuilder.hasAnExercise()) {
                 UserManager.addUserRoutine(RoutineBuilder.buildRoutine())
-            }
-            else {
-              // if the user has not added any exercises then show a message to the user
+            } else {
+                // if the user has not added any exercises then show a message to the user
                 Log.d("CreateRoutineActivity", "No exercises added")
             }
 
@@ -97,8 +93,7 @@ class CreateRoutineActivity : AppCompatActivity(), ExerciseAddedListener, OnSets
         }
     }
 
-    private fun setupColorSpinner()
-    {
+    private fun setupColorSpinner() {
         val spinner = binding.colorPickerSpinner
         val colors = mutableListOf("blue", "red", "orange", "yellow", "green", "purple")
         val adapter = ColorSpinnerAdapter(this, colors)
@@ -108,35 +103,37 @@ class CreateRoutineActivity : AppCompatActivity(), ExerciseAddedListener, OnSets
     /**
      * Code run when an exercise has been added to the RoutineBuilder
      */
-    override fun onExerciseAdded()
-    {
+    override fun onExerciseAdded() {
         if (RoutineBuilder.hasAnExercise()) {
-            try
-            {
+            try {
                 val recyclerView = binding.routineAddedExercises
                 val userExercises = RoutineBuilder.exercises.values.toMutableList()
                 val adapter = CreateRoutineExercisesAdapter(userExercises, this)
                 adapter.addSetUpdatedListener(this)
                 recyclerView.adapter = adapter
                 recyclerView.layoutManager = LinearLayoutManager(this)
-            }
-            catch (e: Exception)
-            {
+            } catch (e: Exception) {
                 Log.e("Failed to get exercises", e.toString())
             }
         }
     }
 
-    override fun onSetsUpdated(exerciseID: String, set: WorkoutSet)
-    {
-        UserManager.addWorkoutSetToWorkoutExerciseInRoutine(RoutineBuilder.routineID ,exerciseID, set)
-        val newSets = RoutineBuilder.exercises[exerciseID]?.sets?.plus(set.workoutSetID to set)
+        override fun onSetsUpdated(exerciseID: String, sets: MutableList<WorkoutSet>) {
+            val setsMap = mutableMapOf<String, WorkoutSet>()
+            sets.forEach {
+                setsMap[it.workoutSetID] = it
+            }
 
-        if (newSets != null)
-        {
             val oldExercise = RoutineBuilder.exercises[exerciseID]
-            val newExercise = WorkoutExercise(exerciseID, oldExercise?.exerciseName!!, oldExercise.category, newSets, Date(), oldExercise.notes, oldExercise.measurementType  )
+            val newExercise = WorkoutExercise(
+                exerciseID,
+                oldExercise?.exerciseName!!,
+                oldExercise.category,
+                setsMap,
+                Date(),
+                oldExercise.notes,
+                oldExercise.measurementType
+            )
             RoutineBuilder.addWorkoutExercise(newExercise)
         }
     }
-}

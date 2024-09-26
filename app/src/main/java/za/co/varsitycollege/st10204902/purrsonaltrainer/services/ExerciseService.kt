@@ -8,6 +8,7 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
 import java.io.InputStreamReader
+import java.util.Locale
 
 class ExerciseService(private val context: Context) {
 
@@ -51,8 +52,14 @@ class ExerciseService(private val context: Context) {
      * @return List<Exercise> - List of all exercises
      */
      fun loadObjectsFromJson(): List<Exercise> {
-        // Open the JSON file from assets
-        val jsonFile = context.assets.open("globalExercises.json")
+        val currentLocale = Locale.getDefault()
+        val languageCode = currentLocale.language
+        val jsonFileName = if (languageCode == "af") {
+            "globalExercises_eng.json" // Afrikaans version
+        } else {
+            "globalExercises_af.json" // English version
+        }
+        val jsonFile = context.assets.open(jsonFileName)
         // Use InputStreamReader to read the file
         val reader = InputStreamReader(jsonFile)
         // Create a type token for List<MyObject>

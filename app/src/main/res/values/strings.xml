@@ -3,17 +3,14 @@
     <!-- Landing, Login and Register Labels -->
     <string name="login">Login</string>
     <string name="register">Register</string>
-    <string name="username">Username</string>
     <string name="google_sso">Login with Google</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="resetApp">Reset App</string>
     <string name="logOut">Log Out</string>
     <string name="done">Done</string>
     <string name="welcome">Welcome!</string>
-    <string name="welcomeBack">Welcome\nBack!</string>
-    <string name="firebase_web_client_id">859936099389-19fcm5qa1m50jqb04hot8jqbjl12oc9m.apps.googleusercontent.com</string>
+    <string name="welcomeBack">Welcome Back!</string>
+    <string name="firebase_web_client_id" translatable="false">859936099389-19fcm5qa1m50jqb04hot8jqbjl12oc9m.apps.googleusercontent.com</string>
     <!-- Home Labels -->
     <string name="home">Home</string>
     <string name="accountDetails">Account Details</string>
@@ -28,7 +25,6 @@
     <string name="quickStart">Quick Start</string>
     <string name="workout">Workout</string>
     <string name="startEmptyWorkout">Start Empty Workout</string>
-    <string name="colour">Colour</string>
     <string name="notes">Notes</string>
     <string name="addExercises">Add Exercises</string>
     <string name="addExercise">Add Exercise</string>
@@ -47,10 +43,8 @@
 
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="background">background</string>
     <string name="email_text_view">email text view</string>
-    <string name="password_text_view">password text view</string>
     <string name="reset_app_button">Reset App Button</string>
     <string name="log_out_button">Log out button</string>
     <string name="done_button">Done Button</string>
@@ -58,4 +52,10 @@
     <string name="analysis">Analysis</string>
     <string name="records">Records</string>
     <string name="placeholder_rm">0 RM</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="colour">Colour</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="password_text_view">password text view</string>
 </resources>
