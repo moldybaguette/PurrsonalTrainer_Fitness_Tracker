@@ -12,10 +12,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:singleLine="false"
+        android:singleLine="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="Untitled Exercise"
+        android:elevation="2dp"
         android:inputType="text"
         android:fontFamily="@font/knicknack_black"
         android:textSize="45sp"
@@ -23,7 +24,9 @@
         app:startColor="@color/routine_start_color"
         app:endColor="@color/routine_end_color"
         app:strokeColor="#EDEDED"
-        app:strokeWidth="15dp"/>
+        app:strokeWidth="15dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
 
     <TextView
         android:layout_width="wrap_content"
