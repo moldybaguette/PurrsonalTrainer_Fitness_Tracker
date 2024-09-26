@@ -83,8 +83,9 @@ object RoutineBuilder {
             val tempExerciseName = exercise.exerciseName
             val tempCategory = exercise.category
             val tempNotes = exercise.notes
+            val tempMeasurementType = exercise.measurementType
             val tempSets = mapOf<String, WorkoutSet>()
-            exercises[tempExerciseID] = WorkoutExercise(tempExerciseID, tempExerciseName, tempCategory, tempSets , Date(), tempNotes)
+            exercises[tempExerciseID] = WorkoutExercise(tempExerciseID, tempExerciseName, tempCategory, tempSets , Date(), tempNotes, tempMeasurementType)
         }
     }
 

@@ -42,6 +42,7 @@ data class WorkoutExercise(
     val sets: Map<String,WorkoutSet> = emptyMap(),
     val date:Date = Date(),
     val notes: String = "",
+    val measurementType: String = "",
 )
 
 @IgnoreExtraProperties
