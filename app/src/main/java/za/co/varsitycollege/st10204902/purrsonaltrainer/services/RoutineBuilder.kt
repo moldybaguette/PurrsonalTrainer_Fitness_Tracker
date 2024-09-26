@@ -78,6 +78,7 @@ object RoutineBuilder {
      */
     fun addExercise(exercise: Exercise) {
         // if the exercise is not already in the exercises list then add it
+        println("called")
         if (!exercises.contains(exercise.exerciseID)) {
             val tempExerciseID = exercise.exerciseID
             val tempExerciseName = exercise.exerciseName
