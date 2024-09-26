@@ -39,12 +39,19 @@ data class WorkoutExercise(
     val exerciseID: String = CreateID.GenerateID(),
     val exerciseName: String = "",
     val category: String = "",
+    val sets: Map<String,WorkoutSet> = emptyMap(),
+    val date:Date = Date(),
+    val notes: String = "",
+)
+
+@IgnoreExtraProperties
+data class WorkoutSet(
+    val workoutSetID: String = CreateID.GenerateID(),
     val weight: Int? = 0,
     val reps: Int? = 0,
     val distance: Int? = 0,
     val durationSeconds: Int? = 0,
-    val notes: String = "",
-    val setType: String = ""
+    val setType: String = "",
 )
 
 // Exercise class for storing default and custom exercises

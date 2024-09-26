@@ -21,6 +21,7 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserBackground
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserWorkout
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutExercise
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutSet
 
 
 object UserManager {
@@ -414,6 +415,80 @@ object UserManager {
             Log.e("UserManager.updateExerciseInWorkout", "User is not logged in")
         }
     }
+
+    //-----------------------------------------------------------//
+    //  WorkoutSet Management
+    //-----------------------------------------------------------//
+
+    /**
+     * Adds a set to an exercise
+     * @param workoutID The ID of the workout containing the exercise
+     * @param workoutExerciseID The ID of the exercise to add the set to
+     * @param set The set to add to the exercise
+     */
+    fun addWorkoutSetToWorkoutExercise(workoutID: String, workoutExerciseID: String, set: WorkoutSet) {
+        if (userIsLoggedIn())
+        {
+            _userFlow.update { user ->
+                user?.let {
+                    val updatedWorkout = it.userWorkouts[workoutID]?.workoutExercises?.get(workoutExerciseID)?.sets?.plus(set.workoutSetID to set)
+                    updatedWorkout?.let { sets ->
+                        it.copy(
+                            userWorkouts = it.userWorkouts + (workoutID to it.userWorkouts[workoutID]!!.copy(
+                                workoutExercises = it.userWorkouts[workoutID]!!.workoutExercises + (workoutExerciseID to it.userWorkouts[workoutID]!!.workoutExercises[workoutExerciseID]!!.copy(
+                                    sets = sets
+                                ))
+                            ))
+                        )
+                    } ?: it // Return the original user if no update occurred
+                }
+            }
+        }
+        else
+        {
+            Log.e("UserManager.addWorkoutSetToWorkoutExercise", "User is not logged in")
+        }
+    }
+
+    /**
+     * Removes a set from an exercise
+     * @param workoutID The ID of the workout containing the exercise
+     * @param exerciseID The ID of the exercise to remove the set from
+     * @param setID The ID of the set to remove
+     */
+    fun removeWorkoutSetFromWorkoutExercise(workoutID: String, exerciseID: String, setID:String )
+    {
+        if (userIsLoggedIn())
+        {
+            _userFlow.update { user ->
+                val sets = user?.userWorkouts?.get(workoutID)?.workoutExercises?.get(exerciseID)?.sets
+                if (sets.isNullOrEmpty() || !sets.containsKey(setID))
+                {
+                    Log.w("UserManager", "the workout or doesn't exist or itn doesn't contain the exercise")
+                    return@update user // Return the user unchanged
+                }
+
+                user.let {
+                    val updatedWorkout = it.userWorkouts[workoutID]?.workoutExercises?.get(exerciseID)?.sets?.minus(setID)
+                    updatedWorkout?.let { sets ->
+                        it.copy(
+                            userWorkouts = it.userWorkouts + (workoutID to it.userWorkouts[workoutID]!!.copy(
+                                workoutExercises = it.userWorkouts[workoutID]!!.workoutExercises + (exerciseID to it.userWorkouts[workoutID]!!.workoutExercises[exerciseID]!!.copy(
+                                    sets = sets
+                                ))
+                            ))
+                        )
+                    } ?: it // Return the original user if no update occurred
+                }
+            }
+
+        }
+        else
+        {
+            Log.e("UserManager.removeWorkoutSetFromWorkoutExercise", "User is not logged in")
+        }
+    }
+
 
     //-----------------------------------------------------------//
     // UserExercise Management
