@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,6 +47,7 @@ class AddExerciseListFragment : Fragment() {
         recyclerView.adapter = ExerciseAdapter(displayedExerciseList, requireContext(), object : ExerciseAdapter.OnItemClickListener{
             override fun onItemClick(exercise: Exercise) {
                 RoutineBuilder.addExercise(exercise)
+                requireActivity().findViewById<FrameLayout>(R.id.chooseCategoryFragmentContainer).visibility = View.GONE
             }
        },categoryId, parentFragmentManager)
 
@@ -74,6 +76,7 @@ class AddExerciseListFragment : Fragment() {
                 recyclerView.adapter = ExerciseAdapter(displayedExerciseList, requireContext(), object : ExerciseAdapter.OnItemClickListener{
                     override fun onItemClick(exercise: Exercise) {
                         RoutineBuilder.addExercise(exercise)
+                        requireActivity().findViewById<FrameLayout>(R.id.chooseCategoryFragmentContainer).visibility = View.GONE
                     }
                 },categoryId, parentFragmentManager)
             }
