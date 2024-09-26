@@ -6,6 +6,7 @@ import android.os.Looper
 import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
@@ -29,17 +30,16 @@ class RegisterActivity : AppCompatActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register) // Navigating to the register view
-
-        val registerButton: AppCompatButton = findViewById(R.id.registerButton) // Getting the register button
-        val originalBackground = registerButton.background // Getting the original background of the button
+        setContentView(R.layout.activity_register) //navigating to the register view
+        enableEdgeToEdge()
+        val registerButton: AppCompatButton = findViewById(R.id.registerButton) //getting the register button
+        val originalBackground = registerButton.background //getting the original background of the button
 
         // Set the layout for the activity
         var email = findViewById<EditText>(R.id.emailInput)
         var password = findViewById<EditText>(R.id.passwordInput)
         var confirmPassword = findViewById<EditText>(R.id.passwordConfirmInput)
         Log.d("RegisterActivity", "OnCreate happened")
-
         // Set the on click listener for the register button
         registerButton.setOnClickListener {
             Log.d("RegisterActivity", "Register button clicked")
