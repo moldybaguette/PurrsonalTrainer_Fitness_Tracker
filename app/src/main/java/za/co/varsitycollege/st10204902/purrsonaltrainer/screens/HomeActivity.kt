@@ -7,7 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
+import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityHomeBinding
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.HomeFragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.RoutinesFragment
@@ -70,9 +73,9 @@ class HomeActivity : AppCompatActivity() {
 
         // Custom navbar setup
         setupNavBar()
+
+
     }
-
-
 
 
 
