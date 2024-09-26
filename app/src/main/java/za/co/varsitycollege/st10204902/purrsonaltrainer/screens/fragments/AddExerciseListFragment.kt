@@ -42,7 +42,7 @@ class AddExerciseListFragment : Fragment() {
         var displayedExerciseList = fullListOfCategoryExercises
         val txtSearch = view.findViewById<EditText>(R.id.searchInput)
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.categoryRecycler)
+        val recyclerView: RecyclerView = view.findViewById(R.id.exercisesRecycler)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         txtSearch.addTextChangedListener(object : TextWatcher{
