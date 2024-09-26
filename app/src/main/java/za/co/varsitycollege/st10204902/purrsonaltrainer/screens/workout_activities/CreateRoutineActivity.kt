@@ -18,10 +18,13 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.ColorSpinnerAda
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityCreateRoutineBinding
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutExercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.ChooseCategoryFragment
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.ExerciseAddedListener
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
 
-class CreateRoutineActivity : AppCompatActivity() {
+class CreateRoutineActivity : AppCompatActivity(), ExerciseAddedListener
+{
     private lateinit var binding: ActivityCreateRoutineBinding
 
 
@@ -38,7 +41,8 @@ class CreateRoutineActivity : AppCompatActivity() {
         val routineColor = binding.colorPickerSpinner
         val txtRoutineDescription = binding.notes
 
-
+        // Subscribing this activity to the ExerciseAddedListener for the RoutineBuilder
+        RoutineBuilder.addExerciseAddedListener(this)
 
 
         doneButton.setOnClickListener {
@@ -89,5 +93,13 @@ class CreateRoutineActivity : AppCompatActivity() {
         val colors = mutableListOf("blue", "red", "orange", "yellow", "green", "purple")
         val adapter = ColorSpinnerAdapter(this, colors)
         spinner.adapter = adapter
+    }
+
+    /**
+     * Code run when an exercise has been added to the RoutineBuilder
+     */
+    override fun onExerciseAdded(exercise: WorkoutExercise)
+    {
+        TODO("Not yet implemented")
     }
 }

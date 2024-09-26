@@ -122,6 +122,13 @@
                 android:layout_marginStart="-70dp"
                 android:layout_marginTop="20dp"/>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/routineAddedExercises"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/component_exercisedetails_display"
+                tools:itemCount="1"/>
+
             <FrameLayout
                 android:id="@+id/addExerciseButton"
                 android:layout_width="360dp"
