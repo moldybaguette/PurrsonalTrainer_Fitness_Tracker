@@ -33,7 +33,7 @@ class RoutineExerciseListAdapter(
         val exercise = exercises[position]
         val name = exercise.exerciseName
 
-        val sets = exercise.sets.toString()
+        val sets = exercise.sets.count().toString()
         holder.exerciseText.text = "${sets}x ${name}"
     }
 
