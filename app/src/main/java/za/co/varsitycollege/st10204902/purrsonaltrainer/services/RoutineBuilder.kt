@@ -4,6 +4,8 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.CreateID
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutExercise
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutSet
+import java.util.Date
 
 object RoutineBuilder {
     //-----------------------------------------------------------//
@@ -81,7 +83,8 @@ object RoutineBuilder {
             val tempExerciseName = exercise.exerciseName
             val tempCategory = exercise.category
             val tempNotes = exercise.notes
-            exercises[tempExerciseID] = WorkoutExercise(tempExerciseID, tempExerciseName, tempCategory, 0, 0, 0, 0, tempNotes, "")
+            val tempSets = mapOf<String, WorkoutSet>()
+            exercises[tempExerciseID] = WorkoutExercise(tempExerciseID, tempExerciseName, tempCategory, tempSets , Date(), tempNotes)
         }
     }
 
