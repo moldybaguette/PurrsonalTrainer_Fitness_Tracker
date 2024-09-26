@@ -33,7 +33,7 @@ class AddExerciseListFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_exercise_list, container, false)
 
-        var exerciseService = ExerciseService(requireContext())
+        val exerciseService = ExerciseService(requireContext())
         //maintain a list of ALL exercises in the category
         val fullListOfCategoryExercises = exerciseService.getExerciseInCategory(categoryId!!)
         var displayedExerciseList = fullListOfCategoryExercises
@@ -47,7 +47,7 @@ class AddExerciseListFragment : Fragment() {
             override fun onItemClick(exercise: Exercise) {
                 RoutineBuilder.addExercise(exercise)
             }
-        },categoryId, parentFragmentManager)
+       },categoryId, parentFragmentManager)
 
         //onclick listener for the add category button
         addCategoryButton.setOnClickListener {
