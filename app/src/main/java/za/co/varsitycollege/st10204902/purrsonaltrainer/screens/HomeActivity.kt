@@ -73,8 +73,6 @@ class HomeActivity : AppCompatActivity() {
 
         // Custom navbar setup
         setupNavBar()
-
-
     }
 
 

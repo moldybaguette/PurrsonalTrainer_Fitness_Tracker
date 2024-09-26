@@ -10,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.async
@@ -80,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         // Check if a user is already logged in
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            idToken = currentUser.getIdToken(true).toString()
+            idToken = currentUser.uid
             checkBiometricSupport()
         } else {
             // No user is logged in, navigate to the login/register screen
@@ -181,6 +182,8 @@ class MainActivity : AppCompatActivity() {
                     UserManager.userManagerScope.launch {
                         async {
                             UserManager.setUpSingleton(idToken)
+
+
                         }.await()
                         navigateTo(this@MainActivity, HomeActivity::class.java, null)
                     }
