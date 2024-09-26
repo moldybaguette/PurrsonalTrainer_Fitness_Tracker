@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
@@ -39,7 +40,7 @@ class AddExerciseListFragment : Fragment() {
         val txtSearch = view.findViewById<EditText>(R.id.searchInput)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.exercisesRecycler)
-        val addCategoryButton = view.findViewById<EditText>(R.id.addCategoryButton)
+        val addCategoryButton = view.findViewById<LinearLayout>(R.id.addCategoryButton)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         //onclick listener for the add category button
