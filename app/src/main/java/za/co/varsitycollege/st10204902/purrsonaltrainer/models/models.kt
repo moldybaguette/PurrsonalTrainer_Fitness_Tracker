@@ -92,12 +92,12 @@ data class WorkoutExercise(
  */
 @IgnoreExtraProperties
 data class WorkoutSet(
-    val workoutSetID: String = CreateID.GenerateID(),
-    val weight: Int? = 0,
-    val reps: Int? = 0,
-    val distance: Int? = 0,
-    val durationSeconds: Int? = 0,
-    val setType: String = "",
+    var workoutSetID: String = CreateID.GenerateID(),
+    var weight: Int? = 0,
+    var reps: Int? = 0,
+    var distance: Int? = 0,
+    var durationSeconds: Int? = 0,
+    var setType: String = "",
 )
 
 /**
