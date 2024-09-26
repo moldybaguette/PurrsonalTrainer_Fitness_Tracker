@@ -17,7 +17,7 @@ class ExerciseService(private val context: Context) {
     /**
      * List of all exercises including default and custom
      */
-    val exercisesList = loadObjectsFromJson()
+    var exercisesList = loadObjectsFromJson()
 
     /**
      * List of all default exercise categories
@@ -58,11 +58,17 @@ class ExerciseService(private val context: Context) {
         // Create a type token for List<MyObject>
         val listType = object : TypeToken<List<Exercise>>() {}.type
         // Parse the JSON using Gson
-        val listOfAllExercises: List<Exercise> = Gson().fromJson(reader, listType)
+        var listOfAllExercises: List<Exercise> = Gson().fromJson(reader, listType)
         // Close the reader
         reader.close()
-        UserManager.user?.userExercises?.let {
-            listOfAllExercises.plus(it.values)
+        val usersExercises = UserManager.user?.userExercises
+        // add all users exercises to the list of all exercises
+        usersExercises?.let {
+            it.values.forEach { userExercise ->
+                if (!listOfAllExercises.contains(userExercise)) {
+                    listOfAllExercises = listOfAllExercises.plus(userExercise)
+                }
+            }
         }
         return listOfAllExercises
     }
@@ -87,7 +93,8 @@ class ExerciseService(private val context: Context) {
         UserManager.user?.userExercises?.let {
             it.values.forEach { userExercise ->
                 if (!exercisesList.contains(userExercise)) {
-                    exercisesList.plus(userExercise)
+                    exercisesList = exercisesList.plus(userExercise)
+                    println("added user exercise ${userExercise.exerciseName}")
                 }
             }
         }

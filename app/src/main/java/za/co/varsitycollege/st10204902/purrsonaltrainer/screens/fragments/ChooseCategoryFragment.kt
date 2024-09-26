@@ -40,7 +40,7 @@ class ChooseCategoryFragment() : Fragment() {
     ): View?
     {
         val view = inflater.inflate(R.layout.fragment_choose_category, container, false)
-        var exerciseService = ExerciseService(requireContext())
+        val exerciseService = ExerciseService(requireContext())
         categories = exerciseService.defaultCategories.toMutableList()
 
         // Add all the unique exercise categories from the user's custom exercises that don't already exist in the default exercises
@@ -49,6 +49,7 @@ class ChooseCategoryFragment() : Fragment() {
         } ?: categories
 
         val fullListOfCategoryExercises = exerciseService.loadObjectsFromJson()
+        exerciseService.updateExerciseService()
         var displayedExerciseList = fullListOfCategoryExercises
         val recyclerView: RecyclerView = view.findViewById(R.id.categoryRecycler)
 
@@ -56,7 +57,7 @@ class ChooseCategoryFragment() : Fragment() {
 
         txtSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
+                exerciseService.updateExerciseService()
             }
 
 
@@ -73,6 +74,7 @@ class ChooseCategoryFragment() : Fragment() {
                         Log.d("ChooseCategoryFragment", "completeCategoryList: ${completeCategoryList.listIterator()}")
                         recyclerView.adapter = CategoryAdapter(completeCategoryList, requireContext(), object : CategoryAdapter.OnItemClickListener {
                             override fun onItemClick(category: String) {
+                                exerciseService.updateExerciseService()
                                 val fragmentManager = parentFragmentManager
                                 fragmentManager.beginTransaction().apply {
                                     replace(R.id.chooseCategoryFragmentContainer, AddExerciseListFragment.newInstance(category))
@@ -88,15 +90,8 @@ class ChooseCategoryFragment() : Fragment() {
                             object : ExerciseAdapter.OnItemClickListener {
                                 override fun onItemClick(exercise: Exercise) {
                                     RoutineBuilder.addExercise(exercise)
-                                    val fragmentManager = parentFragmentManager
-                                    fragmentManager.beginTransaction().apply {
-                                        replace(
-                                            R.id.chooseCategoryFragmentContainer,
-                                            ViewExerciseFragment.newInstance(exercise)
-                                        )
-                                        addToBackStack(null)
-                                        commit()
-                                    }
+                                    exerciseService.updateExerciseService()
+                                    requireActivity().findViewById<FrameLayout>(R.id.chooseCategoryFragmentContainer).visibility = View.GONE
                                 }
                             },categoryId = null, parentFragmentManager
                         )

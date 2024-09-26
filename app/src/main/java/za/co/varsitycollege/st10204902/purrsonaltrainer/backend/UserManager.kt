@@ -63,7 +63,15 @@ object UserManager {
     /**
      * the types of sets that can be used in a workout
      */
-    val SET_TYPES = listOf("WARMUP", "FAILURE", "DROPSET", "NUMBERED")
+    enum class SetType
+    {
+        NORMAL,
+        WARMUP,
+        FAILURE,
+        DROP
+    }
+
+    val MEASUREMENT_TYPE = listOf("Reps & Weight", "Time & Distance", "Time")
 
     //-----------------------------------------------------------//
     //                          METHODS                          //
