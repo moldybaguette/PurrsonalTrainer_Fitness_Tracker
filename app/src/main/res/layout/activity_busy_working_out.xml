@@ -5,6 +5,65 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.workout_activities.BusyWorkingOutActivity">
+    tools:context=".screens.workout_activities.BusyWorkingOutActivity"
+    android:background="@drawable/bg_purple_gradient">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/bg_spotty" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientTextView
+                android:id="@+id/untitledRoutineTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="Workout Name"
+                android:inputType="text"
+                android:fontFamily="@font/knicknack_black"
+                android:textSize="45sp"
+                android:layout_marginTop="40dp"
+                app:startColor="@color/untitled_routine_start_color"
+                app:endColor="@color/untitled_routine_end_color"
+                app:strokeColor="@color/default_stroke_color"
+                app:strokeWidth="15dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:layout_marginStart="10dp"/>
+
+            <include
+                layout="@layout/component_workouttime_bodyweight"
+                android:layout_marginHorizontal="12dp"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="4"
+                tools:listitem="@layout/component_exercisedetails_tracking"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="20dp"/>
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
