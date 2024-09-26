@@ -2,6 +2,7 @@ package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -34,10 +35,15 @@ class RoutinesFragment : Fragment(), OnRoutineItemClickListener {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_routines, container, false)
 
-        // Routines adapter setup
-        val routinesList = view.findViewById<RecyclerView>(R.id.routinesRecyclerView)
-        routinesList.layoutManager = LinearLayoutManager(requireContext())
-        routinesList.adapter = RoutineListAdapter(UserManager.user!!.userRoutines.values.toList(), requireContext(), this)
+        try
+        {
+            // Routines adapter setup
+            val routinesList = view.findViewById<RecyclerView>(R.id.routinesRecyclerView)
+            routinesList.layoutManager = LinearLayoutManager(requireContext())
+            routinesList.adapter = RoutineListAdapter(UserManager.user!!.userRoutines.values.toList(), requireContext(), this)
+        } catch (e: Exception) {
+            Log.e("ERROR loading routines", e.message.toString())
+        }
         return view
     }
 
