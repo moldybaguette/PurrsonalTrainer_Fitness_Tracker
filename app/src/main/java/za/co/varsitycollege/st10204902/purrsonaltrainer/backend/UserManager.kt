@@ -63,7 +63,15 @@ object UserManager {
     /**
      * the types of sets that can be used in a workout
      */
-    val SET_TYPES = listOf("WARMUP", "FAILURE", "DROPSET", "NUMBERED")
+    enum class SetType
+    {
+        NORMAL,
+        WARMUP,
+        FAILURE,
+        DROP
+    }
+
+    val MEASUREMENT_TYPE = listOf("Reps & Weight", "Time & Distance", "Time")
 
     //-----------------------------------------------------------//
     //                          METHODS                          //
@@ -450,6 +458,30 @@ object UserManager {
         else
         {
             Log.e("UserManager.addWorkoutSetToWorkoutExercise", "User is not logged in")
+        }
+    }
+
+    fun addWorkoutSetToWorkoutExerciseInRoutine(routineID: String, exerciseID:String, newSet: WorkoutSet)
+    {
+        if (userIsLoggedIn())
+        {
+            user.let {
+                val updatedRoutine = it?.userRoutines?.get(routineID)?.exercises?.get(exerciseID)?.sets?.plus(newSet.workoutSetID to newSet)
+                updatedRoutine?.let { sets ->
+                    it?.let {
+                        val updatedRoutineExercises = it.userRoutines[routineID]?.exercises?.get(exerciseID)?.copy(sets = sets)
+                        it.copy(
+                            userRoutines = it.userRoutines + (routineID to it.userRoutines[routineID]!!.copy(
+                                exercises = it.userRoutines[routineID]!!.exercises + (exerciseID to updatedRoutineExercises!!)
+                            ))
+                        )
+                    }
+                }
+            }
+        }
+        else
+        {
+            Log.e("UserManager.addWorkoutSetToWorkoutExerciseInRoutine", "User is not logged in")
         }
     }
 

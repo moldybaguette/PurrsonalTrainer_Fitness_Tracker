@@ -1,4 +1,3 @@
-// RecordsFragment.kt
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments
 
 import android.os.Bundle
@@ -16,6 +15,9 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.models.CellType
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.TableCell
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.User
 
+/**
+ * Fragment for displaying user workout records in a table format.
+ */
 class RecordsFragment : Fragment() {
     private var _binding: FragmentRecordsBinding? = null
     private val binding get() = _binding!!
@@ -26,6 +28,13 @@ class RecordsFragment : Fragment() {
     // Data structure to hold weights per exercise and rep count
     private lateinit var exerciseWeightsMap: Map<String, Map<Int, Int>>
 
+    /**
+     * Called to have the fragment instantiate its user interface view.
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+     * @return Return the View for the fragment's UI, or null.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -67,9 +76,9 @@ class RecordsFragment : Fragment() {
         return binding.root
     }
 
-
     /**
      * Processes user workout data to map each exercise to its reps and corresponding weights.
+     * @param user The user whose workout data is being processed.
      */
     private fun processUserData(user: User) {
         // Temporary mutable map
@@ -109,6 +118,8 @@ class RecordsFragment : Fragment() {
 
     /**
      * Determines the highest number of reps achieved across all exercises using WorkoutWorker.
+     * @param user The user whose workout data is being analyzed.
+     * @return The highest number of reps achieved.
      */
     private fun getGlobalMaxRepCount(user: User): Int {
         var maxRep = 0
@@ -125,6 +136,9 @@ class RecordsFragment : Fragment() {
 
     /**
      * Prepares the table data for the adapter.
+     * @param maxRM The maximum number of reps achieved.
+     * @param exerciseNames The list of unique exercise names.
+     * @return A list of TableCell objects representing the table data.
      */
     private fun prepareTableData(maxRM: Int, exerciseNames: List<String>): List<TableCell> {
         val tableData = mutableListOf<TableCell>()
@@ -148,6 +162,9 @@ class RecordsFragment : Fragment() {
         return tableData
     }
 
+    /**
+     * Called when the view previously created by onCreateView has been detached from the fragment.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

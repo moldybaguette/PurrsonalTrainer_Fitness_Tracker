@@ -10,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.async
@@ -29,6 +30,10 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.services.CatFactsApi
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.CatsApiService
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
+/**
+ * Main activity of the application, responsible for displaying cat facts and images,
+ * and handling user authentication with biometric support.
+ */
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
@@ -40,6 +45,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var catsApiService: CatsApiService
     private lateinit var idToken: String
 
+    /**
+     * Called when the activity is first created.
+     * @param savedInstanceState If the activity is being re-created from a previous saved state, this is the state.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -62,7 +71,6 @@ class MainActivity : AppCompatActivity() {
         api = retrofit1.create(CatFactsApi::class.java)
         catsApiService = retrofit2.create(CatsApiService::class.java)
 
-
         fetchCatFact()
         loadNewCatImage()
 
@@ -73,9 +81,8 @@ class MainActivity : AppCompatActivity() {
         // Check if a user is already logged in
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            idToken = currentUser.getIdToken(true).toString()
+            idToken = currentUser.uid
             checkBiometricSupport()
-
         } else {
             // No user is logged in, navigate to the login/register screen
             Log.d("MainActivity", "No user logged in")
@@ -83,6 +90,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Loads a new cat image from the API and displays it in the ImageView.
+     */
     private fun loadNewCatImage() {
         catsApiService.getRandomCatImage().enqueue(object : Callback<List<CatImage>> {
             override fun onResponse(call: Call<List<CatImage>>, response: Response<List<CatImage>>) {
@@ -98,6 +108,9 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Fetches a random cat fact from the API and displays it in the TextView.
+     */
     private fun fetchCatFact() {
         api.getCatFact().enqueue(object : Callback<CatFact> {
             override fun onResponse(call: Call<CatFact>, response: Response<CatFact>) {
@@ -114,7 +127,9 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-
+    /**
+     * Checks if the device supports biometric authentication and initiates the authentication process.
+     */
     private fun checkBiometricSupport() {
         val biometricManager = BiometricManager.from(this)
         when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)) {
@@ -139,6 +154,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Sets up the biometric prompt for user authentication.
+     */
     private fun setupBiometricPrompt() {
         val executor = ContextCompat.getMainExecutor(this)
         biometricPrompt =
@@ -164,6 +182,8 @@ class MainActivity : AppCompatActivity() {
                     UserManager.userManagerScope.launch {
                         async {
                             UserManager.setUpSingleton(idToken)
+
+
                         }.await()
                         navigateTo(this@MainActivity, HomeActivity::class.java, null)
                     }
@@ -180,7 +200,6 @@ class MainActivity : AppCompatActivity() {
                 }
             })
 
-
         promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle("Biometric Authentication")
             .setSubtitle("Log in using your biometric credential")
@@ -188,6 +207,9 @@ class MainActivity : AppCompatActivity() {
             .build()
     }
 
+    /**
+     * Initiates the biometric authentication process.
+     */
     private fun authenticate() {
         biometricPrompt.authenticate(promptInfo)
     }

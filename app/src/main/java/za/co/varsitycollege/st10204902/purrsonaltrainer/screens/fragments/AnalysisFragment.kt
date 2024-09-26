@@ -26,6 +26,9 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/**
+ * Fragment for displaying analysis data using a pie chart.
+ */
 
 class AnalysisFragment : Fragment() {
     private var _binding: FragmentAnalysisBinding? = null
@@ -34,6 +37,13 @@ class AnalysisFragment : Fragment() {
     private lateinit var analysisBreakdownAdapter: AnalysisBreakdownAdapter
     private var categoryAnalysisList: List<CategoryAnalysis> = emptyList()
 
+    /**
+     * Called to have the fragment instantiate its user interface view.
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+     * @return Return the View for the fragment's UI, or null.
+     */
     private var explodedSlice: Int = -1
 
     override fun onCreateView(
@@ -72,6 +82,10 @@ class AnalysisFragment : Fragment() {
         }
     }
 
+    /**
+     * Sets up the pie chart with data.
+     * @param anyChartPie The AnyChartView to display the pie chart.
+     */
     private fun setupChart(anyChartPie: AnyChartView) {
         val pie: Pie = AnyChart.pie()
 
@@ -180,7 +194,10 @@ class AnalysisFragment : Fragment() {
         toolTips.fontWeight("bold")
     }
 
-    // Gets the dates from the date range picker
+
+    /**
+     * Sets up the date range picker and handles date selection.
+     */
     private fun setupDatePicker() {
         val openDatePickerButton = binding.openDatePickerButton
         val displayDateRangeSelected = binding.displayDateRangeSelected
@@ -242,6 +259,14 @@ class AnalysisFragment : Fragment() {
         setupChart(binding.anyChartPie)
     }
 
+
+    /**
+     * Calculates the distribution of exercises within a date range.
+     * @param user The user whose exercise data is being analyzed.
+     * @param startDate The start date of the range in yyyy-MM-dd format.
+     * @param endDate The end date of the range in yyyy-MM-dd format.
+     * @return A map of exercise categories to their counts.
+     */
     private fun calculateExerciseDistribution(
         user: User,
         startDate: Date,
@@ -261,6 +286,13 @@ class AnalysisFragment : Fragment() {
         return categoryCount
     }
 
+    /**
+     * Checks if a date is within a specified range.
+     * @param date The date to check.
+     * @param start The start date of the range.
+     * @param end The end date of the range.
+     * @return True if the date is within the range, false otherwise.
+     */
     private fun isWithinDateRange(date: Date, start: Date, end: Date): Boolean {
         return date in start..end
     }
@@ -283,6 +315,9 @@ class AnalysisFragment : Fragment() {
         return colors[position % colors.size] // Ensure position is within bounds
     }
 
+    /**
+     * Called when the view previously created by onCreateView has been detached from the fragment.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

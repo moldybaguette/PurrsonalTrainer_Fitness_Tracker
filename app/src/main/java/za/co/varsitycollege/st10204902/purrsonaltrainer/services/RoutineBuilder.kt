@@ -7,6 +7,13 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutExercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutSet
 import java.util.Date
 
+interface ExerciseAddedListener {
+    fun onExerciseAdded()
+}
+
+/**
+ * Builder class for creating a routine
+ */
 object RoutineBuilder {
     //-----------------------------------------------------------//
     //                          PROPERTIES                       //
@@ -35,6 +42,11 @@ object RoutineBuilder {
      * The color of the routine being built
      */
     var color: String = ""
+
+    /**
+     * List of subscribers to be notified when an exercise is added
+     */
+    private val exerciseAddedListeners = mutableListOf<ExerciseAddedListener>()
 
     //-----------------------------------------------------------//
     //                          METHODS                          //
@@ -78,23 +90,47 @@ object RoutineBuilder {
      */
     fun addExercise(exercise: Exercise) {
         // if the exercise is not already in the exercises list then add it
-        println("called")
         if (!exercises.contains(exercise.exerciseID)) {
             val tempExerciseID = exercise.exerciseID
             val tempExerciseName = exercise.exerciseName
             val tempCategory = exercise.category
-            val tempNotes = exercise.notes
+            var tempNotes = exercise.notes
+            if (!exercise.isCustom)
+            {
+                tempNotes = ""
+            }
             val tempMeasurementType = exercise.measurementType
             val tempSets = mapOf<String, WorkoutSet>()
-            exercises[tempExerciseID] = WorkoutExercise(tempExerciseID, tempExerciseName, tempCategory, tempSets , Date(), tempNotes, tempMeasurementType)
+            val workoutExercise = WorkoutExercise(tempExerciseID, tempExerciseName, tempCategory, tempSets , Date(), tempNotes, tempMeasurementType)
+            exercises[tempExerciseID] = workoutExercise
+
+            // Notifying subscribers that an exercise has been added
+            notifyExerciseAdded()
         }
     }
+    fun addWorkoutExercise(workoutExercise: WorkoutExercise)
+    {
+        val tempExerciseID = workoutExercise.exerciseID
+        exercises[tempExerciseID] = workoutExercise
 
+        // Notifying subscribers that an exercise has been added
+        notifyExerciseAdded()
+    }
+
+    /**
+     * Removes an exercise from the routine being built
+     * @param exercise The exercise to remove
+     * @return Boolean - True if the exercise was removed, false if not
+     */
     fun convertToWorkoutExercise(exercise: Exercise): WorkoutExercise {
         val tempExerciseID = exercise.exerciseID
         val tempExerciseName = exercise.exerciseName
         val tempCategory = exercise.category
-        val tempNotes = exercise.notes
+        var tempNotes = exercise.notes
+        if (!exercise.isCustom)
+        {
+            tempNotes = ""
+        }
         val tempSets = mapOf<String, WorkoutSet>()
         return WorkoutExercise(tempExerciseID, tempExerciseName, tempCategory, tempSets , Date(), tempNotes)
     }
@@ -112,6 +148,27 @@ object RoutineBuilder {
         color = ""
         return newRoutine
     }
+
+
+    // Exercise Added Methods
     //-----------------------------------------------------------//
+    /**
+     * Adds a listener to the exerciseAddedListeners
+     */
+    fun addExerciseAddedListener(listener: ExerciseAddedListener)
+    {
+        exerciseAddedListeners.add(listener)
+    }
+
+    /**
+     * Notifies subscribers that an exercise has been added
+     */
+    private fun notifyExerciseAdded()
+    {
+        for (listener in exerciseAddedListeners)
+        {
+            listener.onExerciseAdded()
+        }
+    }
 }
 //------------------------***EOF***-----------------------------//

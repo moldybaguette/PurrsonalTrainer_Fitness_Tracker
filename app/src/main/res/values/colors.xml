@@ -76,4 +76,10 @@
 
     <color name="comboBoxGrey">#EBEBEB</color>
     <color name="lowOpacityBlack">#80000000</color>
+
+    <!-- Set type colours -->
+    <color name="normalSet">#BBBBBB</color>
+    <color name="warmupSet">#FED06F</color>
+    <color name="failureSet">#FE562D</color>
+    <color name="dropSet">#1E97B9</color>
 </resources>

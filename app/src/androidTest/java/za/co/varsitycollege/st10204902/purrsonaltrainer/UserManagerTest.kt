@@ -4,6 +4,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import org.junit.After
@@ -20,22 +21,12 @@ import org.junit.runners.MethodSorters
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.AuthManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.CreateID
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.User
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserAchievement
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.*
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
 
 @RunWith(AndroidJUnit4::class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class UserManagerTest {
-
-    private lateinit var authManager: AuthManager
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-    private lateinit var currentUserID: String
-
-    private var flag = false
-
 
     companion object {
         private lateinit var authManager: AuthManager
@@ -44,8 +35,8 @@ class UserManagerTest {
         private lateinit var currentUserID: String
 
 
-        val testUser = User(
-            userID = "testUser",
+        private val testUser = User(
+            userID = "",
             name = "Test User",
             catName = "Test Cat",
             milkCoins = "0",
@@ -65,17 +56,21 @@ class UserManagerTest {
         fun oneTimeSingletonSetup() {
             runBlocking {
                 authManager = AuthManager(auth)
+                // Await the registration process
                 authManager.registerUser(CreateID.GenerateID() + "@gmail.com", "password")
 
-                currentUserID =
-                    auth.currentUser?.uid ?: ("Fail: @" + System.currentTimeMillis())
+                currentUserID = auth.currentUser?.uid ?: throw Exception("User registration failed")
 
+                delay(1000)
+                // Initialize UserManager with the correct currentUserID
+                UserManager.setUpSingleton(currentUserID)
 
-                async { UserManager.setUpSingleton(currentUserID) }.await()
+                // Ensure the test user is written under the currentUserID
+                val updatedTestUser = testUser.copy(userID = currentUserID)
+                database.getReference("users").child(currentUserID).setValue(updatedTestUser).await()
 
-                async{val databaseRef = database.getReference("users").child(testUser.userID)
-                databaseRef.setValue(testUser)}.await()
-                Thread.sleep(1000)
+                // Optionally, add a small delay to ensure data is written
+                delay(1000)
             }
         }
 
@@ -85,10 +80,7 @@ class UserManagerTest {
             runBlocking {
                 val user = auth.currentUser
                 user?.delete()?.await()
-                testUser.userID.let {
-                    database.getReference("users").child(testUser.userID).removeValue().await()
-                    //database.getReference("users").child(currentUserID).removeValue().await()
-                }
+                database.getReference("users").child(currentUserID).removeValue().await()
             }
         }
     }
@@ -164,17 +156,21 @@ class UserManagerTest {
 
     @Test
     fun addUserRoutine_withValidRoutine_addsRoutine() = runBlocking {
-        val routineID = CreateID.GenerateID()
+
         val routineName = "routineName"
         val routineDescription = "routineDescription"
-        val routineExercises = emptyMap<String, Exercise>()
-        val userRoutine = UserRoutine(routineID, routineName, routineDescription, routineExercises)
+        val routineExercises = mutableMapOf<String, WorkoutExercise>()
+        RoutineBuilder.name = routineName
+        RoutineBuilder.description = routineDescription
+        RoutineBuilder.exercises = routineExercises
+        RoutineBuilder.color = "color"
+        val userRoutine = RoutineBuilder.buildRoutine()
         UserManager.addUserRoutine(userRoutine)
         val updatedUser = UserManager.user
         assertNotNull("User should not be null", updatedUser)
         assertTrue(
             "Routine should be added",
-            updatedUser?.userRoutines?.containsKey(routineID) == true
+            updatedUser?.userRoutines?.containsKey(userRoutine.routineID) == true
         )
     }
 

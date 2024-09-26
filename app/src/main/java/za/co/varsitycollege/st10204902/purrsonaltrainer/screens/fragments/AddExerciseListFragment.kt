@@ -18,9 +18,16 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.ExerciseService
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
 
+/**
+ * Fragment for displaying a list of exercises and allowing the user to add exercises to a routine.
+ */
 class AddExerciseListFragment : Fragment() {
     private var categoryId: String? = null
 
+    /**
+     * Called to do initial creation of the fragment.
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -28,6 +35,13 @@ class AddExerciseListFragment : Fragment() {
         }
     }
 
+    /**
+     * Called to have the fragment instantiate its user interface view.
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+     * @return Return the View for the fragment's UI, or null.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,9 +58,12 @@ class AddExerciseListFragment : Fragment() {
         val addCategoryButton = view.findViewById<LinearLayout>(R.id.addCategoryButton)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
+        exerciseService.updateExerciseService()
+
         recyclerView.adapter = ExerciseAdapter(displayedExerciseList, requireContext(), object : ExerciseAdapter.OnItemClickListener{
             override fun onItemClick(exercise: Exercise) {
                 RoutineBuilder.addExercise(exercise)
+                exerciseService.updateExerciseService()
                 requireActivity().findViewById<FrameLayout>(R.id.chooseCategoryFragmentContainer).visibility = View.GONE
             }
        },categoryId, parentFragmentManager)
@@ -61,21 +78,20 @@ class AddExerciseListFragment : Fragment() {
             }
         }
 
-        txtSearch.addTextChangedListener(object : TextWatcher{
+        txtSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
+                // No action needed before text changes
             }
-
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 displayedExerciseList = exerciseService.searchExercises(s.toString(), fullListOfCategoryExercises)
-
             }
 
             override fun afterTextChanged(s: Editable?) {
                 recyclerView.adapter = ExerciseAdapter(displayedExerciseList, requireContext(), object : ExerciseAdapter.OnItemClickListener{
                     override fun onItemClick(exercise: Exercise) {
                         RoutineBuilder.addExercise(exercise)
+                        exerciseService.updateExerciseService()
                         requireActivity().findViewById<FrameLayout>(R.id.chooseCategoryFragmentContainer).visibility = View.GONE
                     }
                 },categoryId, parentFragmentManager)
@@ -87,6 +103,11 @@ class AddExerciseListFragment : Fragment() {
     companion object {
         private const val ARG_CATEGORY_ID = "categoryId"
 
+        /**
+         * Use this factory method to create a new instance of this fragment using the provided parameters.
+         * @param categoryId The ID of the category to display exercises for.
+         * @return A new instance of fragment AddExerciseListFragment.
+         */
         @JvmStatic
         fun newInstance(categoryId: String) =
             AddExerciseListFragment().apply {

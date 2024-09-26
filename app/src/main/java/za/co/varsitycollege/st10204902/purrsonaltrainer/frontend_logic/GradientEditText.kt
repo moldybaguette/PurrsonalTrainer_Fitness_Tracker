@@ -10,6 +10,14 @@ import android.view.MotionEvent
 import androidx.appcompat.widget.AppCompatEditText
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 
+/**
+ * A custom EditText with gradient text and stroke.
+ *
+ * @constructor Creates a GradientEditText with the specified attributes.
+ * @param context The context in which the EditText is used.
+ * @param attrs The attributes of the XML tag that is inflating the view.
+ * @param defStyleAttr An attribute in the current theme that contains a reference to a style resource that supplies default values for the view.
+ */
 class GradientEditText @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -59,6 +67,10 @@ class GradientEditText @JvmOverloads constructor(
         return super.onTouchEvent(event)
     }
 
+    /**
+     * Draws the text with gradient and stroke.
+     * @param canvas The canvas on which the background will be drawn.
+     */
     override fun onDraw(canvas: Canvas) {
         val text = text.toString()
         val x = ((width - paint.measureText(text)) / 2)

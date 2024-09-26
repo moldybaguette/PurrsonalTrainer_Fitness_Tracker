@@ -19,19 +19,27 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
+/**
+ * Activity for handling user registration.
+ */
 class RegisterActivity : AppCompatActivity() {
+    /**
+     * Called when the activity is first created.
+     * @param savedInstanceState If the activity is being re-created from a previous saved state, this is the state.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register) //navigating to the register view
+        setContentView(R.layout.activity_register) // Navigating to the register view
 
-        val registerButton: AppCompatButton = findViewById(R.id.registerButton) //getting the register button
-        val originalBackground = registerButton.background //getting the original background of the button
+        val registerButton: AppCompatButton = findViewById(R.id.registerButton) // Getting the register button
+        val originalBackground = registerButton.background // Getting the original background of the button
 
         // Set the layout for the activity
         var email = findViewById<EditText>(R.id.emailInput)
         var password = findViewById<EditText>(R.id.passwordInput)
         var confirmPassword = findViewById<EditText>(R.id.passwordConfirmInput)
         Log.d("RegisterActivity", "OnCreate happened")
+
         // Set the on click listener for the register button
         registerButton.setOnClickListener {
             Log.d("RegisterActivity", "Register button clicked")
@@ -50,27 +58,27 @@ class RegisterActivity : AppCompatActivity() {
             // Validate email
             if (!validator.validateEmail(emailText)) {
                 email.error = "Invalid email"
-               Log.d("RegisterActivity","Invalid email")
+                Log.d("RegisterActivity", "Invalid email")
                 return@setOnClickListener
             }
 
             // Check if passwords match
             if (passwordText != confirmPasswordText) {
                 confirmPassword.error = "Passwords do not match"
-                Log.d("RegisterActivity","Passwords do not match")
+                Log.d("RegisterActivity", "Passwords do not match")
                 return@setOnClickListener
             }
 
             // Validate password complexity
             if (!validator.validatePasswordComplexity(passwordText)) {
                 password.error = "Password not valid"
-                Log.d("RegisterActivity","Password not valid")
+                Log.d("RegisterActivity", "Password not valid")
                 return@setOnClickListener
             }
 
             // Register the user
             CoroutineScope(Dispatchers.IO).launch {
-                Log.d("RegisterActivity","the coroutine is running")
+                Log.d("RegisterActivity", "The coroutine is running")
                 val authManager = AuthManager()
                 val result = authManager.registerUser(emailText, passwordText)
                 println("Result: $result")
@@ -94,7 +102,7 @@ class RegisterActivity : AppCompatActivity() {
                 } else {
                     runOnUiThread {
                         Toast.makeText(this@RegisterActivity, "Unable to complete registration. Please try again.", Toast.LENGTH_SHORT).show()
-                        Log.e("LoginFragment", "error: ${result.exceptionOrNull()}")
+                        Log.e("LoginFragment", "Error: ${result.exceptionOrNull()}")
                     }
                 }
             }
