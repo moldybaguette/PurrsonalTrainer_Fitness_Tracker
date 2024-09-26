@@ -10,7 +10,7 @@ on:
       - main
       - dev
 
-# Step a: Define permissions to allow creating check runs
+# Define permissions to allow creating check runs
 permissions:
   actions: read
   contents: read
@@ -181,7 +181,7 @@ jobs:
           force-avd-creation: true
           emulator-options: -no-window -gpu swiftshader_indirect
           disable-animations: true
-          timeout: 600
+          emulator-boot-timeout: 600
 
       # Step 12: Set up Firebase Credentials
       - name: Set up Firebase Credentials
@@ -201,14 +201,14 @@ jobs:
 
       # Step 15: Upload Instrumented Test Artifacts
       - name: Upload Instrumented Test Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: instrumented-test-artifacts
           path: |
             app/build/test-results/androidTest/connected/
             app/build/reports/androidTests/connected/index.html
 
-      # Step 16: Publish Instrumented Test Results with dorny/test-reporter@v2
+      # Step 16: Publish Instrumented Test Results with dorny/test-reporter@v1
       - name: Publish Instrumented Test Results
         uses: dorny/test-reporter@v1
         if: always()
@@ -218,4 +218,3 @@ jobs:
           reporter: java-junit
           list-tests: all
           fail-on-error: true
-        
