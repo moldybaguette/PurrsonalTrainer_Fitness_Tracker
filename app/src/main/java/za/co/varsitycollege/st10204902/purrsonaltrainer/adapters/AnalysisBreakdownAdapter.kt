@@ -1,6 +1,7 @@
 // za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.AnalysisBreakdownAdapter.kt
 package za.co.varsitycollege.st10204902.purrsonaltrainer.adapters
 
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,9 +36,9 @@ class AnalysisBreakdownAdapter(
         holder.percentageTextView.text = "${String.format("%.1f", item.percentage)}%"
 
         // Set the color indicator
-        holder.colorIndicator.setBackgroundColor(
-            ContextCompat.getColor(holder.itemView.context, item.color)
-        )
+        holder.colorIndicator.setBackgroundResource(R.drawable.circle_shape)
+        (holder.colorIndicator.background as GradientDrawable).setColor(ContextCompat.getColor(holder.itemView.context, item.color))
+
         holder.categoryNameTextView.setTextColor(
             ContextCompat.getColor(holder.itemView.context, item.color)
         )

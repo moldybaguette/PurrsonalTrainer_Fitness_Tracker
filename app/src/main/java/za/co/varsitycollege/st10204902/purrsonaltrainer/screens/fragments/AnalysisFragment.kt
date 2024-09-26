@@ -1,11 +1,13 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anychart.AnyChart
@@ -53,6 +55,7 @@ class AnalysisFragment : Fragment() {
         // Initialize Pie Chart
         setupChart()
 
+
         // Set default date range
         val defaultStartDate =
             SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse("2024-01-01") ?: Date(0)
@@ -62,7 +65,7 @@ class AnalysisFragment : Fragment() {
         val sdfDisplay = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         val myText = "${sdfDisplay.format(defaultStartDate)} - ${sdfDisplay.format(defaultEndDate)}"
         binding.displayDateRangeSelected.text = myText
-        
+
         // Initial chart and adapter setup with default date range
         UserManager.user?.let { user ->
             updateAnalysis(user, defaultStartDate, defaultEndDate)
@@ -338,12 +341,20 @@ class AnalysisFragment : Fragment() {
      * @param pie The pie chart instance.
      */
     private fun configureTitle(pie: Pie) {
-        pie.title().enabled(true)
+        // Get the custom font from resources
+        val typeface: Typeface? = ResourcesCompat.getFont(requireContext(), R.font.knicknack_medium)
+
+        // Configure the title
+        pie.title().enabled(false)
         pie.title().text("Set Distribution")
-        pie.title().fontColor("black")
-        pie.title().fontSize(24)
+        pie.title().fontColor("hint_text")
+        pie.title().fontSize(35)
         pie.title().fontWeight("bold")
-        pie.title().fontFamily("")
+
+        // Set the font family
+        typeface?.let {
+            pie.title().fontFamily(it.toString())
+        }
     }
 
     /**
@@ -357,6 +368,7 @@ class AnalysisFragment : Fragment() {
         labels.fontColor("black")
         labels.fontSize(12)
         labels.fontWeight("bold")
+        pie.title().fontFamily("knicknack_medium")
     }
 
     /**

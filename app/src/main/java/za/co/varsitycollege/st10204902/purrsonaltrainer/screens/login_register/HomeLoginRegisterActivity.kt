@@ -83,9 +83,14 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
             }, 200) // Delay in milliseconds
         }
 
-
+        val originalBackgroundGoogle = binding.googleSignInButton.background
         binding.googleSignInButton.setOnClickListener() {
             soundManager.playSound()
+            binding.googleSignInButton.setBackgroundResource(R.drawable.svg_grey_bblbtn_clicked) // Set the background to the clicked background
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.googleSignInButton.background =
+                    originalBackgroundGoogle // Restore the original background after the delay
+            }, 200) // Delay in milliseconds
             signInWithGoogle()
         }
         binding.loginDismissArea.setOnClickListener { dismissLoginPopup() }
