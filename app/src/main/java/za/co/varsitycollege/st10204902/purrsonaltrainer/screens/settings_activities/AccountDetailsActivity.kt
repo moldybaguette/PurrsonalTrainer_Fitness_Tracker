@@ -7,6 +7,7 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -15,6 +16,7 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.MainActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityAccountDetailsBinding
+import za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.SoundManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.SettingsActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.DataWipeConfirmationFragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.PasswordReentryFragment
@@ -28,6 +30,7 @@ class AccountDetailsActivity : AppCompatActivity(),
     DataWipeConfirmationFragment.OnDataWipeConfirmationListener {
 
     private lateinit var binding: ActivityAccountDetailsBinding
+    private lateinit var soundManager: SoundManager
     private lateinit var auth: FirebaseAuth
 
     /**
@@ -36,6 +39,7 @@ class AccountDetailsActivity : AppCompatActivity(),
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        soundManager = SoundManager(this, R.raw.custom_tap_sound)
         enableEdgeToEdge()
         binding = ActivityAccountDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -57,6 +61,8 @@ class AccountDetailsActivity : AppCompatActivity(),
         }
 
         binding.doneButtonAccountDetails.setOnClickListener {
+            soundManager.playSound()
+            binding.doneButtonAccountDetails.setBackgroundResource(R.drawable.svg_green_bblbtn_clicked)
             if(binding.passwordInput.text.isNotEmpty()) {
                 launchPasswordReentryFragment()
             }
@@ -65,8 +71,14 @@ class AccountDetailsActivity : AppCompatActivity(),
             }
 
         }
-        binding.resetAppButton.setOnClickListener { launchDataWipeConfirmationFragment() }
+        binding.resetAppButton.setOnClickListener {
+            soundManager.playSound()
+            binding.resetAppButton.setBackgroundResource(R.drawable.svg_orange_bblbtn_clicked)
+            launchDataWipeConfirmationFragment()
+        }
         binding.logOutButton.setOnClickListener {
+            soundManager.playSound()
+            binding.logOutButton.setBackgroundResource(R.drawable.svg_blue_bblbtn_clicked)
             auth.signOut()
             navigateTo(this, MainActivity::class.java, null)
         }
