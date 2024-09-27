@@ -177,7 +177,7 @@ jobs:
           api-level: 33
           target: google_apis
           arch: x86_64
-          profile: Nexus_5X
+          profile: Pixel_6
           force-avd-creation: true
           emulator-options: -no-window -gpu swiftshader_indirect
           disable-animations: true
