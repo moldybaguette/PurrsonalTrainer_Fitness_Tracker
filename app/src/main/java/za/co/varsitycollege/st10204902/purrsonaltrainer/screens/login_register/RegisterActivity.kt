@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -44,7 +46,17 @@ class RegisterActivity : AppCompatActivity() {
         var email = findViewById<EditText>(R.id.emailInput)
         var password = findViewById<EditText>(R.id.passwordInput)
         var confirmPassword = findViewById<EditText>(R.id.passwordConfirmInput)
+        var appLogo = findViewById<View>(R.id.appLogo)
+        var registerCard = findViewById<View>(R.id.registerCard)
         Log.d("RegisterActivity", "OnCreate happened")
+
+        applyFloatUpAnimation(registerButton)
+        applyFloatUpAnimation(email)
+        applyFloatUpAnimation(password)
+        applyFloatUpAnimation(confirmPassword)
+        applyFloatUpAnimation(appLogo)
+        applyFloatUpAnimation(registerCard)
+
         // Set the on click listener for the register button
         registerButton.setOnClickListener {
             soundManager.playSound()
@@ -115,4 +127,10 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun applyFloatUpAnimation(view: View) {
+        val animation = AnimationUtils.loadAnimation(this, R.anim.float_up)
+        view.startAnimation(animation)
+    }
+
 }
