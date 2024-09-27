@@ -4,9 +4,11 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
-    android:layout_gravity="center_vertical">
+    android:layout_gravity="center_vertical"
+    android:windowSoftInputMode="adjustResize">
 
-    <Spinner
+
+<Spinner
         android:id="@+id/setType"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
