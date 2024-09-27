@@ -54,6 +54,14 @@
             <include
                 layout="@layout/component_workouttime_bodyweight" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/workoutExercises"
+                android:paddingHorizontal="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/component_exercisedetails_tracking_time"
+                tools:itemCount="1"/>
+
             <LinearLayout
                 android:id="@+id/addExerciseButton"
                 android:layout_marginTop="25dp"
