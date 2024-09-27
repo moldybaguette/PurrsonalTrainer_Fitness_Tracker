@@ -1,24 +1,33 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.workout_activities
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.ColorSpinnerAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.CreateRoutineExercisesAdapter
-import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.RoutineExerciseListAdapter
-import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.RoutineListAdapter
-import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.WorkoutExercisesAdapter
+import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.OnSetsUpdatedListener
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityMadeRoutineBinding
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutExercise
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutSet
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.ChooseCategoryFragment
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.ExerciseAddedListener
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.SlideUpPopup
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
+import java.util.Date
 
-class MadeRoutineActivity : AppCompatActivity() {
+class MadeRoutineActivity : AppCompatActivity(), ExerciseAddedListener, OnSetsUpdatedListener {
     private lateinit var binding: ActivityMadeRoutineBinding
     private lateinit var exercisesRecyclerView: RecyclerView
     var boundRoutine: UserRoutine? = null
@@ -37,6 +46,58 @@ class MadeRoutineActivity : AppCompatActivity() {
 
         // Bind routine details to fields
         bindRoutineDetails()
+
+        // Adding an exercise Onclick setup
+        setupAddExerciseButton()
+
+        if (boundRoutine != null)
+            setupDoneButton()
+    }
+
+    private fun setupDoneButton()
+    {
+        // Subscribing this activity to the ExerciseAddedListener for the RoutineBuilder
+        RoutineBuilder.addExerciseAddedListener(this)
+        // Check for existing exercises
+        this.onExerciseAdded()
+
+        val txtRoutineName = binding.routineTitle
+        val routineColor = binding.colorPickerSpinner.selectedItem.toString()
+        val txtDescription = binding.notes
+
+        binding.doneButton.setOnClickListener {
+            // Add Routine to database
+            RoutineBuilder.setRoutineName(txtRoutineName.text.toString())
+            RoutineBuilder.setRoutineColor(routineColor)
+            RoutineBuilder.setRoutineDescription(txtDescription.text.toString())
+
+            if (RoutineBuilder.hasAnExercise())
+                UserManager.updateUserRoutine(boundRoutine!!.routineID, RoutineBuilder.buildRoutine())
+            else
+                Log.d("CreateRoutineActivity", "No exercises added")
+
+            // UI stuffs (Anneme)
+            binding.doneButton.setBackgroundResource(R.drawable.svg_green_bblbtn_clicked)
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.doneButton.background = binding.doneButton.background
+            }, 400)
+
+            // Navigating back to home activity
+            navigateTo(this, HomeActivity::class.java, null)
+        }
+    }
+
+    private fun setupAddExerciseButton()
+    {
+        val addButton = binding.addExerciseButton
+        val popup = SlideUpPopup(
+            supportFragmentManager,
+            binding.chooseCategoryFragmentContainer,
+            binding.chooseCategoryDismissArea,
+            ChooseCategoryFragment(),
+            this)
+
+        addButton.setOnClickListener { popup.showPopup() }
     }
 
     private fun bindRoutineDetails()
@@ -94,13 +155,19 @@ class MadeRoutineActivity : AppCompatActivity() {
     private fun setupExercises()
     {
         this.exercisesRecyclerView = binding.exercisesRecyclerView
-
+        val workoutExercises = boundRoutine!!.exercises.values.toList()
         // Add exercises if navigated to from a routine
         if (boundRoutine != null)
         {
-            val adapter = CreateRoutineExercisesAdapter(boundRoutine!!.exercises.values.toList(), this)
+            val adapter = CreateRoutineExercisesAdapter(workoutExercises, this)
             exercisesRecyclerView.adapter = adapter
             exercisesRecyclerView.layoutManager = LinearLayoutManager(this)
+        }
+
+        // Setup RoutineBuilder
+        for (exercise in workoutExercises)
+        {
+            RoutineBuilder.addWorkoutExercise(exercise)
         }
     }
 
@@ -116,6 +183,38 @@ class MadeRoutineActivity : AppCompatActivity() {
 
             // Setting bound routine
             boundRoutine = UserManager.user!!.userRoutines[routineID] // TESTED, Works
+        }
+    }
+
+    override fun onExerciseAdded()
+    {
+        if (RoutineBuilder.hasAnExercise()) {
+            try
+            {
+                val recyclerView = binding.exercisesRecyclerView
+                val userExercises = RoutineBuilder.exercises.values.toMutableList()
+                val adapter = CreateRoutineExercisesAdapter(userExercises, this)
+                adapter.addSetUpdatedListener(this)
+                recyclerView.adapter = adapter
+                recyclerView.layoutManager = LinearLayoutManager(this)
+            }
+            catch (e: Exception)
+            {
+                Log.e("Failed to get exercises", e.toString())
+            }
+        }
+    }
+
+    override fun onSetsUpdated(exerciseID: String, set: WorkoutSet)
+    {
+        UserManager.addWorkoutSetToWorkoutExerciseInRoutine(RoutineBuilder.routineID ,exerciseID, set)
+        val newSets = RoutineBuilder.exercises[exerciseID]?.sets?.plus(set.workoutSetID to set)
+
+        if (newSets != null)
+        {
+            val oldExercise = RoutineBuilder.exercises[exerciseID]
+            val newExercise = WorkoutExercise(exerciseID, oldExercise?.exerciseName!!, oldExercise.category, newSets, Date(), oldExercise.notes, oldExercise.measurementType  )
+            RoutineBuilder.addWorkoutExercise(newExercise)
         }
     }
 }
