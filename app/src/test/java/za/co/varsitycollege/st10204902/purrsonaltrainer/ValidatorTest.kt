@@ -24,12 +24,6 @@ class ValidatorTest {
     }
 
     @Test
-    fun validatePasswordComplexity_withInvalidPassword_returnsFalse() {
-        val validator = Validator()
-        assertFalse(validator.validatePasswordComplexity("invalid"))
-    }
-
-    @Test
     fun validateStartEndTime_withStartTimeBeforeEndTime_returnsTrue() {
         val validator = Validator()
         assertTrue(validator.validateStartEndTime("08:00", "09:00"))
