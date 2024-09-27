@@ -3,7 +3,6 @@
     <string name="app_name">Purrsonal Trainer</string>
     <string name="login">Teken in</string>
     <string name="register">Registreer</string>
-    <string name="register">Registreer</string>
     <string name="username">" Gebruikersnaam"</string>
     <string name="google_sso">Teken in met Google</string>
     <string name="email">E-pos</string>
@@ -19,7 +18,6 @@
     <string name="catSettings">Kat instellings</string>
     <string name="statistics">Statistieke</string>
     <string name="settingsTitle">Instellings</string>
-    <string name="settingsTitle">I</string>
     <string name="routines">" Roetines"</string>
     <string name="yourRoutines">Jou roetines</string>
     <string name="newRoutine">Nuwe Roetine</string>

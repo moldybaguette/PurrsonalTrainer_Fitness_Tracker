@@ -31,7 +31,7 @@ class CreateExerciseFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            category = it.getString("catagoryID")
+            category = it.getString("category")
             val exerciseID = it.getString("exerciseID")
             if (exerciseID != null) {
                 exercise = UserManager.user?.userExercises?.get(exerciseID)
@@ -75,7 +75,7 @@ class CreateExerciseFragment : Fragment() {
             }else{
                 val newExercise = Exercise(
                     exerciseName = title.text.toString(),
-                    category = workoutType.selectedItem.toString(),
+                    category = category!!,
                     notes = notes.text.toString(),
                     // set measurement type based on spinner
                     measurementType = workoutType.selectedItem.toString(),

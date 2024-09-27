@@ -117,7 +117,7 @@ data class Exercise(
     val category: String = "",
     val notes: String = "",
     val measurementType: String = "",
-    val isCustom: Boolean = false
+    val isCustom: Boolean = true
 )
 
 /**

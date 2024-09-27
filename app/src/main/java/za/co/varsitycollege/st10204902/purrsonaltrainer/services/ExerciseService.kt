@@ -23,25 +23,44 @@ class ExerciseService(private val context: Context) {
     /**
      * List of all default exercise categories
      */
-    val defaultCategories = listOf(
-        "lower back",
-        "biceps",
-        "traps",
-        "adductors",
-        "abs",
-        "middle back",
-        "glutes",
-        "neck",
-        "calves",
-        "shoulders",
-        "triceps",
-        "forearms",
-        "abductors",
-        "hamstrings",
-        "quads",
-        "lats",
-        "chest"
-    )
+    val defaultCategories: List<String> = if (Locale.getDefault().language == "af") {
+        listOf(
+            "adduktore",
+            "middelrug",
+            "kalfspiere",
+            "gluteus",
+            "hamstrings",
+            "lats",
+            "triseps",
+            "bors",
+            "rug",
+            "maagspiere",
+            "skouers",
+            "biseps",
+            "laerug",
+            "kwadriseps"
+        )
+    } else {
+        listOf(
+            "lower back",
+            "biceps",
+            "traps",
+            "adductors",
+            "abs",
+            "middle back",
+            "glutes",
+            "neck",
+            "calves",
+            "shoulders",
+            "triceps",
+            "forearms",
+            "abductors",
+            "hamstrings",
+            "quads",
+            "lats",
+            "chest"
+        )
+    }
 
     //-----------------------------------------------------------//
     //                          METHODS                          //
@@ -55,9 +74,9 @@ class ExerciseService(private val context: Context) {
         val currentLocale = Locale.getDefault()
         val languageCode = currentLocale.language
         val jsonFileName = if (languageCode == "af") {
-            "globalExercises_eng.json" // Afrikaans version
-        } else {
             "globalExercises_af.json" // English version
+        } else {
+            "globalExercises_eng.json" // Afrikaans version
         }
         val jsonFile = context.assets.open(jsonFileName)
         // Use InputStreamReader to read the file
