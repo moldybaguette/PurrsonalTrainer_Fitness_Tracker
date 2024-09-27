@@ -100,12 +100,15 @@ class TableAdapter(private val tableData: List<TableCell>,
 
         val font = ResourcesCompat.getFont(holder.itemView.context, R.font.knicknack_medium)
 
+        val textColour = ContextCompat.getColor(holder.itemView.context, R.color.hint_text)
+
         when(holder) {
             is HeaderViewHolder -> {
                 holder.binding.headerTextView.text = cell.text
                 // Customize header appearance if needed
                 holder.binding.headerTextView.setTypeface(font, Typeface.BOLD)
                 holder.binding.headerTextView.gravity = Gravity.CENTER
+                holder.binding.headerTextView.setTextColor(textColour)
             }
             is LabelViewHolder -> {
                 holder.binding.labelTextView.text = cell.text
@@ -118,7 +121,7 @@ class TableAdapter(private val tableData: List<TableCell>,
                 holder.binding.dataTextView.text = cell.text
                 // Set text color based on cell content
                 if (cell.text != "---") {
-                    holder.binding.dataTextView.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.black))
+                    holder.binding.dataTextView.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.hint_text))
                 } else {
                     holder.binding.dataTextView.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.rmGrey))
                 }

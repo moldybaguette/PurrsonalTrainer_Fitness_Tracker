@@ -37,11 +37,11 @@ interface OnRoutineItemClickListener {
  * @property listener The listener for handling item click events.
  */
 class RoutineListAdapter(
-    private val routines: List<UserRoutine>,
+    private var routines: List<UserRoutine>,
     private val context: Context,
     private val listener: OnRoutineItemClickListener,
-) : RecyclerView.Adapter<RoutineListAdapter.RoutineViewHolder>() {
-
+) : RecyclerView.Adapter<RoutineListAdapter.RoutineViewHolder>()
+{
     /**
      * ViewHolder class for holding the views of a routine item.
      *
@@ -89,6 +89,21 @@ class RoutineListAdapter(
         }
     }
 
+    fun removeItem(position: Int) {
+        val mutableList = routines.toMutableList()
+        mutableList.removeAt(position)
+        routines = mutableList
+        notifyItemRemoved(position)
+    }
+
+    fun restoreItem(item: UserRoutine, position: Int) {
+        val mutableList = routines.toMutableList()
+        mutableList.add(position, item)
+        routines = mutableList
+        notifyItemInserted(position)
+    }
+
+    fun getRoutineAt(position: Int): UserRoutine = routines[position]
     /**
      * Returns the total number of items in the list.
      *
