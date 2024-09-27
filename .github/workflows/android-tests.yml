@@ -114,14 +114,14 @@ jobs:
       # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
-
+  
       # Step 2: Set up JDK 17
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
-
+  
       # Step 3: Set up Android SDK using the correct action
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
@@ -129,11 +129,11 @@ jobs:
           api-level: 33
           target: google_apis
           components: platform-tools,build-tools-33.0.0
-
+  
       # Step 4: Add platform tools to PATH using the recommended method
       - name: Add platform tools to PATH
         run: echo "${ANDROID_SDK_ROOT}/platform-tools" >> $GITHUB_PATH
-
+  
       # Step 5: Cache Gradle dependencies
       - name: Cache Gradle dependencies
         uses: actions/cache@v3
@@ -144,7 +144,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-
+  
       # Step 6: Cache Android SDK
       - name: Cache Android SDK
         uses: actions/cache@v3
@@ -153,48 +153,69 @@ jobs:
           key: ${{ runner.os }}-android-sdk
           restore-keys: |
             ${{ runner.os }}-android-sdk-
-
+  
       # Step 7: Create Gradle Directory
       - name: Create Gradle Directory
         run: mkdir -p ~/.gradle
-
+  
       # Step 8: Enable Gradle Daemon
       - name: Enable Gradle Daemon
         run: echo "org.gradle.daemon=true" >> ~/.gradle/gradle.properties
-
+  
       # Step 9: Download dependencies
       - name: Download Dependencies
         run: ./gradlew dependencies
-
+  
       # Step 10: Build the project
       - name: Build with Gradle
         run: ./gradlew assembleDebug
-
-      # Step 11: Set up Firebase Credentials
-      - name: Set up Firebase Credentials
-        env:
-          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_TESTLAB_ACCOUNT }}
-        run: |
-          echo "$FIREBASE_TESTLAB_ACCOUNT" > $HOME/firebase_credentials.json
-          echo "GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase_credentials.json" >> $GITHUB_ENV
-
-      # Step 12: Install Google Cloud SDK
-      - name: Install Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+  
+      # Step 11: Run Unit Tests
+      - name: Run Unit Tests
+        run: ./gradlew testDebugUnitTest
+  
+      # Step 12: List Unit Test Results (for debugging)
+      - name: List Unit Test Results
+        run: ls -la app/build/test-results/testDebugUnitTest/
+  
+      # Step 13: Upload Unit Test Artifacts
+      - name: Upload Unit Test Artifacts
+        uses: actions/upload-artifact@v3
         with:
-          service_account_key: ${{ secrets.FIREBASE_TESTLAB_ACCOUNT }}
-          project_id: purrsonal-trainer
-          export_default_credentials: true
-
-      # Step 13: Authenticate with Google Cloud
-      - name: Authenticate with Google Cloud
-        run: gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
-
-      # Step 14: Build the Test APK
+          name: unit-test-artifacts
+          path: |
+            app/build/test-results/testDebugUnitTest/
+            app/build/reports/tests/testDebugUnitTest/index.html
+  
+      # Step 14: Publish Unit Test Results with dorny/test-reporter@v1
+      - name: Publish Unit Test Results
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Unit Tests
+          path: app/build/test-results/testDebugUnitTest/*.xml
+          reporter: java-junit
+          list-tests: all
+          fail-on-error: true
+  
+      # Step 15: Authenticate with Google Cloud using auth@v2
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.FIREBASE_TESTLAB_ACCOUNT }}'
+  
+      # Step 16: Set up Cloud SDK using setup-gcloud@v2
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v2'
+        with:
+          project_id: purrsonal-trainer  # Replace with your actual Firebase project ID
+          install_components: 'beta'    # Optional: Install additional components if needed
+  
+      # Step 17: Build the Test APK
       - name: Build Test APK
         run: ./gradlew assembleDebugAndroidTest
-
-      # Step 15: Run Instrumented Tests on Firebase Test Lab
+  
+      # Step 18: Run Instrumented Tests on Firebase Test Lab
       - name: Run Instrumented Tests on Firebase Test Lab
         run: |
           gcloud firebase test android run \
@@ -204,18 +225,26 @@ jobs:
             --device model=Nexus5,version=30,locale=en,orientation=portrait \
             --results-dir=./firebase-test-results \
             --timeout=30m
-
-      # Step 16: List Test Results (for debugging)
+  
+      # Step 19: List Test Results (for debugging)
       - name: List Test Results
         run: ls -la ./firebase-test-results/
-
-      # Step 17: Upload Firebase Test Lab Results as Artifacts
+  
+      # Step 20: Upload Firebase Test Lab Results as Artifacts
       - name: Upload Firebase Test Lab Results
         uses: actions/upload-artifact@v3
         with:
           name: firebase-testlab-results
           path: ./firebase-test-results/
+  
+      # Step 21: Publish Firebase Test Lab Results (Optional)
+      - name: Publish Firebase Test Lab Results
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Firebase Test Lab Tests
+          path: ./firebase-test-results/**/*.xml
+          reporter: java-junit
+          list-tests: all
+          fail-on-error: true
 
-      # Step 18: Publish Firebase Test Lab Results (Optional)
-      # You can parse the test results and report them similarly to unit tests
-      # This step can be customized based on your reporting needs
