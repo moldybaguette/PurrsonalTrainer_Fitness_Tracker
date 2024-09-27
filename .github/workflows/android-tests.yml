@@ -189,6 +189,12 @@ jobs:
         run: |
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
+      - name: Cleanup Disk Space
+        run: |
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          sudo rm -rf /tmp/*
+          sudo rm -rf /var/tmp/
   
       # Step 13: Set up and Run Instrumented Tests using Android Emulator Runner
       - name: Run Instrumented Tests on Emulator
@@ -197,6 +203,7 @@ jobs:
           api-level: 33
           target: google_apis
           arch: x86_64
+          disk-size: 6G
           force-avd-creation: true
           emulator-options: -no-window -no-boot-anim -no-audio -no-snapshot-load -gpu swiftshader_indirect
           disable-animations: true
