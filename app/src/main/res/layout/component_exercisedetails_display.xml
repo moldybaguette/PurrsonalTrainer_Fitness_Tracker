@@ -5,8 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="@drawable/bg_userinput"
-    android:windowSoftInputMode="adjustPan">
+    android:background="@drawable/bg_userinput">
 
     <!-- Exercise Name -->
     <TextView
@@ -48,9 +47,7 @@
             android:fontFamily="@font/rounded"
             android:textColor="#C3C3C3"
             android:textSize="15sp"
-            android:background="@color/transparent"
-            android:focusable="true"
-            android:focusableInTouchMode="true"/>
+            android:background="@color/transparent"/>
     </LinearLayout>
 
     <!-- Column Headers -->
