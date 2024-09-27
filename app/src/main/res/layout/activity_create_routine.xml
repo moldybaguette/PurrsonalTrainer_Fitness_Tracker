@@ -6,9 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".screens.workout_activities.MadeRoutineActivity"
-    android:background="@drawable/bg_purple_gradient">
+    android:background="@drawable/bg_purple_gradient"
+    android:windowSoftInputMode="adjustPan">
 
-    <ImageView
+
+<ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
