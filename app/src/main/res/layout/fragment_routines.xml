@@ -34,7 +34,7 @@
                 android:text="@string/routines"
                 android:fontFamily="@font/knicknack_black"
                 android:textSize="55sp"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="-70dp"
                 app:startColor="@color/routine_start_color"
                 app:endColor="@color/routine_end_color"
                 app:strokeColor="@color/default_stroke_color"
@@ -63,7 +63,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="0"
             tools:listitem="@layout/item_saved_workouts_display"
-            tools:itemCount="5"/>
+            tools:itemCount="5"
+            android:layout_marginTop="-25dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

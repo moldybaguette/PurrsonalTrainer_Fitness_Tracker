@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.AuthManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
+import za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.SoundManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
@@ -28,12 +29,15 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
  */
 class LoginFragment : Fragment() {
 
+    private lateinit var soundManager: SoundManager
+
     /**
      * Called to do initial creation of the fragment.
      * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
         }
     }
@@ -49,6 +53,8 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        soundManager = SoundManager(requireContext(), R.raw.custom_tap_sound)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
@@ -67,6 +73,8 @@ class LoginFragment : Fragment() {
         val originalBackgroundLogin = loginButton.background
 
         loginButton.setOnClickListener {
+            soundManager.playSound()
+
             loginButton.setBackgroundResource(R.drawable.svg_orange_bblbtn_clicked)
 
             // Revert the background after 2 seconds (2000 milliseconds)
