@@ -11,11 +11,16 @@ import androidx.recyclerview.widget.RecyclerView
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.CategoryAnalysis
 
+/**
+ * Adapter for the Analysis Breakdown RecyclerView
+ */
 class AnalysisBreakdownAdapter(
     private var categoryAnalysisList: List<CategoryAnalysis>
 ) : RecyclerView.Adapter<AnalysisBreakdownAdapter.AnalysisViewHolder>() {
 
-    // ViewHolder Class
+    /**
+     * ViewHolder for the Analysis Breakdown RecyclerView
+     */
     class AnalysisViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val colorIndicator: View = itemView.findViewById(R.id.colorIndicator)
         val categoryNameTextView: TextView = itemView.findViewById(R.id.categoryNameTextView)
@@ -23,12 +28,18 @@ class AnalysisBreakdownAdapter(
         val percentageTextView: TextView = itemView.findViewById(R.id.percentageTextView)
     }
 
+    /**
+     * Create a new ViewHolder
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnalysisViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_analysis_info, parent, false)
         return AnalysisViewHolder(view)
     }
 
+    /**
+     * Bind data to the ViewHolder
+     */
     override fun onBindViewHolder(holder: AnalysisViewHolder, position: Int) {
         val item = categoryAnalysisList[position]
         holder.categoryNameTextView.text = item.categoryName
@@ -44,9 +55,14 @@ class AnalysisBreakdownAdapter(
         )
     }
 
+    /**
+     * Get the number of items in the list
+     */
     override fun getItemCount(): Int = categoryAnalysisList.size
 
-    // Method to update data
+    /**
+     * Update the data in the list
+     */
     fun updateData(newData: List<CategoryAnalysis>) {
         categoryAnalysisList = newData
         notifyDataSetChanged()

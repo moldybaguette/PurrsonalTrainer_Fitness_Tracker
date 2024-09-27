@@ -1,6 +1,104 @@
 # PurrsonalTrainer
 
-# styleGuide
+# Project Title
+
+Brief description of the project.
+
+## Table of Contents
+
+- [PurrsonalTrainer](#purrsonaltrainer)
+- [Project Title](#project-title)
+  - [Table of Contents](#table-of-contents)
+  - [Project Title and Description](#project-title-and-description)
+  - [Installation Instructions](#installation-instructions)
+  - [Usage](#usage)
+  - [Features](#features)
+  - [Configuration](#configuration)
+  - [Deployment](#deployment)
+  - [Credits](#credits)
+  - [Documentation](#documentation)
+  - [Roadmap](#roadmap)
+  - [Contact Information](#contact-information)
+  - [Testing](#testing)
+  - [Security](#security)
+  - [Screenshots or Demos](#screenshots-or-demos)
+  - [Style Guide](#style-guide)
+    - [styleGuide](#styleguide)
+- [Classes](#classes)
+  - [naming](#naming)
+  - [organization](#organization)
+  - [Notes](#notes)
+- [Methods](#methods)
+  - [naming](#naming-1)
+  - [Modifiers](#modifiers)
+  - [length](#length)
+- [Comments](#comments)
+- [KDoc or Summaries](#kdoc-or-summaries)
+- [Comments](#comments-1)
+  - [End of file](#end-of-file)
+  - [Parameters](#parameters)
+- [constructors](#constructors)
+  - [methods](#methods-1)
+  - [section starts and ends](#section-starts-and-ends)
+- [Usage](#usage-1)
+
+## Project Title and Description
+
+Provide an overview of the project, its purpose, and goals.
+
+## Installation Instructions
+
+Step-by-step instructions on how to install the project, including any prerequisites.
+
+## Usage
+
+How to use the project, including command examples or UI walkthroughs.
+
+## Features
+
+List the core features of the project.
+
+## Configuration
+
+Explain any configuration options or environment-specific settings.
+
+## Deployment
+
+Instructions on how to deploy the project to a live or production environment.
+
+## Credits
+
+List contributors, libraries, or resources that were instrumental in the project.
+
+## Documentation
+
+Link to additional documentation, such as API references, user guides, or online resources.
+
+## Roadmap
+
+Outline any upcoming features or future plans for the project.
+
+## Contact Information
+
+Provide information on how to contact the project maintainers.
+
+## Testing
+
+Explain how to run the project's test suite or perform testing.
+
+## Security
+
+Note any security practices or protocols related to the project.
+
+## Screenshots or Demos
+
+Insert screenshots, GIFs, or links to video demos that showcase the application.
+
+## Style Guide
+
+Outline any code style conventions, naming conventions, or design principles followed in the project.
+
+### styleGuide
 
 # Classes
 
