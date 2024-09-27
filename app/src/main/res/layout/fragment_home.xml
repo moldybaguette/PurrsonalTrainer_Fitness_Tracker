@@ -35,11 +35,11 @@
                 android:text="@string/home"
                 android:fontFamily="@font/knicknack_black"
                 android:textSize="55sp"
-                android:layout_marginStart="5dp"
                 app:startColor="@color/soft_lime_green"
                 app:endColor="@color/olive_green"
                 app:strokeColor="@color/default_stroke_color"
-                app:strokeWidth="15dp"/>
+                app:strokeWidth="15dp"
+                android:layout_marginStart="-150dp"/>
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/add_button"
@@ -63,8 +63,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="0"
-            tools:listitem="@layout/ "
-            tools:itemCount="5"/>
+            tools:listitem="@layout/component_previous_workouts_list"
+            tools:itemCount="5"
+            android:layout_marginTop="-30dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

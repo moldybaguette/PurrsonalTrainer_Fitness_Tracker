@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.MonthsAdapter
+import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.RoutineListAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.MonthWorkout
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.workout_activities.StartEmptyWorkoutActivity
@@ -67,6 +69,7 @@ class HomeFragment : Fragment() {
         loadMonthWorkouts()
     }
 
+
     private fun loadMonthWorkouts() {
         CoroutineScope(Dispatchers.IO).launch {
             val user = UserManager.user
@@ -97,6 +100,32 @@ class HomeFragment : Fragment() {
                 }
                 routinesRecyclerView.adapter = monthsAdapter
                 monthsAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    private fun setupSwipeToDelete(recyclerView: RecyclerView) {
+        val swipeHandler = object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = recyclerView.adapter as RoutineListAdapter
+                val position = viewHolder.adapterPosition
+                val routine = adapter.getRoutineAt(position)
+
+                // Remove the item from the adapter
+                adapter.removeItem(position)
+
+                // Remove the routine from UserManager
+                //TODO consule team because i don't know why it is passing routine.workoutID but it doesnt work if i just call the workoutID
+                //UserManager.removeUserWorkout(routine.workoutID)
             }
         }
     }
