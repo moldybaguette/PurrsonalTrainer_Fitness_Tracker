@@ -9,11 +9,13 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.WorkoutExercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.ActivityStartEmptyWorkoutBinding
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserWorkout
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineConverter
 
 class StartEmptyWorkoutActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStartEmptyWorkoutBinding
     private lateinit var exercisesRecyclerView: RecyclerView
-    var boundRoutine: UserRoutine? = null
+    var boundWorkout: UserWorkout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,8 +23,21 @@ class StartEmptyWorkoutActivity : AppCompatActivity() {
         binding = ActivityStartEmptyWorkoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Getting data provided from navigation
-        this.getRoutineIfExists()
+        // Bind UI to Workout fields (if they exist)
+        bindWorkoutDetails()
+    }
+
+    private fun bindWorkoutDetails()
+    {
+        // Populating boundWorkout
+        if (UserManager.user != null)
+        {
+            // Routine data if starting a workout from a routine
+            this.getRoutineIfExists()
+
+            // Workout data if viewing an existing workout
+            this.getWorkoutIfExists()
+        }
 
         // Setup for exercises in this workout
         setupExercises()
@@ -33,9 +48,9 @@ class StartEmptyWorkoutActivity : AppCompatActivity() {
         this.exercisesRecyclerView = binding.workoutExercises
 
         // Add exercises if navigated to from a routine
-        if (boundRoutine != null)
+        if (boundWorkout != null)
         {
-            val adapter = WorkoutExercisesAdapter(boundRoutine!!.exercises.values.toList(), this)
+            val adapter = WorkoutExercisesAdapter(boundWorkout!!.workoutExercises.values.toList(), this)
             exercisesRecyclerView.adapter = adapter
             exercisesRecyclerView.layoutManager = LinearLayoutManager(this)
         }
@@ -55,8 +70,33 @@ class StartEmptyWorkoutActivity : AppCompatActivity() {
             val bundle = extras.getBundle("data")
             val routineID = bundle?.getString("routineID")
 
-            // Setting bound routine
-            boundRoutine = UserManager.user!!.userRoutines[routineID] // TESTED, Works
+            // Setting bound workout
+            val routine = UserManager.user!!.userRoutines[routineID]
+            if (routine != null)
+            {
+                this.boundWorkout = RoutineConverter().convertUserRoutineToUserWorkout(routine)
+                UserManager.addUserWorkout(this.boundWorkout!!)
+            }
+        }
+    }
+
+    private fun getWorkoutIfExists()
+    {
+        // Getting data from the intent's bundle
+        val extras = intent.extras
+        if (extras != null) {
+
+            // Unpacking bundle
+            val bundle = extras.getBundle("data")
+            val workoutID = bundle?.getString("WorkoutID")
+
+            // Setting bound workout
+            val workout = UserManager.user!!.userWorkouts[workoutID]
+            if (workout != null)
+            {
+                this.boundWorkout = workout
+                UserManager.addUserWorkout(this.boundWorkout!!)
+            }
         }
     }
 }
