@@ -1,9 +1,13 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.adapters
 
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
@@ -63,6 +67,52 @@ class WorkoutSetsAdapter(
         // repsInput
         if (set.reps != null)
             holder.repsInput.setText(set.reps.toString())
+
+        holder.weightInput.addTextChangedListener(object : TextWatcher
+        {
+            override fun afterTextChanged(s: Editable?) {
+
+                val weight = s.toString().toIntOrNull() ?: 0
+                set.weight = weight
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Optional: Do something before text is changed
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Optional: Do something while the text is being changed
+            }
+        })
+
+        holder.repsInput.addTextChangedListener(object : TextWatcher
+        {
+            override fun afterTextChanged(s: Editable?) {
+                // Run your code here after the text has changed
+                val reps = s.toString().toIntOrNull() ?: 0
+                set.reps = reps
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Optional: Do something before text is changed
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Optional: Do something while the text is being changed
+            }
+        })
+
+        holder.setType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val setType = parent?.getItemAtPosition(position) as SetType
+                set.setType = setType.name
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                Log.d("RoutineSetsAdapter", "Nothing selected")
+            }
+        }
     }
 
     override fun getItemCount(): Int
