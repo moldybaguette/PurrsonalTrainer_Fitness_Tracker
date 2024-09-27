@@ -152,6 +152,8 @@ data class UserRoutine(
     val exercises: Map<String, WorkoutExercise> = emptyMap()
 )
 
+// TODO: Add color field please Michael
+// TODO: Add user body weight please Michael
 /**
  * Data class representing a workout within a routine.
  *
@@ -167,7 +169,7 @@ data class UserWorkout(
     val name: String = "",
     val workoutExercises: Map<String, WorkoutExercise> = emptyMap(),
     val durationSeconds: Int = 0,
-    val date: Date = Date()
+    val date: Date = Date() // TODO: Make this a datetime, see figma
 )
 
 /**

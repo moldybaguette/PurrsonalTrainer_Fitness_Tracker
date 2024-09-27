@@ -19,6 +19,8 @@ class WorkoutExercisesAdapter(
     private val context: Context
 ) : RecyclerView.Adapter<WorkoutExercisesAdapter.WorkoutExercisesViewHolder>()
 {
+    private val setsUpdatedListeners = mutableListOf<OnSetsUpdatedListener>()
+
     class WorkoutExercisesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     {
         val exerciseName = itemView.findViewById<TextView>(R.id.exerciseName)
@@ -52,11 +54,32 @@ class WorkoutExercisesAdapter(
 
         // Add set Onclick
         holder.addSetButton.setOnClickListener {
+            val setToBeAdded = WorkoutSet()
+            setsList.add(setToBeAdded)
+            adapter.notifyItemInserted(setsList.count() - 1)
+            // Notify set to be added in Activity
+            notifySetsUpdated(exercise.exerciseID, setsList)
         }
     }
 
     override fun getItemCount(): Int
     {
         return exercises.count()
+    }
+
+    fun addSetUpdatedListener(listener: OnSetsUpdatedListener)
+    {
+        setsUpdatedListeners.add(listener)
+    }
+
+    /**
+     * Notifies subscribers that a set has been added
+     */
+    private fun notifySetsUpdated(exerciseID: String, sets: MutableList<WorkoutSet>)
+    {
+        for (listener in setsUpdatedListeners)
+        {
+            listener.onSetsUpdated(exerciseID, sets)
+        }
     }
 }

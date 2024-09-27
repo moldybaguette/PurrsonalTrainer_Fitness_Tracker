@@ -26,6 +26,7 @@
             android:textSize="20sp"/>
 
         <TextView
+            android:id="@+id/workoutStartTime"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -56,6 +57,7 @@
             android:textSize="20sp"/>
 
         <TextView
+            android:id="@+id/workoutEndTime"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -85,10 +87,12 @@
             android:paddingStart="35dp"
             android:textSize="20sp"/>
 
-        <TextView
+        <EditText
+            android:id="@+id/workoutBodyWeight"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@color/transparent"
             android:text="--"
             android:fontFamily="@font/rounded"
             android:textColor="@color/hint_text"
