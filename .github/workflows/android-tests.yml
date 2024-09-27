@@ -170,14 +170,35 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew assembleDebug
   
-      # Step 11: Set up and Run Instrumented Tests using Android Emulator Runner
+      # Step 11: Install KVM and Configure Permissions
+      - name: Install KVM and Configure Permissions
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils cpu-checker
+          sudo adduser $USER kvm
+          sudo adduser $USER libvirt
+          sudo systemctl enable libvirtd
+          sudo systemctl start libvirtd
+          sudo chown root:kvm /dev/kvm
+          sudo chmod 660 /dev/kvm
+          sudo apt-get install -y cpu-checker
+          sudo kvm-ok
+  
+      # Step 12: Reload Udev Rules and Trigger Changes
+      - name: Reload Udev Rules and Trigger
+        run: |
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+  
+      # Step 13: Set up and Run Instrumented Tests using Android Emulator Runner
       - name: Run Instrumented Tests on Emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 33
-          target: default
+          target: google_apis
           arch: x86_64
-          profile: Nexus 4
+          profile: Nexus_4
+          force-avd-creation: true
           emulator-options: -no-window -no-boot-anim -no-audio -no-snapshot-load -gpu swiftshader_indirect
           disable-animations: true
           emulator-boot-timeout: 600
@@ -186,7 +207,7 @@ jobs:
             adb shell input keyevent 82
             ./gradlew connectedDebugAndroidTest --continue
   
-      # Step 12: Set up Firebase Credentials
+      # Step 14: Set up Firebase Credentials
       - name: Set up Firebase Credentials
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
@@ -194,11 +215,11 @@ jobs:
           echo "$FIREBASE_SERVICE_ACCOUNT" > $HOME/firebase_credentials.json
           echo "GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase_credentials.json" >> $GITHUB_ENV
   
-      # Step 13: List Instrumented Test Results (for debugging)
+      # Step 15: List Instrumented Test Results (for debugging)
       - name: List Instrumented Test Results
         run: ls -la app/build/test-results/androidTest/connected/
   
-      # Step 14: Upload Instrumented Test Artifacts
+      # Step 16: Upload Instrumented Test Artifacts
       - name: Upload Instrumented Test Artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -207,7 +228,7 @@ jobs:
             app/build/test-results/androidTest/connected/
             app/build/reports/androidTests/connected/index.html
   
-      # Step 15: Publish Instrumented Test Results with dorny/test-reporter@v1
+      # Step 17: Publish Instrumented Test Results with dorny/test-reporter@v1
       - name: Publish Instrumented Test Results
         uses: dorny/test-reporter@v1
         if: always()
@@ -217,4 +238,5 @@ jobs:
           reporter: java-junit
           list-tests: all
           fail-on-error: true
+
 
