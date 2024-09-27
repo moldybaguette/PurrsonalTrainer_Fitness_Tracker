@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -32,6 +34,7 @@ class HomeFragment : Fragment() {
     private lateinit var routinesRecyclerView: RecyclerView
     private lateinit var monthsAdapter: MonthsAdapter
     private var monthWorkoutList: List<MonthWorkout> = listOf()
+    private lateinit var topSection: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +52,12 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         routinesRecyclerView = view.findViewById(R.id.routinesRecyclerView)
+        topSection = view.findViewById<LinearLayout>(R.id.topSection)
+
+
+        applyFloatUpAnimation(topSection)
+        applyFloatUpAnimation(routinesRecyclerView)
+
         routinesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         // Initialize MonthsAdapter with empty list and click listener
         monthsAdapter = MonthsAdapter(monthWorkoutList) { workout ->
@@ -104,29 +113,10 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setupSwipeToDelete(recyclerView: RecyclerView) {
-        val swipeHandler = object :
-            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val adapter = recyclerView.adapter as RoutineListAdapter
-                val position = viewHolder.adapterPosition
-                val routine = adapter.getRoutineAt(position)
-
-                // Remove the item from the adapter
-                adapter.removeItem(position)
-
-                // Remove the routine from UserManager
-                //TODO consule team because i don't know why it is passing routine.workoutID but it doesnt work if i just call the workoutID
-                //UserManager.removeUserWorkout(routine.workoutID)
-            }
+    private fun applyFloatUpAnimation(view: View?) {
+        view?.let {
+            val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.float_up)
+            it.startAnimation(animation)
         }
     }
 

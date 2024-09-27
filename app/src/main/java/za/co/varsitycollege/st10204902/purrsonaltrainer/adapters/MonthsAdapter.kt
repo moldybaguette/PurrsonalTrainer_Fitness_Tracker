@@ -1,9 +1,9 @@
-// File: adapters/MonthsAdapter.kt
 package za.co.varsitycollege.st10204902.purrsonaltrainer.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,17 +29,23 @@ class MonthsAdapter(
     }
 
     override fun onBindViewHolder(holder: MonthViewHolder, position: Int) {
-        val monthWorkout = months[position]
-        holder.workoutItemDate.text = monthWorkout.month
-        holder.workoutCount.text = "${monthWorkout.workouts.size} Workouts"
+    val monthWorkout = months[position]
+    holder.workoutItemDate.text = monthWorkout.month
+    holder.workoutCount.text = "${monthWorkout.workouts.size} Workouts"
 
-        // Initialize the inner RecyclerView
-        holder.previousWorkoutsList.layoutManager = LinearLayoutManager(holder.itemView.context)
-        holder.previousWorkoutsList.adapter = WorkoutsAdapter(monthWorkout.workouts, onWorkoutClick)
-        holder.previousWorkoutsList.setHasFixedSize(true)
-        holder.previousWorkoutsList.isNestedScrollingEnabled = false
-    }
+    // Initialize the inner RecyclerView
+    holder.previousWorkoutsList.layoutManager = LinearLayoutManager(holder.itemView.context)
+    holder.previousWorkoutsList.adapter = WorkoutsAdapter(monthWorkout.workouts, onWorkoutClick)
+    holder.previousWorkoutsList.setHasFixedSize(true)
+    holder.previousWorkoutsList.isNestedScrollingEnabled = false
+
+    // Apply staggered animation to the item
+    val animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.float_up)
+    animation.startOffset = position * 100L // Delay each item by 100ms
+    holder.itemView.postDelayed({
+        holder.itemView.startAnimation(animation)
+    }, position * 100L)
+}
 
     override fun getItemCount(): Int = months.size
-
 }

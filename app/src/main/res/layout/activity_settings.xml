@@ -69,7 +69,6 @@
         android:text="@string/catSettings"
         android:textColor="@color/white"
         android:textSize="30sp"
-        android:enabled="false"
         android:layout_gravity="center_horizontal"
         android:fontFamily="@font/knicknack_medium"
         android:drawableStart="@drawable/ico_paw"
