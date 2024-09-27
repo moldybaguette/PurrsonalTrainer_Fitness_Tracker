@@ -16,4 +16,5 @@
     android:singleLine="false"
     android:maxLines="2"
     android:ellipsize="none"
-    android:lineSpacingExtra="2dp" />
+    android:lineSpacingExtra="2dp"
+    android:background="@color/white"/>
