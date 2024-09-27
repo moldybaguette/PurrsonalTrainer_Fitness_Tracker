@@ -33,6 +33,7 @@
 
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/registerCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:cardCornerRadius="40dp"
