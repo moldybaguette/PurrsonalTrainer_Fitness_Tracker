@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="@drawable/bg_userinput">
+    android:background="@drawable/bg_userinput"
+    android:windowSoftInputMode="adjustPan">
 
     <!-- Exercise Name -->
     <TextView
