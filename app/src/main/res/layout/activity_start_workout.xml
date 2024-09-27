@@ -141,11 +141,12 @@
         android:layout_marginTop="15dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/savedWorkoutsDisplay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/item_saved_workouts_display"
+            android:layout_marginHorizontal="12dp"
             tools:itemCount="1"
-            android:layout_marginHorizontal="12dp"/>
+            tools:listitem="@layout/item_saved_workouts_display" />
 
     </LinearLayout>
     </ScrollView>
