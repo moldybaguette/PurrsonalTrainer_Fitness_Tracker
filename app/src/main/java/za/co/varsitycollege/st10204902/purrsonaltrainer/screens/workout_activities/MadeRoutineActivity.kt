@@ -30,6 +30,7 @@ import java.util.Date
 class MadeRoutineActivity : AppCompatActivity(), ExerciseAddedListener, OnSetsUpdatedListener {
     private lateinit var binding: ActivityMadeRoutineBinding
     private lateinit var exercisesRecyclerView: RecyclerView
+    var selectedColor = "blue"
     var boundRoutine: UserRoutine? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,13 +63,12 @@ class MadeRoutineActivity : AppCompatActivity(), ExerciseAddedListener, OnSetsUp
         this.onExerciseAdded()
 
         val txtRoutineName = binding.routineTitle
-        val routineColor = binding.colorPickerSpinner.selectedItem.toString()
         val txtDescription = binding.notes
 
         binding.doneButton.setOnClickListener {
             // Add Routine to database
             RoutineBuilder.setRoutineName(txtRoutineName.text.toString())
-            RoutineBuilder.setRoutineColor(routineColor)
+            RoutineBuilder.setRoutineColor(selectedColor)
             RoutineBuilder.setRoutineDescription(txtDescription.text.toString())
 
             if (RoutineBuilder.hasAnExercise())
@@ -112,6 +112,7 @@ class MadeRoutineActivity : AppCompatActivity(), ExerciseAddedListener, OnSetsUp
 
             // Setting title colour
             setTitleColor(boundRoutine!!.color)
+            selectedColor = boundRoutine!!.color
 
             // Setting the colour spinner and the selected item
             val spinner = binding.colorPickerSpinner
@@ -131,6 +132,7 @@ class MadeRoutineActivity : AppCompatActivity(), ExerciseAddedListener, OnSetsUp
                 override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                     val selectedItem = parent.getItemAtPosition(position).toString()
                     setTitleColor(selectedItem)
+                    selectedColor = selectedItem
                 }
                 override fun onNothingSelected(parent: AdapterView<*>) {}
             }
@@ -205,16 +207,22 @@ class MadeRoutineActivity : AppCompatActivity(), ExerciseAddedListener, OnSetsUp
         }
     }
 
-    override fun onSetsUpdated(exerciseID: String, set: WorkoutSet)
-    {
-        UserManager.addWorkoutSetToWorkoutExerciseInRoutine(RoutineBuilder.routineID ,exerciseID, set)
-        val newSets = RoutineBuilder.exercises[exerciseID]?.sets?.plus(set.workoutSetID to set)
-
-        if (newSets != null)
-        {
-            val oldExercise = RoutineBuilder.exercises[exerciseID]
-            val newExercise = WorkoutExercise(exerciseID, oldExercise?.exerciseName!!, oldExercise.category, newSets, Date(), oldExercise.notes, oldExercise.measurementType  )
-            RoutineBuilder.addWorkoutExercise(newExercise)
+    override fun onSetsUpdated(exerciseID: String, sets: MutableList<WorkoutSet>) {
+        val setsMap = mutableMapOf<String, WorkoutSet>()
+        sets.forEach {
+            setsMap[it.workoutSetID] = it
         }
+
+        val oldExercise = RoutineBuilder.exercises[exerciseID]
+        val newExercise = WorkoutExercise(
+            exerciseID,
+            oldExercise?.exerciseName!!,
+            oldExercise.category,
+            setsMap,
+            Date(),
+            oldExercise.notes,
+            oldExercise.measurementType
+        )
+        RoutineBuilder.addWorkoutExercise(newExercise)
     }
 }
