@@ -29,29 +29,20 @@
             android:orientation="vertical">
 
             <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientTextView
+                android:id="@+id/workoutTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Empty"
+                android:text="Empty Workout"
                 android:fontFamily="@font/knicknack_black"
                 android:textSize="57sp"
+                android:gravity="center"
                 app:startColor="#F2CB56"
                 app:endColor="#ED750C"
-                app:strokeColor="@color/default_stroke_color"
-                app:strokeWidth="15dp"/>
-
-            <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Workout"
-                android:fontFamily="@font/knicknack_black"
-                android:textSize="57sp"
-                app:startColor="#F2CB56"
-                app:endColor="#ED750C"
-                android:layout_marginTop="-45dp"
                 app:strokeColor="@color/default_stroke_color"
                 app:strokeWidth="15dp"/>
 
             <include
+                android:id="@+id/detailsComponent"
                 layout="@layout/component_workouttime_bodyweight" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -91,8 +82,63 @@
                     android:textFontWeight="600"
                     android:textColor="#CCCACA"
                     android:elevation="5dp"/>
+
             </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/doneButton"
+                android:layout_width="300dp"
+                android:layout_height="100dp"
+                android:background="@drawable/svg_green_bblbtn"
+                android:fontFamily="@font/knicknack_medium"
+                android:text="@string/done"
+                android:layout_gravity="center_horizontal"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="50sp"
+                android:layout_marginTop="20dp"/>
         </LinearLayout>
     </ScrollView>
+
+    <View
+        android:id="@+id/chooseCategoryDismissArea"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="9dp"
+        android:background="@color/lowOpacityBlack"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/chooseCategoryFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:elevation="10dp"
+        android:layout_marginTop="40dp"/>
+
+    <View
+        android:id="@+id/createCategoryDismissArea"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="10dp"
+        android:background="@color/lowOpacityBlack"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/createCategoryFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="@drawable/login_popup"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:elevation="11dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

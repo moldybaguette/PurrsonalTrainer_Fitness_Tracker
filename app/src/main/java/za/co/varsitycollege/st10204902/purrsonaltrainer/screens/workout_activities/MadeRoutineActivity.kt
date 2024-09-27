@@ -51,8 +51,25 @@ class MadeRoutineActivity : AppCompatActivity(), ExerciseAddedListener, OnSetsUp
         // Adding an exercise Onclick setup
         setupAddExerciseButton()
 
+        // Setup done button onclick to update routine
         if (boundRoutine != null)
             setupDoneButton()
+
+        // Navigation for starting a workout from
+        setupWorkoutNavigation()
+    }
+
+    private fun setupWorkoutNavigation()
+    {
+        if (boundRoutine != null)
+        {
+            binding.startWorkoutButton.setOnClickListener {
+                // Adding routineID for which the workout will be created
+                val bundle = Bundle()
+                bundle.putString("routineID", boundRoutine!!.routineID)
+                navigateTo(this, StartEmptyWorkoutActivity::class.java, bundle)
+            }
+        }
     }
 
     private fun setupDoneButton()
