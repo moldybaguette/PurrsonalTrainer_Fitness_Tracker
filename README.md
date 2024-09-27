@@ -1,13 +1,114 @@
-# PurrsonalTrainer
-# styleGuide
+# Purrsonal Trainer
+
+Purrsonal Trainer is a gameafied, 
+
+## Table of Contents
+
+- [PurrsonalTrainer](#purrsonaltrainer)
+- [Project Title](#project-title)
+  - [Table of Contents](#table-of-contents)
+  - [Project Title and Description](#project-title-and-description)
+  - [Installation Instructions](#installation-instructions)
+  - [Usage](#usage)
+  - [Features](#features)
+  - [Configuration](#configuration)
+  - [Deployment](#deployment)
+  - [Credits](#credits)
+  - [Documentation](#documentation)
+  - [Roadmap](#roadmap)
+  - [Contact Information](#contact-information)
+  - [Testing](#testing)
+  - [Security](#security)
+  - [Screenshots or Demos](#screenshots-or-demos)
+  - [Style Guide](#style-guide)
+    - [styleGuide](#styleguide)
+- [Classes](#classes)
+  - [naming](#naming)
+  - [organization](#organization)
+  - [Notes](#notes)
+- [Methods](#methods)
+  - [naming](#naming-1)
+  - [Modifiers](#modifiers)
+  - [length](#length)
+- [Comments](#comments)
+- [KDoc or Summaries](#kdoc-or-summaries)
+- [Comments](#comments-1)
+  - [End of file](#end-of-file)
+  - [Parameters](#parameters)
+- [constructors](#constructors)
+  - [methods](#methods-1)
+  - [section starts and ends](#section-starts-and-ends)
+- [Usage](#usage-1)
+
+## Project Title and Description
+
+Provide an overview of the project, its purpose, and goals.
+
+## Installation Instructions
+
+Step-by-step instructions on how to install the project, including any prerequisites.
+
+## Usage
+
+How to use the project, including command examples or UI walkthroughs.
+
+## Features
+
+List the core features of the project.
+
+## Configuration
+
+Explain any configuration options or environment-specific settings.
+
+## Deployment
+
+Instructions on how to deploy the project to a live or production environment.
+
+## Credits
+
+List contributors, libraries, or resources that were instrumental in the project.
+
+## Documentation
+
+Link to additional documentation, such as API references, user guides, or online resources.
+
+## Roadmap
+
+Outline any upcoming features or future plans for the project.
+
+## Contact Information
+
+Provide information on how to contact the project maintainers.
+
+## Testing
+
+Explain how to run the project's test suite or perform testing.
+
+## Security
+
+Note any security practices or protocols related to the project.
+
+## Screenshots or Demos
+
+Insert screenshots, GIFs, or links to video demos that showcase the application.
+
+## Style Guide
+
+Outline any code style conventions, naming conventions, or design principles followed in the project.
+
+### styleGuide
+
 # Classes
+
 ## naming
+
 class naming convention should be pascal case
 example: MySuperCoolClass
 
 ## organization
 
 classes should be organized as follow:
+
 1. public properties
 2. private properties
 3. constructor
@@ -15,13 +116,16 @@ classes should be organized as follow:
 5. private methods
 
 ## Notes
+
 - group methods by functionality
 - classes should not be to big and only have one responsibility
 
 # Methods
+
 ## naming
+
 method names should be camel case
-method names should also be verb based 
+method names should also be verb based
 example: calculateTotalAmount
 
 method parameters should be named descriptively to clarify its role.
@@ -32,36 +136,40 @@ use private where possible
 use internal for both classes and methods that are only needed within the module.
 
 ## length
+
 Methods should only do one thing
 Methods should ideally not be longer than 20 lines
 
 # Comments
+
 Comments should explain why something is done not how something is done
 avoid redundant comments
 
-``` kotlin
-// BAD: This comment just restates what the code does 
-// Add 5 to total 
-total += 5 
-// GOOD: This comment explains the reasoning behind the action 
-// Adding shipping cost to the total purchase amount 
+```kotlin
+// BAD: This comment just restates what the code does
+// Add 5 to total
+total += 5
+// GOOD: This comment explains the reasoning behind the action
+// Adding shipping cost to the total purchase amount
 total += shippingCost
 ```
 
 Use TODO to mark future work needed to be done
-``` kotlin
+
+```kotlin
 // TODO: Handle edge case for negative amounts
 ```
 
 # KDoc or Summaries
 
-kdoc starts with /** and ends with  * /
+kdoc starts with /\*_ and ends with _ /
 use tags:
+
 - @param
 - @return
 - @throws
 
-``` kotlin
+```kotlin
 /**
  * Handles all user-related operations, including authentication
  * and account management.
@@ -114,57 +222,71 @@ fun connectToServer() {
 
 ```
 
-# Comments 
+# Comments
+
 ## End of file
-``` kotlin
-  
-//  _____          _          __  ______ _ _      
-// |  ___|        | |        / _| |  ___(_) |     
-// | |__ _ __   __| |   ___ | |_  | |_   _| | ___ 
-// |  __| '_ \ / _` |  / _ \|  _| |  _| | | |/ _ \
-// | |__| | | | (_| | | (_) | |   | |   | | |  __/
-// \____/_| |_|\__,_|  \___/|_|   \_|   |_|_|\___|
-//---------------------------------------------------------------------------------
+
+```kotlin
+
+//------------------------***EOF***-----------------------------//
 ```
 
 ## Parameters
-``` kotlin
-  
-//                                       _                
-//                                      | |               
-//  _ __   __ _ _ __ __ _ _ __ ___   ___| |_ ___ _ __ ___ 
-// | '_ \ / _` | '__/ _` | '_ ` _ \ / _ \ __/ _ \ '__/ __|
-// | |_) | (_| | | | (_| | | | | | |  __/ ||  __/ |  \__ \
-// | .__/ \__,_|_|  \__,_|_| |_| |_|\___|\__\___|_|  |___/
-// | |                                                    
-// |_|
-//---------------------------------------------------------------------------------
+
+```kotlin
+//                          PROPERTIES                       //
 ```
 
 # constructors
 
-``` kotlin
-  
-//  _____                 _                   _                 
-// /  __ \               | |                 | |                
-// | /  \/ ___  _ __  ___| |_ _ __ _   _  ___| |_ ___  _ __ ___ 
-// | |    / _ \| '_ \/ __| __| '__| | | |/ __| __/ _ \| '__/ __|
-// | \__/\ (_) | | | \__ \ |_| |  | |_| | (__| || (_) | |  \__ \
-//  \____/\___/|_| |_|___/\__|_|   \__,_|\___|\__\___/|_|  |___/
-//---------------------------------------------------------------------------------
+// CONSTRUCTORS //
+
+```kotlin
+
+//                          CONSTRUCTORS                       //
 ```
 
 ## methods
-``` kotlin
-  
-// ___  ___     _   _               _     
-// |  \/  |    | | | |             | |    
-// | .  . | ___| |_| |__   ___   __| |___ 
-// | |\/| |/ _ \ __| '_ \ / _ \ / _` / __|
-// | |  | |  __/ |_| | | | (_) | (_| \__ \
-// \_|  |_/\___|\__|_| |_|\___/ \__,_|___/
-//---------------------------------------------------------------------------------
+
+```kotlin
+//                          METHODS                          //
 ```
 
+## section starts and ends
 
-# other boring stuff
+```kotlin
+//-----------------------------------------------------------//
+```
+
+# Usage
+
+so when starting a section at the top of a document you'll give the heading of the section followed by the line of dashes to indicate the start of the section.
+
+for instance:
+
+```
+//                          METHODS                          //
+//-----------------------------------------------------------//
+```
+
+this is what a section heading with no other headings above it would look like.
+
+sub sections are titles with a capital letter at the start of each word and spaces between words
+they also are left aligned instead of centred.
+
+```
+// Authentication Methods
+//-----------------------------------------------------------//
+```
+
+in this example the Authentication methods would come after the METHODs title. NOTE: there is no //--// line above the Authentication Methods heading because that would indicate the end of the methods section!!!
+
+think of the //----// as brackets. you can nest them!
+
+if you added another methods section underneath the authentication section it would have both an opening and closing line:
+
+```
+//-----------------------------------------------------------//
+// Validation Methods
+//-----------------------------------------------------------//
+```
