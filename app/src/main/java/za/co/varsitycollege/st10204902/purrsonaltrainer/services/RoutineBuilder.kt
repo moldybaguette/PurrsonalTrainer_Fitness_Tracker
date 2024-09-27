@@ -111,7 +111,8 @@ object RoutineBuilder {
     fun addWorkoutExercise(workoutExercise: WorkoutExercise)
     {
         val tempExerciseID = workoutExercise.exerciseID
-        exercises[tempExerciseID] = workoutExercise
+        val newExercises = exercises.plus(tempExerciseID to workoutExercise)
+        exercises = newExercises.toMutableMap()
 
         // Notifying subscribers that an exercise has been added
         notifyExerciseAdded()
