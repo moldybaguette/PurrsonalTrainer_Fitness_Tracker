@@ -60,6 +60,11 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
 
         soundManager = SoundManager(this, R.raw.custom_tap_sound)
 
+        applyFloatUpAnimation(binding.appLogo)
+        applyFloatUpAnimation(binding.loginButtonFrame)
+        applyFloatUpAnimation(binding.registerButtonFrame)
+        applyFloatUpAnimation(binding.googleSignInButton)
+
         val originalBackgroundRegister = binding.registerButton.background //getting the original background of the button
         binding.registerButton.setOnClickListener {
             soundManager.playSound()
@@ -223,6 +228,11 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
             addToBackStack(null)
             commit()
         }
+    }
+
+    private fun applyFloatUpAnimation(view: View) {
+        val animation = AnimationUtils.loadAnimation(this, R.anim.float_up)
+        view.startAnimation(animation)
     }
 
     /**

@@ -8,10 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.AuthManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
+import za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.SoundManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
@@ -28,12 +29,15 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
  */
 class LoginFragment : Fragment() {
 
+    private lateinit var soundManager: SoundManager
+
     /**
      * Called to do initial creation of the fragment.
      * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
         }
     }
@@ -49,6 +53,8 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        soundManager = SoundManager(requireContext(), R.raw.custom_tap_sound)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
@@ -61,12 +67,16 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val loginButton: ImageView = view.findViewById(R.id.loginButton)
-        val email: EditText = view.findViewById(R.id.emailInput)
-        val password: EditText = view.findViewById(R.id.passwordInput)
-        val originalBackgroundLogin = loginButton.background
+        val loginButton: ImageView? = view.findViewById(R.id.loginButton)
+        val email: EditText? = view.findViewById(R.id.emailInput)
+        val password: EditText? = view.findViewById(R.id.passwordInput)
+        val originalBackgroundLogin = loginButton?.background
+        val emailLabel: View? = view.findViewById(R.id.emailLabel)
+        val passwordLabel: View? = view.findViewById(R.id.passwordLabel)
 
-        loginButton.setOnClickListener {
+        loginButton?.setOnClickListener {
+            soundManager.playSound()
+
             loginButton.setBackgroundResource(R.drawable.svg_orange_bblbtn_clicked)
 
             // Revert the background after 2 seconds (2000 milliseconds)
@@ -74,8 +84,14 @@ class LoginFragment : Fragment() {
                 loginButton.background = originalBackgroundLogin
             }, 400)
 
-            LoginUser(email.text.toString(), password.text.toString())
+            LoginUser(email?.text.toString(), password?.text.toString())
         }
+
+        applyFloatUpAnimation(loginButton)
+        applyFloatUpAnimation(email)
+        applyFloatUpAnimation(password)
+        applyFloatUpAnimation(emailLabel)
+        applyFloatUpAnimation(passwordLabel)
     }
 
     /**
@@ -108,6 +124,13 @@ class LoginFragment : Fragment() {
                 }
                 Log.e("LoginFragment", "error: ${result.exceptionOrNull()}")
             }
+        }
+    }
+
+    private fun applyFloatUpAnimation(view: View?) {
+        view?.let {
+            val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.float_up)
+            it.startAnimation(animation)
         }
     }
 

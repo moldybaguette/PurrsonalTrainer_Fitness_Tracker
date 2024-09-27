@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -17,6 +19,7 @@ import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10204902.purrsonaltrainer.Validator
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.AuthManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
+import za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.SoundManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
@@ -24,6 +27,8 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
  * Activity for handling user registration.
  */
 class RegisterActivity : AppCompatActivity() {
+    private lateinit var soundManager: SoundManager
+
     /**
      * Called when the activity is first created.
      * @param savedInstanceState If the activity is being re-created from a previous saved state, this is the state.
@@ -32,6 +37,8 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register) //navigating to the register view
         enableEdgeToEdge()
+        soundManager = SoundManager(this, R.raw.custom_tap_sound)
+
         val registerButton: AppCompatButton = findViewById(R.id.registerButton) //getting the register button
         val originalBackground = registerButton.background //getting the original background of the button
 
@@ -39,9 +46,21 @@ class RegisterActivity : AppCompatActivity() {
         var email = findViewById<EditText>(R.id.emailInput)
         var password = findViewById<EditText>(R.id.passwordInput)
         var confirmPassword = findViewById<EditText>(R.id.passwordConfirmInput)
+        var appLogo = findViewById<View>(R.id.appLogo)
+        var registerCard = findViewById<View>(R.id.registerCard)
         Log.d("RegisterActivity", "OnCreate happened")
+
+        applyFloatUpAnimation(registerButton)
+        applyFloatUpAnimation(email)
+        applyFloatUpAnimation(password)
+        applyFloatUpAnimation(confirmPassword)
+        applyFloatUpAnimation(appLogo)
+        applyFloatUpAnimation(registerCard)
+
         // Set the on click listener for the register button
         registerButton.setOnClickListener {
+            soundManager.playSound()
+
             Log.d("RegisterActivity", "Register button clicked")
             registerButton.setBackgroundResource(R.drawable.svg_purple_bblbtn_clicked) // Set the background to the clicked background
 
@@ -108,4 +127,10 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun applyFloatUpAnimation(view: View) {
+        val animation = AnimationUtils.loadAnimation(this, R.anim.float_up)
+        view.startAnimation(animation)
+    }
+
 }
