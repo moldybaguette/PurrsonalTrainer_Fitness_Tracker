@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserWorkout
@@ -21,6 +22,7 @@ class WorkoutsAdapter(
     val workoutDayOfMonth: TextView = itemView.findViewById(R.id.workoutDayOfMonth)
     val workoutDuration: TextView = itemView.findViewById(R.id.workoutDuration)
     val workoutTitle: TextView = itemView.findViewById(R.id.workoutTitle)
+    val exercisesRecyclerView: RecyclerView = itemView.findViewById(R.id.workoutExersises)
     init {
         // Set click listener on the entire item view
         itemView.setOnClickListener {
@@ -48,11 +50,11 @@ class WorkoutsAdapter(
         holder.workoutDuration.text = "${workout.durationSeconds / 60} min"
         holder.workoutTitle.text = workout.name
 
-        // TODO: If you want to display exercises, initialize and set an adapter for workoutExercises RecyclerView
-        /*
-        val exercisesRecyclerView: RecyclerView = holder.itemView.findViewById(R.id.workoutExersises)
-        exercisesRecyclerView.adapter = ExercisesAdapter(workout.workoutExercises.values.toList())
-        */
+        val exercises = workout.workoutExercises.values.toList()
+        holder.exercisesRecyclerView.layoutManager = LinearLayoutManager(holder.itemView.context)
+        holder.exercisesRecyclerView.adapter = RoutineExerciseListAdapter(exercises, holder.itemView.context)
+        holder.exercisesRecyclerView.setHasFixedSize(true)
+        holder.exercisesRecyclerView.isNestedScrollingEnabled = false
     }
 
     override fun getItemCount(): Int = workouts.size
