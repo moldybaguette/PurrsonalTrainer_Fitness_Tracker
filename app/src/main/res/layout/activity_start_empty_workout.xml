@@ -82,7 +82,21 @@
                     android:textFontWeight="600"
                     android:textColor="#CCCACA"
                     android:elevation="5dp"/>
+
             </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/doneButton"
+                android:layout_width="300dp"
+                android:layout_height="100dp"
+                android:background="@drawable/svg_green_bblbtn"
+                android:fontFamily="@font/knicknack_medium"
+                android:text="@string/done"
+                android:layout_gravity="center_horizontal"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="50sp"
+                android:layout_marginTop="20dp"/>
         </LinearLayout>
     </ScrollView>
 

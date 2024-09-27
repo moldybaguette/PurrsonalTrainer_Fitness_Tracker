@@ -1,11 +1,14 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.workout_activities
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.CreateRoutineExercisesAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.OnSetsUpdatedListener
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.WorkoutExercisesAdapter
@@ -15,11 +18,14 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserRoutine
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserWorkout
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutExercise
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.WorkoutSet
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.HomeActivity
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.ChooseCategoryFragment
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.ExerciseAddedListener
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineConverter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.SlideUpPopup
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
+import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Date
@@ -28,6 +34,7 @@ import java.util.Locale
 class StartEmptyWorkoutActivity : AppCompatActivity(), ExerciseAddedListener, OnSetsUpdatedListener {
     private lateinit var binding: ActivityStartEmptyWorkoutBinding
     private lateinit var exercisesRecyclerView: RecyclerView
+    private lateinit var workoutStartTime: LocalDateTime
     var boundWorkout: UserWorkout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +49,50 @@ class StartEmptyWorkoutActivity : AppCompatActivity(), ExerciseAddedListener, On
         // Add Exercise functionality
         setupAddExerciseButton()
 
+        // Add done button onclick to save the workout
+        if (boundWorkout != null)
+            setupDoneButton()
+    }
+
+    private fun setupDoneButton()
+    {
+        // Subscribing this activity to the ExerciseAddedListener for the RoutineBuilder
         RoutineBuilder.addExerciseAddedListener(this)
+        // Check for existing exercises
+        this.onExerciseAdded()
+
+        binding.doneButton.setOnClickListener {
+            // Update workout in database
+            // Converting the RoutineBuilder info to a workout
+            val newWorkout = UserWorkout(
+                workoutID = boundWorkout!!.workoutID,
+                workoutExercises = RoutineBuilder.exercises,
+                date = boundWorkout!!.date,
+                name = binding.workoutTitle.text.toString(),
+                durationSeconds = calculateWorkoutDuration())
+
+            UserManager.updateUserWorkout(boundWorkout!!.workoutID, newWorkout)
+
+            // UI stuffs (Anneme)
+            binding.doneButton.setBackgroundResource(R.drawable.svg_green_bblbtn_clicked)
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.doneButton.background = binding.doneButton.background
+            }, 400)
+
+            // Navigating back to home activity
+            navigateTo(this, HomeActivity::class.java, null)
+        }
+    }
+    private fun calculateWorkoutDuration() : Int
+    {
+        // Only recalculate the duration if the workout is being created
+        if (boundWorkout!!.durationSeconds == 0)
+        {
+            val now = LocalDateTime.now()
+            val duration = Duration.between(workoutStartTime, now)
+            return duration.seconds.toInt()
+        }
+        return boundWorkout!!.durationSeconds
     }
 
     private fun setupAddExerciseButton()
@@ -56,6 +106,7 @@ class StartEmptyWorkoutActivity : AppCompatActivity(), ExerciseAddedListener, On
             this)
 
         addButton.setOnClickListener { popup.showPopup() }
+        RoutineBuilder.addExerciseAddedListener(this)
     }
 
     private fun bindWorkoutDetails()
@@ -63,11 +114,21 @@ class StartEmptyWorkoutActivity : AppCompatActivity(), ExerciseAddedListener, On
         // Populating boundWorkout
         if (UserManager.user != null)
         {
-            // Routine data if starting a workout from a routine
-            this.getRoutineIfExists()
+            if (!getWorkoutIfExists() && !getRoutineIfExists())
+            {
+                // set BoundWorkout to a new Workout and add it to the database
+                this.boundWorkout = UserWorkout()
+                UserManager.addUserWorkout(this.boundWorkout!!)
 
-            // Workout data if viewing an existing workout
-            this.getWorkoutIfExists()
+                // TODO: Remove the exercises from RoutineBuilder for empty workout
+            }
+            else // Add existing exercises in the boundWorkout to the RoutineBuilder
+            {
+                for (exercise in boundWorkout!!.workoutExercises)
+                {
+                    RoutineBuilder.addWorkoutExercise(exercise.value)
+                }
+            }
         }
 
         // Setup for exercises in this workout
@@ -94,7 +155,9 @@ class StartEmptyWorkoutActivity : AppCompatActivity(), ExerciseAddedListener, On
             else
             {
                 // Workout StartTime
-                detailsComponent.workoutStartTime.text = formatWorkoutTime(LocalDateTime.now())
+                val startDate = LocalDateTime.now()
+                detailsComponent.workoutStartTime.text = formatWorkoutTime(startDate)
+                this.workoutStartTime = startDate
                 // Workout BodyWeight
             }
         }
@@ -123,7 +186,7 @@ class StartEmptyWorkoutActivity : AppCompatActivity(), ExerciseAddedListener, On
      * Gets the routine using a routine id passed when this activity is navigated to.
      * If the user clicked on a specific routine to navigate here, the boundRoutine will be set.
      */
-    private fun getRoutineIfExists()
+    private fun getRoutineIfExists() : Boolean
     {
         // Getting data from the intent's bundle
         val extras = intent.extras
@@ -139,11 +202,13 @@ class StartEmptyWorkoutActivity : AppCompatActivity(), ExerciseAddedListener, On
             {
                 this.boundWorkout = RoutineConverter().convertUserRoutineToUserWorkout(routine)
                 UserManager.addUserWorkout(this.boundWorkout!!)
+                return true
             }
         }
+        return false
     }
 
-    private fun getWorkoutIfExists()
+    private fun getWorkoutIfExists() : Boolean
     { // Getting data from the intent's bundle
         val extras = intent.extras
         if (extras != null)
@@ -159,8 +224,10 @@ class StartEmptyWorkoutActivity : AppCompatActivity(), ExerciseAddedListener, On
             {
                 this.boundWorkout = workout
                 UserManager.addUserWorkout(this.boundWorkout!!)
+                return true
             }
         }
+        return false
     }
 
     override fun onExerciseAdded()
