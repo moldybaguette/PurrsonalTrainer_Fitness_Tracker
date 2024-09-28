@@ -11,37 +11,39 @@ Purrsonal Trainer is a pawsome and interactive fitness tracker designed to help 
   - [Configuration](#configuration)
   - [Deployment](#deployment)
   - [Credits](#credits)
-  - [Documentation](#documentation)
-  - [Roadmap](#roadmap)
-  - [Contact Information](#contact-information)
   - [Testing](#testing)
-  - [Security](#security)
-  - [Screenshots or Demos](#screenshots-or-demos)
   - [Style Guide](#style-guide)
-    - [styleGuide](#styleguide)
-- [Classes](#classes)
-  - [naming](#naming)
-  - [organization](#organization)
-  - [Notes](#notes)
-- [Methods](#methods)
-  - [naming](#naming-1)
-  - [Modifiers](#modifiers)
-  - [length](#length)
-- [Comments](#comments)
-- [KDoc or Summaries](#kdoc-or-summaries)
-- [Comments](#comments-1)
-  - [End of file](#end-of-file)
-  - [Parameters](#parameters)
-- [constructors](#constructors)
-  - [methods](#methods-1)
-  - [section starts and ends](#section-starts-and-ends)
-- [Usage](#usage-1)
+    - [Classes](#classes)
+      - [Naming](#naming)
+      - [organization](#organization)
+      - [Notes](#notes)
+    - [Methods](#methods)
+      - [naming](#naming-1)
+      - [Modifiers](#modifiers)
+      - [length](#length)
+    - [Comments](#comments)
+    - [KDoc or Summaries](#kdoc-or-summaries)
+      - [End of file](#end-of-file)
+      - [Parameters](#parameters)
+      - [constructors](#constructors)
+      - [methods](#methods-1)
+      - [section starts and ends](#section-starts-and-ends)
+    - [Usage](#usage-1)
 
 ## Usage
 
 ## Features
 
 List the core features of the project.
+![Sign in page](image-1.png)
+
+![User can sign in with SSO](image-2.png)
+
+![Home page displays previous workouts](image-3.png)
+
+![routines page lets you save custom routines](image-4.png)
+
+![you can edit routines from the routine page](image-5.png)
 
 ## Configuration
 
@@ -55,52 +57,31 @@ Instructions on how to deploy the project to a live or production environment.
 
 This project would never have been possible without our legendary project manager Anneme Holzhausen who also designed the entire UI!
 
-Testing was implemented by the formidable Nicholas Meyer who had to deal with all but untestable code.
+Testing was implemented by the formidable Nicholas Meyer who had to deal with all but untestable code. He also took on implementing the settings page as well as the graph and RM section.
 
-The untestable code in question was the backend UserManager that allows the app to interface seamlessly with Firebase Realtime database and was implemented by Michael French (and other than being difficult to test didn't break once throughout the project!)
+speaking of untestable code was the backend UserManager that allows the app to interface seamlessly with Firebase Realtime database and was implemented by Michael French (and other than being difficult to test didn't break once throughout the project!)
 
 login and registration as well as middleware was tackled by the dedicated efforts of Jasper Van Niekerk.
+
 And finally, the man holding the entire fort together the true Renaissance man Joshua "joshy squashy" Harvey took on the tasks that no one else could handle.
-
-## Documentation
-
-Link to additional documentation, such as API references, user guides, or online resources.
-
-## Roadmap
-
-Outline any upcoming features or future plans for the project.
-
-## Contact Information
-
-Provide information on how to contact the project maintainers.
 
 ## Testing
 
+Automated testing using github actions runs whenever something is pushed to main
 ![alt text](image.png)
-Explain how to run the project's test suite or perform testing.
-
-## Security
-
-Note any security practices or protocols related to the project.
-
-## Screenshots or Demos
-
-Insert screenshots, GIFs, or links to video demos that showcase the application.
 
 ## Style Guide
 
 Outline any code style conventions, naming conventions, or design principles followed in the project.
 
-### styleGuide
+### Classes
 
-# Classes
-
-## naming
+#### Naming
 
 class naming convention should be pascal case
 example: MySuperCoolClass
 
-## organization
+#### organization
 
 classes should be organized as follow:
 
@@ -110,14 +91,14 @@ classes should be organized as follow:
 4. public methods
 5. private methods
 
-## Notes
+#### Notes
 
 - group methods by functionality
 - classes should not be to big and only have one responsibility
 
-# Methods
+### Methods
 
-## naming
+#### naming
 
 method names should be camel case
 method names should also be verb based
@@ -125,17 +106,17 @@ example: calculateTotalAmount
 
 method parameters should be named descriptively to clarify its role.
 
-## Modifiers
+#### Modifiers
 
 use private where possible
 use internal for both classes and methods that are only needed within the module.
 
-## length
+#### length
 
 Methods should only do one thing
 Methods should ideally not be longer than 20 lines
 
-# Comments
+### Comments
 
 Comments should explain why something is done not how something is done
 avoid redundant comments
@@ -155,7 +136,7 @@ Use TODO to mark future work needed to be done
 // TODO: Handle edge case for negative amounts
 ```
 
-# KDoc or Summaries
+### KDoc or Summaries
 
 kdoc starts with /\*_ and ends with _ /
 use tags:
@@ -217,22 +198,20 @@ fun connectToServer() {
 
 ```
 
-# Comments
-
-## End of file
+#### End of file
 
 ```kotlin
 
 //------------------------***EOF***-----------------------------//
 ```
 
-## Parameters
+#### Parameters
 
 ```kotlin
 //                          PROPERTIES                       //
 ```
 
-# constructors
+#### constructors
 
 // CONSTRUCTORS //
 
@@ -241,19 +220,19 @@ fun connectToServer() {
 //                          CONSTRUCTORS                       //
 ```
 
-## methods
+#### methods
 
 ```kotlin
 //                          METHODS                          //
 ```
 
-## section starts and ends
+#### section starts and ends
 
 ```kotlin
 //-----------------------------------------------------------//
 ```
 
-# Usage
+### Usage
 
 so when starting a section at the top of a document you'll give the heading of the section followed by the line of dashes to indicate the start of the section.
 
