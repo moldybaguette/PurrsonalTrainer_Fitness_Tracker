@@ -1,16 +1,11 @@
-# PurrsonalTrainer
+# Purrsonal Trainer
 
-# Project Title
-
-Brief description of the project.
+Purrsonal Trainer is a pawsome and interactive fitness tracker designed to help users log and manage their gym sessions. With Purrsonal Trainer, users can create custom workout routines, track their purr-formance, and view detailed meow-trics, such as which muscle groups they’ve clawed the most and their rep maxes for each exercise. Future updates will introduce ameowzing gamification, including a fully customizable cat avatar that evolves as the user paws through their workouts. Users will earn “experience points” and “milk coins” for purr-sisting in their fitness routine, which they can use to purr-sonalize and upgrade their feline friend. Upcoming features will include a fitter, fur-midable cat avatar that mirrors the user’s own purr-suit of fitness!
 
 ## Table of Contents
 
-- [PurrsonalTrainer](#purrsonaltrainer)
-- [Project Title](#project-title)
+- [Purrsonal Trainer](#purrsonal-trainer)
   - [Table of Contents](#table-of-contents)
-  - [Project Title and Description](#project-title-and-description)
-  - [Installation Instructions](#installation-instructions)
   - [Usage](#usage)
   - [Features](#features)
   - [Configuration](#configuration)
@@ -42,17 +37,7 @@ Brief description of the project.
   - [section starts and ends](#section-starts-and-ends)
 - [Usage](#usage-1)
 
-## Project Title and Description
-
-Provide an overview of the project, its purpose, and goals.
-
-## Installation Instructions
-
-Step-by-step instructions on how to install the project, including any prerequisites.
-
 ## Usage
-
-How to use the project, including command examples or UI walkthroughs.
 
 ## Features
 
@@ -60,7 +45,7 @@ List the core features of the project.
 
 ## Configuration
 
-Explain any configuration options or environment-specific settings.
+The app has multi-language support and can be used in Afrikaans by changing your devices language settings
 
 ## Deployment
 
@@ -68,7 +53,14 @@ Instructions on how to deploy the project to a live or production environment.
 
 ## Credits
 
-List contributors, libraries, or resources that were instrumental in the project.
+This project would never have been possible without our legendary project manager Anneme Holzhausen who also designed the entire UI!
+
+Testing was implemented by the formidable Nicholas Meyer who had to deal with all but untestable code.
+
+The untestable code in question was the backend UserManager that allows the app to interface seamlessly with Firebase Realtime database and was implemented by Michael French (and other than being difficult to test didn't break once throughout the project!)
+
+login and registration as well as middleware was tackled by the dedicated efforts of Jasper Van Niekerk.
+And finally, the man holding the entire fort together the true Renaissance man Joshua "joshy squashy" Harvey took on the tasks that no one else could handle.
 
 ## Documentation
 
@@ -84,6 +76,7 @@ Provide information on how to contact the project maintainers.
 
 ## Testing
 
+![alt text](image.png)
 Explain how to run the project's test suite or perform testing.
 
 ## Security
