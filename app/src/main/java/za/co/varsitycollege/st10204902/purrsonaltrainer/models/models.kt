@@ -169,8 +169,11 @@ data class UserWorkout(
     val name: String = "",
     val workoutExercises: Map<String, WorkoutExercise> = emptyMap(),
     val durationSeconds: Int = 0,
-    val date: Date = Date() // TODO: Make this a datetime, see figma
+    val date: Date = Date(),
+    val bodyWeight: Int = 0,
+    val color: String = "",
 )
+
 
 /**
  * Data class representing a user's achievement.
