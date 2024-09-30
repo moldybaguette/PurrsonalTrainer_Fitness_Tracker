@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_userinput"
+    android:orientation="vertical"
+    android:layout_marginHorizontal="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="12dp"
+        android:paddingVertical="15dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/startTime"
+            android:fontFamily="@font/rounded"
+            android:textColor="@color/hint_text"
+            android:paddingStart="35dp"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/workoutStartTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="--"
+            android:fontFamily="@font/rounded"
+            android:textColor="@color/hint_text"
+            android:textSize="20sp"
+            android:gravity="end"
+            android:layout_marginEnd="35dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#E9E9E9"
+        android:layout_marginHorizontal="12dp"
+        android:paddingVertical="15dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/endTime"
+            android:fontFamily="@font/rounded"
+            android:textColor="@color/hint_text"
+            android:paddingStart="35dp"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/workoutEndTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="--"
+            android:fontFamily="@font/rounded"
+            android:textColor="@color/hint_text"
+            android:textSize="20sp"
+            android:gravity="end"
+            android:layout_marginEnd="35dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginBottom="12dp"
+        android:paddingVertical="15dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/bodyWeight"
+            android:fontFamily="@font/rounded"
+            android:textColor="@color/hint_text"
+            android:paddingStart="35dp"
+            android:textSize="20sp"/>
+
+        <EditText
+            android:id="@+id/workoutBodyWeight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:text="--"
+            android:fontFamily="@font/rounded"
+            android:textColor="@color/hint_text"
+            android:textSize="20sp"
+            android:gravity="end"
+            android:layout_marginEnd="35dp"/>
+    </LinearLayout>
+
+</LinearLayout>

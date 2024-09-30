@@ -5,6 +5,138 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_purple_gradient"
     tools:context=".screens.workout_activities.StartEmptyWorkoutActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/bg_rain"/>
+
+    <ScrollView
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientTextView
+                android:id="@+id/workoutTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Empty Workout"
+                android:fontFamily="@font/knicknack_black"
+                android:textSize="57sp"
+                android:gravity="center"
+                app:strokeColor="@color/default_stroke_color"
+                app:strokeWidth="15dp"/>
+
+            <include
+                android:id="@+id/detailsComponent"
+                layout="@layout/component_workouttime_bodyweight" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/workoutExercises"
+                android:paddingHorizontal="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/component_exercisedetails_tracking_time"
+                tools:itemCount="1"/>
+
+            <LinearLayout
+                android:id="@+id/addExerciseButton"
+                android:layout_marginTop="25dp"
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_start_workout_button"
+                android:paddingStart="45dp"
+                android:layout_gravity="center_horizontal"
+                android:paddingVertical="25dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/isco_add" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="add exercise"
+                    android:fontFamily="@font/rounded"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="25sp"
+                    android:textFontWeight="600"
+                    android:textColor="#CCCACA"
+                    android:elevation="5dp"/>
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/doneButton"
+                android:layout_width="300dp"
+                android:layout_height="100dp"
+                android:background="@drawable/svg_green_bblbtn"
+                android:fontFamily="@font/knicknack_medium"
+                android:text="@string/done"
+                android:layout_gravity="center_horizontal"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="50sp"
+                android:layout_marginTop="20dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/chooseCategoryDismissArea"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="9dp"
+        android:background="@color/lowOpacityBlack"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/chooseCategoryFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:elevation="10dp"
+        android:layout_marginTop="40dp"/>
+
+    <View
+        android:id="@+id/createCategoryDismissArea"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="10dp"
+        android:background="@color/lowOpacityBlack"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/createCategoryFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="@drawable/login_popup"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:elevation="11dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

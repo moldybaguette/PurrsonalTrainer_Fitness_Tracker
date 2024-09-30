@@ -5,12 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatSpinner
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
+import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.ExerciseTypeSpinnerAdapter
+import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.Exercise
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.workout_activities.CreateRoutineActivity
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+
+private var exercise: Exercise? = null
+private var category: String? = null
 
 /**
  * A simple [Fragment] subclass.
@@ -18,15 +26,16 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class CreateExerciseFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var spinnerItemList = listOf("Reps & Weight", "Time & Distance", "Time")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            category = it.getString("category")
+            val exerciseID = it.getString("exerciseID")
+            if (exerciseID != null) {
+                exercise = UserManager.user?.userExercises?.get(exerciseID)
+            }
         }
     }
 
@@ -35,25 +44,77 @@ class CreateExerciseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_exercise, container, false)
+        val view = inflater.inflate(R.layout.fragment_create_exercise, container, false)
+
+        val title = view.findViewById<EditText>(R.id.exerciseTitle)
+        val workoutType = view.findViewById<AppCompatSpinner>(R.id.workoutTypeSpinner)
+        workoutType.adapter = ExerciseTypeSpinnerAdapter(requireContext(), spinnerItemList)
+        val notes = view.findViewById<EditText>(R.id.notes)
+        val doneBTN = view.findViewById<AppCompatButton>(R.id.doneButton)
+
+        //EDITING A EXERCISE
+        if (exercise != null) {
+            title.setText(exercise!!.exerciseName)
+            workoutType.setSelection(spinnerItemList.indexOf(exercise!!.measurementType))
+            notes.setText(exercise!!.notes)
+        }
+
+        doneBTN.setOnClickListener {
+            if(exercise == null){
+                val newExercise = Exercise(
+                    exerciseName = title.text.toString(),
+                    category = category!!,
+                    notes = notes.text.toString(),
+                    // set measurement type based on spinner
+                    measurementType = workoutType.selectedItem.toString(),
+                    isCustom = true
+                )
+                UserManager.addUserExercise(newExercise)
+                RoutineBuilder.addExercise(newExercise)
+                navigateTo(requireContext(), CreateRoutineActivity::class.java, null)
+            }else{
+                val newExercise = Exercise(
+                    exerciseName = title.text.toString(),
+                    category = category!!,
+                    notes = notes.text.toString(),
+                    // set measurement type based on spinner
+                    measurementType = workoutType.selectedItem.toString(),
+                    isCustom = true
+                )
+                if(exercise!!.exerciseName != newExercise.exerciseName) {
+                    UserManager.updateUserExercise(exercise!!.exerciseID, newExercise)
+                    var editedExercise = UserManager.user?.userExercises?.get(exercise!!.exerciseID)
+                    RoutineBuilder.addExercise(editedExercise!!)
+                }
+                if(exercise!!.notes != newExercise.notes) {
+                    UserManager.updateUserExercise(exercise!!.exerciseID, newExercise)
+                    var editedExercise = UserManager.user?.userExercises?.get(exercise!!.exerciseID)
+                    RoutineBuilder.addExercise(editedExercise!!)
+                }
+                // if they change the measurement type update the exercise
+                if(exercise!!.measurementType != newExercise.measurementType) {
+                    UserManager.updateUserExercise(exercise!!.exerciseID, newExercise)
+                    var editedExercise = UserManager.user?.userExercises?.get(exercise!!.exerciseID)
+                    RoutineBuilder.addExercise(editedExercise!!)
+                }
+                navigateTo(requireContext(), CreateRoutineActivity::class.java, null)
+            }
+        }
+
+        return view
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CreateExerciseFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(exerciseID: String?, categoryName: String?) =
             CreateExerciseFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    if (categoryName != null) {
+                        putString("catagoryID", categoryName)
+                    }
+                    if (exerciseID != null) {
+                        putString("exerciseID", exerciseID)
+                    }
                 }
             }
     }

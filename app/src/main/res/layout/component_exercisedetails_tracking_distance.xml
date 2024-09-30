@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/bg_userinput">
+
+    <!-- Exercise Name -->
+    <TextView
+        android:id="@+id/exerciseName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Leg Extensions"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/knicknack_medium"
+        android:textColor="@color/light_peach_pink"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="30dp"/>
+
+    <!-- Notes -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#EEEEEE"
+        android:layout_marginHorizontal="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notes:"
+            android:fontFamily="@font/rounded"
+            android:textColor="#C3C3C3"
+            android:textSize="20dp"
+            android:padding="20dp"/>
+
+        <EditText
+            android:id="@+id/notesEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Enter notes here"
+            android:fontFamily="@font/rounded"
+            android:textColor="#C3C3C3"
+            android:textSize="15sp"
+            android:background="@color/transparent"/>
+    </LinearLayout>
+
+    <!-- Column Headers -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Set"
+            android:fontFamily="@font/rounded"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:textColor="#C3C3C3"
+            android:background="#EEEEEE"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Previous"
+            android:fontFamily="@font/rounded"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:textColor="#C3C3C3"/>
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Distance"
+            android:fontFamily="@font/rounded"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:textColor="#C3C3C3"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Done"
+            android:fontFamily="@font/rounded"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:textColor="#C3C3C3"/>
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/item_detail_tracking_distance"
+        android:layout_marginHorizontal="12dp"
+        tools:itemCount="1"/>
+
+    <!-- Add Set Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/addSetButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/knicknack_black"
+        android:paddingVertical="20dp"
+        android:text="+ Set"
+        android:textColor="#929292"
+        android:textSize="25sp"
+        android:layout_marginHorizontal="12dp"
+        android:background="@drawable/bg_add_set_button"
+        android:layout_marginBottom="14dp"/>
+
+</LinearLayout>

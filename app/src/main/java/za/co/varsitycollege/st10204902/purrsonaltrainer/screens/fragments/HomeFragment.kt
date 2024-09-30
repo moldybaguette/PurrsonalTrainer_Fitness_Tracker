@@ -1,33 +1,40 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
+import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.MonthsAdapter
+import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.RoutineListAdapter
+import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
+import za.co.varsitycollege.st10204902.purrsonaltrainer.models.MonthWorkout
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.workout_activities.StartEmptyWorkoutActivity
+import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.workout_activities.StartWorkoutActivity
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private lateinit var routinesRecyclerView: RecyclerView
+    private lateinit var monthsAdapter: MonthsAdapter
+    private var monthWorkoutList: List<MonthWorkout> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -38,22 +45,97 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        routinesRecyclerView = view.findViewById(R.id.routinesRecyclerView)
+        routinesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        // Initialize MonthsAdapter with empty list and click listener
+        monthsAdapter = MonthsAdapter(monthWorkoutList, { workout ->
+            // Handle workout item click
+            val bundle = Bundle()
+            bundle.putString("WorkoutID", workout.workoutID) // Correct key
+            navigateTo(requireContext(), StartEmptyWorkoutActivity::class.java, bundle)
+        }, requireContext())
+        routinesRecyclerView.adapter = monthsAdapter
+
+        val addButton: AppCompatImageButton = view.findViewById(R.id.add_button)
+        addButton.setOnClickListener {
+            val intent = Intent(activity, StartWorkoutActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Load and group workouts by month
+        loadMonthWorkouts()
+    }
+
+
+    private fun loadMonthWorkouts() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val user = UserManager.user
+            if (user == null) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
+                }
+                return@launch
+            }
+
+            // Group workouts by month
+            val dateFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
+            val grouped = user.userWorkouts.values.groupBy { dateFormat.format(it.date) }
+                .map { (month, workouts) ->
+                    MonthWorkout(month, workouts.sortedBy { it.date })
+                }.sortedByDescending {
+                    // To sort months in descending order, parse the month string back to Date
+                    SimpleDateFormat("MMMM yyyy", Locale.getDefault()).parse(it.month) ?: Date()
+                }
+
+            monthWorkoutList = grouped
+
+            withContext(Dispatchers.Main) {
+                monthsAdapter = MonthsAdapter(monthWorkoutList, { workout ->
+                    val bundle = Bundle()
+                    bundle.putString("WorkoutID", workout.workoutID)
+                    navigateTo(requireContext(), StartEmptyWorkoutActivity::class.java, bundle)
+                }, requireContext())
+                routinesRecyclerView.adapter = monthsAdapter
+                monthsAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    private fun setupSwipeToDelete(recyclerView: RecyclerView) {
+        val swipeHandler = object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = recyclerView.adapter as RoutineListAdapter
+                val position = viewHolder.adapterPosition
+                val routine = adapter.getRoutineAt(position)
+
+                // Remove the item from the adapter
+                adapter.removeItem(position)
+
+                // Remove the routine from UserManager
+                //TODO consule team because i don't know why it is passing routine.workoutID but it doesnt work if i just call the workoutID
+                //UserManager.removeUserWorkout(routine.workoutID)
+            }
+        }
+    }
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             HomeFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
                 }
             }
     }

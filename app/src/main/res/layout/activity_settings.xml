@@ -1,10 +1,105 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.SettingsActivity">
+    tools:context=".screens.SettingsActivity"
+    android:background="@drawable/bg_grey_gradient">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:contentDescription="@string/background"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/bg_cogs"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientTextView
+        android:id="@+id/settingsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settingsTitle"
+        android:fontFamily="@font/knicknack_black"
+        android:textSize="60sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="40dp"
+        app:startColor="@color/pale_sky_blue"
+        app:endColor="@color/deep_cyan_blue"
+        app:strokeColor="@color/default_stroke_color"
+        app:strokeWidth="15dp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/accountButton"
+        android:layout_width="350dp"
+        android:layout_height="110dp"
+        android:layout_marginHorizontal="10dp"
+        android:background="@drawable/svg_orange_bblbtn"
+        android:text="@string/accountDetails"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:fontFamily="@font/knicknack_medium"
+        android:drawableStart="@drawable/ico_user"
+        android:drawablePadding="-20dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingStart="30dp"
+        android:paddingEnd="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/settingsTitle"
+        android:layout_marginTop="15dp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/catSettingsButton"
+        android:layout_width="350dp"
+        android:layout_height="110dp"
+        android:layout_marginHorizontal="10dp"
+        android:background="@drawable/svg_green_bblbtn"
+        android:text="@string/catSettings"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:enabled="false"
+        android:layout_gravity="center_horizontal"
+        android:fontFamily="@font/knicknack_medium"
+        android:drawableStart="@drawable/ico_paw"
+        android:drawablePadding="-40dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/accountButton"
+        android:layout_marginTop="15dp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/statisticsButton"
+        android:layout_width="350dp"
+        android:layout_height="110dp"
+        android:layout_marginHorizontal="10dp"
+        android:background="@drawable/svg_purple_bblbtn"
+        android:text="@string/statistics"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:layout_gravity="center_horizontal"
+        android:fontFamily="@font/knicknack_medium"
+        android:drawableStart="@drawable/ico_stats"
+        android:drawablePadding="-40dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/catSettingsButton"
+        android:layout_marginTop="15dp"/>
+    </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

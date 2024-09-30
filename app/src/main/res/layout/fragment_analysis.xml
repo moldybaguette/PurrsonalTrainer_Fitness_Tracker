@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".screens.fragments.AnalysisFragment">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/background"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/bg_cogs" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientTextView
+                android:id="@+id/AnalysisTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="1dp"
+                android:fontFamily="@font/knicknack_medium"
+                android:gravity="center_horizontal"
+                android:text="@string/analysis"
+                app:startColor="@color/pale_sky_blue"
+                app:endColor="@color/deep_cyan_blue"
+                android:textSize="50sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp" />
+
+            <LinearLayout
+                android:id="@+id/openDatePickerButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_start_workout_button"
+                android:orientation="horizontal"
+                android:paddingVertical="30dp"
+                android:paddingHorizontal="25dp"
+                android:layout_marginHorizontal="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date:"
+                    android:textAllCaps="false"
+                    android:fontFamily="@font/rounded"
+                    android:textColor="#D4D4D4"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/displayDateRangeSelected"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:fontFamily="@font/rounded"
+                    android:textColor="#D4D4D4"
+                    android:textSize="17sp"
+                    android:gravity="end"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_downarrow"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="2dp"/>
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_userinput"
+                android:layout_marginHorizontal="20dp"
+                android:padding="10dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Set Distribution"
+                    android:fontFamily="@font/knicknack_medium"
+                    android:textColor="@color/hint_text"
+                    android:textSize="35sp"
+                    android:gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:elevation="10dp"/>
+            <com.anychart.AnyChartView
+                android:id="@+id/anyChartPie"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:paddingHorizontal="10dp"
+                android:layout_marginVertical="20dp"
+                android:background="@color/transparent"
+                />
+            </FrameLayout>
+            <!-- RecyclerView for Analysis Breakdown -->
+
+            <!-- No Data TextView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/analysisBreakdownRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                tools:itemCount="10"
+                tools:listitem="@layout/item_analysis_info" />
+
+            <TextView
+                android:id="@+id/noDataTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No data available for the selected date range."
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

@@ -5,6 +5,61 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.workout_activities.PastWorkoutDetailsActivity">
+    tools:context=".screens.workout_activities.PastWorkoutDetailsActivity"
+    android:background="@drawable/bg_purple_gradient">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/bg_spotty"/>
+
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientTextView
+            android:id="@+id/routineTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Routine Name"
+            android:fontFamily="@font/knicknack_black"
+            android:textSize="55sp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="40dp"
+            app:startColor="@color/routine_start_color"
+            app:endColor="@color/routine_end_color"
+            app:strokeColor="@color/default_stroke_color"
+            app:strokeWidth="15dp"/>
+
+        <include
+            layout="@layout/component_workouttime_bodyweight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trackedExerciseRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/component_exercisedetails_tracking"
+            tools:itemCount="1"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="5dp"/>
+    </LinearLayout>
+</ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

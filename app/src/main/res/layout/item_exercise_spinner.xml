@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/colorPickerItemLayout"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="15dp">
+
+    <TextView
+        android:id="@+id/exerciseTypeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Item Text"
+        android:layout_marginStart="40dp"
+        android:fontFamily="@font/rounded"
+        android:textSize="20sp"
+        android:textColor="#CCCACA"
+        android:layout_gravity="center" />
+
+</LinearLayout>

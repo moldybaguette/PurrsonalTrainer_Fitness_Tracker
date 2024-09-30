@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:layout_marginBottom="7dp">
+
+    <LinearLayout
+        android:id="@+id/routineLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/workout_item_background_shape"
+        android:paddingVertical="20dp"
+        android:paddingHorizontal="30dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/routineTitle"
+                android:layout_marginStart="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Leg Day"
+                android:textColor="@color/workout_title"
+                android:textSize="30sp"
+                android:fontFamily="@font/knicknack_medium" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/routineExercises"
+                android:layout_marginStart="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="5"
+                tools:listitem="@layout/item_workout_exersise"/>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -5,6 +5,149 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.workout_activities.StartWorkoutActivity">
+    tools:context=".screens.workout_activities.StartWorkoutActivity"
+    android:background="@drawable/bg_purple_gradient">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/bg_rain"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientTextView
+        android:id="@+id/workoutTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/workout"
+        android:fontFamily="@font/knicknack_black"
+        android:textSize="70sp"
+        android:layout_marginTop="40dp"
+        app:startColor="#F2CB56"
+        app:endColor="#ED750C"
+        app:strokeColor="@color/default_stroke_color"
+        app:strokeWidth="15dp"/>
+
+    <TextView
+        android:id="@+id/quickStartHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/quickStart"
+        android:fontFamily="@font/knicknack_medium"
+        android:textSize="35sp"
+        android:textColor="@color/workout_view_text"
+        app:layout_constraintTop_toBottomOf="@id/workoutTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="-20dp"/>
+
+
+        <LinearLayout
+            android:id="@+id/startEmptyWorkoutButton"
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/bg_start_workout_button"
+            android:paddingStart="45dp"
+            android:layout_gravity="center_horizontal"
+            android:paddingVertical="25dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/isco_add" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="start empty workout"
+                android:fontFamily="@font/rounded"
+                android:layout_gravity="center_vertical"
+                android:textSize="25sp"
+                android:textFontWeight="600"
+                android:textColor="#CCCACA"
+                android:elevation="5dp"/>
+        </LinearLayout>
+
+    <TextView
+        android:id="@+id/routineHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/routines"
+        android:fontFamily="@font/knicknack_medium"
+        android:textSize="35sp"
+        android:textColor="@color/workout_view_text"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="15dp"/>
+
+
+        <LinearLayout
+            android:id="@+id/makeNewRoutineButton"
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/bg_start_workout_button"
+            android:paddingStart="45dp"
+            android:layout_gravity="center_horizontal"
+            android:paddingVertical="25dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/isco_add" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="new routine"
+                android:fontFamily="@font/rounded"
+                android:layout_gravity="center_vertical"
+                android:textSize="25sp"
+                android:textFontWeight="600"
+                android:textColor="#CCCACA"
+                android:elevation="5dp"/>
+            </LinearLayout>
+
+    <TextView
+        android:id="@+id/yourRoutineHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/yourRoutines"
+        android:fontFamily="@font/knicknack_medium"
+        android:textSize="35sp"
+        android:textColor="@color/workout_view_text"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="15dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/savedRoutinesDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_saved_workouts_display"
+            tools:itemCount="1"
+            android:layout_marginHorizontal="12dp"/>
+
+    </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

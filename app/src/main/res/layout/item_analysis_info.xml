@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="16dp"
+    android:paddingHorizontal="16dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:background="@color/white">
+
+    <View
+        android:id="@+id/colorIndicator"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/circle_shape" />
+
+    <!-- Spacer -->
+    <Space
+        android:layout_width="16dp"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/categoryNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Category Name"
+        android:fontFamily="@font/knicknack_medium"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/setCountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sets: 0"
+        android:layout_gravity="center_vertical"
+        android:fontFamily="@font/knicknack_medium"
+        android:layout_marginEnd="20dp"
+        android:textSize="22sp"
+        android:textColor="@color/rmGrey" />
+
+    <TextView
+        android:id="@+id/percentageTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="30%"
+        android:textColor="@color/rmGrey"
+        android:fontFamily="@font/knicknack_black"
+        android:layout_gravity="end"
+        android:textSize="22sp"/>
+</LinearLayout>
