@@ -51,12 +51,12 @@ class HomeFragment : Fragment() {
         routinesRecyclerView = view.findViewById(R.id.routinesRecyclerView)
         routinesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         // Initialize MonthsAdapter with empty list and click listener
-        monthsAdapter = MonthsAdapter(monthWorkoutList) { workout ->
+        monthsAdapter = MonthsAdapter(monthWorkoutList, { workout ->
             // Handle workout item click
             val bundle = Bundle()
             bundle.putString("WorkoutID", workout.workoutID) // Correct key
             navigateTo(requireContext(), StartEmptyWorkoutActivity::class.java, bundle)
-        }
+        }, requireContext())
         routinesRecyclerView.adapter = monthsAdapter
 
         val addButton: AppCompatImageButton = view.findViewById(R.id.add_button)
@@ -93,11 +93,11 @@ class HomeFragment : Fragment() {
             monthWorkoutList = grouped
 
             withContext(Dispatchers.Main) {
-                monthsAdapter = MonthsAdapter(monthWorkoutList) { workout ->
+                monthsAdapter = MonthsAdapter(monthWorkoutList, { workout ->
                     val bundle = Bundle()
                     bundle.putString("WorkoutID", workout.workoutID)
                     navigateTo(requireContext(), StartEmptyWorkoutActivity::class.java, bundle)
-                }
+                }, requireContext())
                 routinesRecyclerView.adapter = monthsAdapter
                 monthsAdapter.notifyDataSetChanged()
             }

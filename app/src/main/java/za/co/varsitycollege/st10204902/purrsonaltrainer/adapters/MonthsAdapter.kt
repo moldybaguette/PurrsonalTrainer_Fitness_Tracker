@@ -1,6 +1,7 @@
 // File: adapters/MonthsAdapter.kt
 package za.co.varsitycollege.st10204902.purrsonaltrainer.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,8 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.models.UserWorkout
 
 class MonthsAdapter(
     private val months: List<MonthWorkout>,
-    private val onWorkoutClick: (UserWorkout) -> Unit // Lambda to handle workout clicks
+    private val onWorkoutClick: (UserWorkout) -> Unit, // Lambda to handle workout clicks
+    private val context: Context
 ) : RecyclerView.Adapter<MonthsAdapter.MonthViewHolder>() {
 
     class MonthViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -35,7 +37,7 @@ class MonthsAdapter(
 
         // Initialize the inner RecyclerView
         holder.previousWorkoutsList.layoutManager = LinearLayoutManager(holder.itemView.context)
-        holder.previousWorkoutsList.adapter = WorkoutsAdapter(monthWorkout.workouts, onWorkoutClick)
+        holder.previousWorkoutsList.adapter = WorkoutsAdapter(monthWorkout.workouts, onWorkoutClick, context)
         holder.previousWorkoutsList.setHasFixedSize(true)
         holder.previousWorkoutsList.isNestedScrollingEnabled = false
     }
