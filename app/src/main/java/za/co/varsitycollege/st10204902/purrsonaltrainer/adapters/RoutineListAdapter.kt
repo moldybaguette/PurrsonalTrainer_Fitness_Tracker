@@ -83,7 +83,7 @@ class RoutineListAdapter(
         holder.routineExerciseView.layoutManager = LinearLayoutManager(context)
         holder.routineExerciseView.adapter = RoutineExerciseListAdapter(routine.exercises.values.toList(), context)
 
-        // Navigating to start workout
+        // Navigating to MadeRoutineActivity
         holder.routineLayout.setOnClickListener {
             // Adding routineID for which the workout will be created
             val bundle = Bundle()
