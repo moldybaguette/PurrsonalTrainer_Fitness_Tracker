@@ -6,7 +6,11 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.coroutines.launch
+import com.google.firebase.database.*
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+
 import kotlinx.coroutines.tasks.await
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.User
 
@@ -61,51 +65,58 @@ class AuthManager(val auth: FirebaseAuth = FirebaseAuth.getInstance()) {
      * @param userID The user's unique ID
      * @return The user's unique ID
      */
-    fun createUserInRealtimeDatabase(userID: String): String {
+    suspend fun createUserInRealtimeDatabase(userID: String): String {
         val databaseReference = FirebaseDatabase.getInstance().getReference(UserManager.USERS_PATH).child(userID)
-        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    // User ID exists in the database, no need to create a new user
-                    Log.d("AuthManager", "User already exists in the database.")
-                } else {
-                    // User ID does not exist, create a new user
-                    val userObject = User(
-                        userID,
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        emptyMap(),
-                        emptyMap(),
-                        emptyMap(),
-                        emptyMap(),
-                        emptyMap(),
-                        emptyMap()
-                    )
-                    UserManager.userManagerScope.launch {
-                        val task =
-                            database.reference.child("users").child(userID).setValue(userObject)
-                        task.addOnCompleteListener { task1 ->
-                            if (task1.isSuccessful) {
-                                println("User added to Realtime Database successfully")
-                            } else {
-                                println("Failed to add user to Realtime Database: ${task.exception?.message}")
-                            }
-                        }
-                    }
 
+        // Suspend the coroutine until Firebase database operation completes
+        return suspendCancellableCoroutine { continuation ->
+            databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // User ID exists, no need to create a new user
+                        Log.d("AuthManager", "User already exists in the database.")
+                        continuation.resume(userID) // Resume coroutine with userID
+                    } else {
+                        // User ID does not exist, create a new user
+                        val userObject = User(
+                            userID,
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            emptyMap(),
+                            emptyMap(),
+                            emptyMap(),
+                            emptyMap(),
+                            emptyMap(),
+                            emptyMap()
+                        )
+
+                        // Add the user to the database and wait for the result
+                        databaseReference.setValue(userObject)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    Log.d("AuthManager", "User added to Realtime Database successfully")
+                                    continuation.resume(userID) // Resume coroutine with userID
+                                } else {
+                                    val exception = task.exception ?: Exception("Unknown error occurred while adding user")
+                                    Log.e("AuthManager", "Failed to add user to Realtime Database: ${exception.message}")
+                                    continuation.resumeWithException(exception) // Resume coroutine with exception
+                                }
+                            }
+                    }
                 }
 
-            }
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.e("AuthManager", "Database error: ${databaseError.message}")
-            }
-        })
-        return userID
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e("AuthManager", "Database error: ${databaseError.message}")
+                    continuation.resumeWithException(databaseError.toException()) // Resume coroutine with exception
+                }
+            })
+        }
     }
+
 //--------------------------------------------------------------//
 }
 //------------------------***EOF***-----------------------------//

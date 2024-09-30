@@ -19,6 +19,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.AuthManager
@@ -194,11 +195,15 @@ class HomeLoginRegisterActivity : AppCompatActivity() {
                             if (task.isSuccessful) {
                                 // Sign in success
                                 Log.d(TAG, "signInWithCredential:success")
-                                val user = auth.currentUser
-                                val authManager = AuthManager()
-                                authManager.createUserInRealtimeDatabase(user!!.uid)
+
+
                                 UserManager.userManagerScope.launch {
-                                    UserManager.setUpSingleton(user.uid)
+                                    val user = auth.currentUser
+                                    val authManager = AuthManager()
+                                    async {authManager.createUserInRealtimeDatabase(user!!.uid)}.await()
+                                    if (user != null) {
+                                        UserManager.setUpSingleton(user.uid)
+                                    }
                                 }.invokeOnCompletion {
                                     // Navigate to the next screen
                                     navigateTo(this, HomeActivity::class.java, null)

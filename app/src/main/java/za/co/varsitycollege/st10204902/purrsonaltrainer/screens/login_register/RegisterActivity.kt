@@ -11,11 +11,11 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.Validator
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.AuthManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
@@ -39,8 +39,10 @@ class RegisterActivity : AppCompatActivity() {
         enableEdgeToEdge()
         soundManager = SoundManager(this, R.raw.custom_tap_sound)
 
-        val registerButton: AppCompatButton = findViewById(R.id.registerButton) //getting the register button
-        val originalBackground = registerButton.background //getting the original background of the button
+        val registerButton: AppCompatButton =
+            findViewById(R.id.registerButton) //getting the register button
+        val originalBackground =
+            registerButton.background //getting the original background of the button
 
         // Set the layout for the activity
         var email = findViewById<EditText>(R.id.emailInput)
@@ -95,33 +97,45 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Register the user
             CoroutineScope(Dispatchers.IO).launch {
                 Log.d("RegisterActivity", "The coroutine is running")
                 val authManager = AuthManager()
-                val result = authManager.registerUser(emailText, passwordText)
-                println("Result: $result")
-                if (result.isSuccess) {
-                    val data = result.getOrNull()
-                    if (data != null) {
+
+                // Register the user and handle the result
+                val result: Result<String> = try {
+                    authManager.registerUser(emailText, passwordText)
+                } catch (e: Exception) {
+                    Result.failure(e) // Handle failure case
+                }
+
+                val userID = result.getOrNull()!!
+
+                // Handle the result in the main thread
+                withContext(Dispatchers.Main) {
+                    if (result.isSuccess) {
                         try {
                             UserManager.userManagerScope.launch {
-                                async {
-                                    UserManager.setUpSingleton(data.toString())
-                                }.await()
+                                UserManager.setUpSingleton(userID)
+                            }.invokeOnCompletion {
+                                // Navigate to the next screen
                                 navigateTo(this@RegisterActivity, HomeActivity::class.java, null)
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()
-                            runOnUiThread {
-                                Toast.makeText(this@RegisterActivity, "Error setting up user", Toast.LENGTH_SHORT).show()
-                            }
+                            Toast.makeText(
+                                this@RegisterActivity,
+                                "Error setting up user",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-                    }
-                } else {
-                    runOnUiThread {
-                        Toast.makeText(this@RegisterActivity, "Unable to complete registration. Please try again.", Toast.LENGTH_SHORT).show()
-                        Log.e("LoginFragment", "Error: ${result.exceptionOrNull()}")
+
+                    } else {
+                        Toast.makeText(
+                            this@RegisterActivity,
+                            "Unable to complete registration. Please try again.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        Log.e("RegisterActivity", "Error: ${result.exceptionOrNull()}")
                     }
                 }
             }
