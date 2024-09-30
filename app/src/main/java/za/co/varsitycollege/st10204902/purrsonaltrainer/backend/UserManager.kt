@@ -242,6 +242,49 @@ object UserManager {
         }
     }
 
+    /**
+     * Updates the user's workout in progress
+     * @param workoutID The ID of the workout in progress
+     */
+    fun updateWorkoutInProgress(workoutID: String) {
+        if (userIsLoggedIn()) {
+            _userFlow.update { user ->
+                user?.copy(workoutInProgress = workoutID)
+            }
+        } else {
+            Log.e("UserManager.updateWorkoutInProgress", "User is not logged in")
+        }
+    }
+
+    /**
+     * resets the user's workout in progress
+     */
+    fun resetWorkoutInProgress() {
+        if (!userIsLoggedIn()) {
+            Log.e("UserManager.resetWorkoutInProgress", "User is not logged in")
+        } else {
+            _userFlow.update { user ->
+                user?.copy(workoutInProgress = "")
+            }
+        }
+    }
+
+    /**
+     * Sets the user singleton to the provided user
+     * @param user The user to set the singleton to
+     */
+    fun getWorkoutInProgress(): UserWorkout? {
+        if (!userIsLoggedIn()) {
+            Log.e("UserManager.getWorkoutInProgress", "User is not logged in")
+            return null
+        }
+        if (user?.workoutInProgress.isNullOrEmpty()) {
+            Log.w("UserManager.getWorkoutInProgress", "No workout is happening rn")
+            return null
+        }
+        return user?.userWorkouts?.get(user?.workoutInProgress)
+    }
+
     //-----------------------------------------------------------//
     // UserRoutine Management
     //-----------------------------------------------------------//

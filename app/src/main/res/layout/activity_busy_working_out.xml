@@ -33,7 +33,8 @@
 
             <za.co.varsitycollege.st10204902.purrsonaltrainer.frontend_logic.GradientTextView
                 android:id="@+id/untitledRoutineTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="12dp"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:text="Workout Name"
@@ -44,10 +45,12 @@
                 app:startColor="@color/untitled_routine_start_color"
                 app:endColor="@color/untitled_routine_end_color"
                 app:strokeColor="@color/default_stroke_color"
+                android:ellipsize="end"
                 app:strokeWidth="15dp"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:layout_marginStart="10dp"/>
+
 
             <include
                 layout="@layout/component_workouttime_bodyweight"

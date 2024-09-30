@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
@@ -82,7 +83,7 @@ class RoutineListAdapter(
         holder.routineExerciseView.layoutManager = LinearLayoutManager(context)
         holder.routineExerciseView.adapter = RoutineExerciseListAdapter(routine.exercises.values.toList(), context)
 
-        // Navigating to start workout
+        // Navigating to MadeRoutineActivity
         holder.routineLayout.setOnClickListener {
             // Adding routineID for which the workout will be created
             val bundle = Bundle()

@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".screens.workout_activities.MadeRoutineActivity"
-    android:background="@drawable/bg_purple_gradient">
+    android:background="@drawable/bg_purple_gradient"
+    android:windowSoftInputMode="adjustResize">
 
     <ImageView
         android:layout_width="match_parent"
@@ -20,7 +21,7 @@
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/bg_spotty" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -107,11 +108,9 @@
                 android:gravity="top"
                 android:maxLength="250"
                 android:fontFamily="@font/rounded"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:textColor="@color/hint_text"
-                android:padding="25dp"/>
-
-
+                android:padding="40dp"/>
 
             <TextView
                 android:id="@+id/addExercisesHeading"
@@ -128,6 +127,7 @@
                 android:id="@+id/routineAddedExercises"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/component_exercisedetails_display"
                 tools:itemCount="1"/>
 
@@ -171,7 +171,7 @@
                 android:textSize="50sp"
                 android:layout_marginTop="20dp"/>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <View
         android:id="@+id/chooseCategoryDismissArea"
@@ -192,7 +192,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:elevation="10dp"
         android:layout_marginTop="40dp"/>
-
 
     <View
         android:id="@+id/createCategoryDismissArea"

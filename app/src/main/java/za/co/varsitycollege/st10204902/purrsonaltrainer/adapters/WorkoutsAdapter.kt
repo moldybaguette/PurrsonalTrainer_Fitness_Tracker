@@ -17,7 +17,8 @@ import java.util.Locale
 class WorkoutsAdapter(
     private val workouts: List<UserWorkout>,
     private val onItemClick: (UserWorkout) -> Unit, // Lambda for click handling
-    private val context: Context
+    private val context: Context,
+    private val overrideItemLayoutID : Int = R.layout.item_home_single_workout
 ) : RecyclerView.Adapter<WorkoutsAdapter.WorkoutViewHolder>() {
 
     class WorkoutViewHolder(itemView: View, private val onItemClick: (UserWorkout) -> Unit, private val workouts: List<UserWorkout>) : RecyclerView.ViewHolder(itemView) {
@@ -39,7 +40,7 @@ class WorkoutsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkoutViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_home_single_workout, parent, false)
+            .inflate(overrideItemLayoutID, parent, false)
         return WorkoutViewHolder(view, onItemClick, workouts)
     }
 

@@ -53,7 +53,9 @@ class CreateRoutineActivity : AppCompatActivity(), ExerciseAddedListener, OnSets
 
         doneButton.setOnClickListener {
 
-            RoutineBuilder.setRoutineName(txtRoutineName.text.toString())
+            val routineName = txtRoutineName.text.toString()
+
+            RoutineBuilder.setRoutineName(routineName)
             RoutineBuilder.setRoutineColor(routineColor.selectedItem.toString())
             RoutineBuilder.setRoutineDescription(txtRoutineDescription.text.toString())
 

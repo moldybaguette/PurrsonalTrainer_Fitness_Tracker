@@ -73,6 +73,7 @@ class LoginFragment : Fragment() {
         val originalBackgroundLogin = loginButton?.background
         val emailLabel: View? = view.findViewById(R.id.emailLabel)
         val passwordLabel: View? = view.findViewById(R.id.passwordLabel)
+        val welcomeMessage: View? = view.findViewById<View>(R.id.welcomeMessage)
 
         loginButton?.setOnClickListener {
             soundManager.playSound()
@@ -92,6 +93,7 @@ class LoginFragment : Fragment() {
         applyFloatUpAnimation(password)
         applyFloatUpAnimation(emailLabel)
         applyFloatUpAnimation(passwordLabel)
+        applyFloatUpAnimation(welcomeMessage)
     }
 
     /**

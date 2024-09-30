@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
@@ -31,20 +29,22 @@ class StartWorkoutActivity : AppCompatActivity(), OnRoutineItemClickListener {
             val intent = Intent(this, CreateRoutineActivity::class.java)
             startActivity(intent)
         }
+        if (UserManager.user != null && UserManager.user!!.userRoutines.isNotEmpty()) {
+            var savedWorkoutsDisplay = findViewById<RecyclerView>(R.id.savedWorkoutsDisplay)
+            val userRoutines = UserManager.user!!.userRoutines.values.toMutableList()
+            savedWorkoutsDisplay.layoutManager = LinearLayoutManager(this)
+            val adapter = RoutineListAdapter(userRoutines, this, this)
+            savedWorkoutsDisplay.adapter = adapter
+        }
 
         // Navigation to StartEmptyWorkoutActivity
         binding.startEmptyWorkoutButton.setOnClickListener {
             navigateTo(this, StartEmptyWorkoutActivity::class.java, null)
         }
-
-        var savedRoutinesDisplay = findViewById<RecyclerView>(R.id.savedRoutinesDisplay)
-        val userRoutines = UserManager.user!!.userRoutines.values.toMutableList()
-        savedRoutinesDisplay.layoutManager = LinearLayoutManager(this)
-        val adapter = RoutineListAdapter(userRoutines, this, this)
-        savedRoutinesDisplay.adapter = adapter
     }
 
     override fun onItemClick(routine: UserRoutine) {
+        // Adding routineID for which the workout will be created
         val bundle = Bundle()
         bundle.putString("routineID", routine.routineID)
         navigateTo(this, MadeRoutineActivity::class.java, bundle)

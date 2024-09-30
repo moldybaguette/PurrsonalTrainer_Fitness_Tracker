@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatSpinner
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
@@ -71,7 +72,8 @@ class CreateExerciseFragment : Fragment() {
                 )
                 UserManager.addUserExercise(newExercise)
                 RoutineBuilder.addExercise(newExercise)
-                navigateTo(requireContext(), CreateRoutineActivity::class.java, null)
+                requireActivity().findViewById<FrameLayout>(R.id.chooseCategoryFragmentContainer).visibility = View.GONE
+                requireActivity().findViewById<View>(R.id.chooseCategoryDismissArea).visibility = View.GONE
             }else{
                 val newExercise = Exercise(
                     exerciseName = title.text.toString(),
@@ -97,7 +99,8 @@ class CreateExerciseFragment : Fragment() {
                     var editedExercise = UserManager.user?.userExercises?.get(exercise!!.exerciseID)
                     RoutineBuilder.addExercise(editedExercise!!)
                 }
-                navigateTo(requireContext(), CreateRoutineActivity::class.java, null)
+                requireActivity().findViewById<FrameLayout>(R.id.chooseCategoryFragmentContainer).visibility = View.GONE
+                requireActivity().findViewById<View>(R.id.chooseCategoryDismissArea).visibility = View.GONE
             }
         }
 
@@ -110,7 +113,7 @@ class CreateExerciseFragment : Fragment() {
             CreateExerciseFragment().apply {
                 arguments = Bundle().apply {
                     if (categoryName != null) {
-                        putString("catagoryID", categoryName)
+                        putString("category", categoryName)
                     }
                     if (exerciseID != null) {
                         putString("exerciseID", exerciseID)
