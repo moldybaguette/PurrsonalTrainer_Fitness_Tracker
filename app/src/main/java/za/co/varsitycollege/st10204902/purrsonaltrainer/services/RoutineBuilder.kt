@@ -158,6 +158,7 @@ object RoutineBuilder {
      */
     fun addExerciseAddedListener(listener: ExerciseAddedListener)
     {
+        exerciseAddedListeners.clear()
         exerciseAddedListeners.add(listener)
     }
 

@@ -64,17 +64,7 @@ class StartEmptyWorkoutActivity : AppCompatActivity(), ExerciseAddedListener, On
 
         binding.doneButton.setOnClickListener {
             // Update workout in database
-            // Converting the RoutineBuilder info to a workout
-            val newWorkout = UserWorkout(
-                workoutID = boundWorkout!!.workoutID,
-                workoutExercises = RoutineBuilder.exercises,
-                date = boundWorkout!!.date,
-                name = getWorkoutTitle(),
-                durationSeconds = calculateWorkoutDuration(),
-                bodyWeight = getBodyWeight(),
-                color = boundWorkout!!.color)
-
-            UserManager.updateUserWorkout(boundWorkout!!.workoutID, newWorkout)
+            saveUserWorkout()
 
             // UI stuffs (Anneme)
             binding.doneButton.setBackgroundResource(R.drawable.svg_green_bblbtn_clicked)
@@ -82,10 +72,28 @@ class StartEmptyWorkoutActivity : AppCompatActivity(), ExerciseAddedListener, On
                 binding.doneButton.background = binding.doneButton.background
             }, 400)
 
+            UserManager.resetWorkoutInProgress()
+
             // Navigating back to home activity
             navigateTo(this, HomeActivity::class.java, null)
         }
     }
+
+    private fun saveUserWorkout()
+    {
+        val newWorkout = UserWorkout(
+            workoutID = boundWorkout!!.workoutID,
+            workoutExercises = RoutineBuilder.exercises, // using RoutineBuilder for exercises
+            date = boundWorkout!!.date,
+            name = getWorkoutTitle(),
+            durationSeconds = calculateWorkoutDuration(),
+            bodyWeight = getBodyWeight(),
+            color = boundWorkout!!.color)
+
+        UserManager.updateUserWorkout(boundWorkout!!.workoutID, newWorkout)
+        UserManager.updateWorkoutInProgress(newWorkout.workoutID)
+    }
+
     private fun calculateWorkoutDuration() : Int
     {
         // Only recalculate the duration if the workout is being created
@@ -296,6 +304,9 @@ class StartEmptyWorkoutActivity : AppCompatActivity(), ExerciseAddedListener, On
                 adapter.addSetUpdatedListener(this)
                 recyclerView.adapter = adapter
                 recyclerView.layoutManager = LinearLayoutManager(this)
+
+                // saving current version of workout
+                this.saveUserWorkout()
             }
             catch (e: Exception)
             {
@@ -321,5 +332,8 @@ class StartEmptyWorkoutActivity : AppCompatActivity(), ExerciseAddedListener, On
             oldExercise.measurementType
         )
         RoutineBuilder.addWorkoutExercise(newExercise)
+
+        // Saving current version of workout
+        this.saveUserWorkout()
     }
 }

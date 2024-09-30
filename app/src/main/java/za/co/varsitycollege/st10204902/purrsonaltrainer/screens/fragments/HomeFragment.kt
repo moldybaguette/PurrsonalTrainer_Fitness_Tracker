@@ -20,6 +20,7 @@ import kotlinx.coroutines.withContext
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.MonthsAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.RoutineListAdapter
+import za.co.varsitycollege.st10204902.purrsonaltrainer.adapters.WorkoutsAdapter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.UserManager
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.MonthWorkout
 import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.workout_activities.StartEmptyWorkoutActivity
@@ -76,8 +77,31 @@ class HomeFragment : Fragment() {
 
         // Load and group workouts by month
         loadMonthWorkouts()
+
+        // Setup current workout
+        setupCurrentWorkout(view)
     }
 
+    private fun setupCurrentWorkout(view: View)
+    {
+        val isWorkoutInProgress = UserManager.getWorkoutInProgress() != null
+
+        if (isWorkoutInProgress)
+        {
+            val currentWorkout = UserManager.getWorkoutInProgress()
+            if (currentWorkout != null)
+            {
+                val recyclerView = view.findViewById<RecyclerView>(R.id.currentWorkout)
+                val adapter = WorkoutsAdapter(listOf(currentWorkout), { workout -> // only adding current workout
+                    val bundle = Bundle()
+                    bundle.putString("WorkoutID", workout.workoutID)
+                    navigateTo(requireContext(), StartEmptyWorkoutActivity::class.java, bundle)
+                }, requireContext(), R.layout.item_current_workout)
+                recyclerView.adapter = adapter
+                recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            }
+        }
+    }
 
     private fun loadMonthWorkouts() {
         CoroutineScope(Dispatchers.IO).launch {
