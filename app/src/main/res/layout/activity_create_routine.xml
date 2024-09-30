@@ -173,6 +173,14 @@
         </LinearLayout>
     </ScrollView>
 
+    <View
+        android:id="@+id/chooseCategoryDismissArea"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="9dp"
+        android:background="@color/lowOpacityBlack"
+        android:visibility="gone" />
+
     <FrameLayout
         android:id="@+id/chooseCategoryFragmentContainer"
         android:layout_width="match_parent"

@@ -6,6 +6,7 @@ import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.AdapterView
 import android.widget.FrameLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,7 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments.Choose
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.ExerciseAddedListener
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.SetBuilder
+import za.co.varsitycollege.st10204902.purrsonaltrainer.services.SlideUpPopup
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
 import java.util.Date
 
@@ -72,12 +74,23 @@ class CreateRoutineActivity : AppCompatActivity(), ExerciseAddedListener, OnSets
             navigateTo(this, HomeActivity::class.java, null)
         }
 
-        val addExerciseButton: FrameLayout = findViewById(R.id.addExerciseButton)
-        addExerciseButton.setOnClickListener {
-            showChooseCategoryFragment()
-        }
 
+
+
+        setupChooseCategoryPopup()
         setupColorSpinner()
+    }
+
+    private fun setupChooseCategoryPopup()
+    {
+        val addExerciseButton: FrameLayout = findViewById(R.id.addExerciseButton)
+        val popup = SlideUpPopup(
+            supportFragmentManager,
+            binding.chooseCategoryFragmentContainer,
+            binding.chooseCategoryDismissArea,
+            ChooseCategoryFragment(),
+            this)
+        addExerciseButton.setOnClickListener { popup.showPopup() }
     }
 
     private fun showChooseCategoryFragment() {
@@ -94,10 +107,38 @@ class CreateRoutineActivity : AppCompatActivity(), ExerciseAddedListener, OnSets
     }
 
     private fun setupColorSpinner() {
+        // Setting the colour spinner and the selected item
         val spinner = binding.colorPickerSpinner
         val colors = mutableListOf("blue", "red", "orange", "yellow", "green", "purple")
         val adapter = ColorSpinnerAdapter(this, colors)
         spinner.adapter = adapter
+
+        // Setting the selected colour blue by default
+        spinner.setSelection(0)
+
+        // Setting the onclick listener so the title color changes when the user chooses a new color
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedItem = parent.getItemAtPosition(position).toString()
+                setTitleColor(selectedItem)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+    }
+
+    private fun setTitleColor(color: String)
+    {
+        val title = binding.untitledRoutineTitle
+
+        when (color)
+        {
+            "blue" -> title.reInitialiseComponent(R.color.blue_start, R.color.blue_end)
+            "red" -> title.reInitialiseComponent(R.color.red_start, R.color.red_end)
+            "orange" -> title.reInitialiseComponent(R.color.orange_start, R.color.orange_end)
+            "yellow" -> title.reInitialiseComponent(R.color.yellow_start, R.color.yellow_end)
+            "green" -> title.reInitialiseComponent(R.color.green_start, R.color.green_end)
+            "purple" -> title.reInitialiseComponent(R.color.purple_start, R.color.purple_end)
+        }
     }
 
     /**
@@ -118,22 +159,22 @@ class CreateRoutineActivity : AppCompatActivity(), ExerciseAddedListener, OnSets
         }
     }
 
-        override fun onSetsUpdated(exerciseID: String, sets: MutableList<WorkoutSet>) {
-            val setsMap = mutableMapOf<String, WorkoutSet>()
-            sets.forEach {
-                setsMap[it.workoutSetID] = it
-            }
-
-            val oldExercise = RoutineBuilder.exercises[exerciseID]
-            val newExercise = WorkoutExercise(
-                exerciseID,
-                oldExercise?.exerciseName!!,
-                oldExercise.category,
-                setsMap,
-                Date(),
-                oldExercise.notes,
-                oldExercise.measurementType
-            )
-            RoutineBuilder.addWorkoutExercise(newExercise)
+    override fun onSetsUpdated(exerciseID: String, sets: MutableList<WorkoutSet>) {
+        val setsMap = mutableMapOf<String, WorkoutSet>()
+        sets.forEach {
+            setsMap[it.workoutSetID] = it
         }
+
+        val oldExercise = RoutineBuilder.exercises[exerciseID]
+        val newExercise = WorkoutExercise(
+            exerciseID,
+            oldExercise?.exerciseName!!,
+            oldExercise.category,
+            setsMap,
+            Date(),
+            oldExercise.notes,
+            oldExercise.measurementType
+        )
+        RoutineBuilder.addWorkoutExercise(newExercise)
     }
+}

@@ -100,6 +100,7 @@ class ChooseCategoryFragment() : Fragment() {
                                     RoutineBuilder.addExercise(exercise)
                                     exerciseService.updateExerciseService()
                                     requireActivity().findViewById<FrameLayout>(R.id.chooseCategoryFragmentContainer).visibility = View.GONE
+                                    requireActivity().findViewById<View>(R.id.chooseCategoryDismissArea).visibility = View.GONE
                                 }
                             },categoryId = null, parentFragmentManager
                         )
