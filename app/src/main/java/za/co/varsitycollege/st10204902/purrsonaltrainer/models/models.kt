@@ -98,6 +98,7 @@ data class WorkoutSet(
     var distance: Int? = 0,
     var durationSeconds: Int? = 0,
     var setType: String = "",
+    var completed : Boolean = false
 )
 
 /**
