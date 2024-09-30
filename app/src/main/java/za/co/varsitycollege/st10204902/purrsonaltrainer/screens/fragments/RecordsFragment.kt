@@ -1,7 +1,6 @@
 package za.co.varsitycollege.st10204902.purrsonaltrainer.screens.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.backend.WorkoutWorker
 import za.co.varsitycollege.st10204902.purrsonaltrainer.databinding.FragmentRecordsBinding
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.CellType
 import za.co.varsitycollege.st10204902.purrsonaltrainer.models.TableCell
-import za.co.varsitycollege.st10204902.purrsonaltrainer.models.User
 
 /**
  * Fragment for displaying user workout records in a table format.
@@ -47,10 +45,10 @@ class RecordsFragment : Fragment() {
         workoutWorker = WorkoutWorker(user.userWorkouts)
 
         // Process user data to map exercises to weights and reps
-        processUserData(user)
+        processUserData()
 
         // Determine the maximum reps achieved across all exercises
-        val maxRM = getGlobalMaxRepCount(user)
+        val maxRM = getGlobalMaxRepCount()
 
         // Get unique exercise names
         val exerciseNames = exerciseWeightsMap.keys.toList()
@@ -80,12 +78,12 @@ class RecordsFragment : Fragment() {
      * Processes user workout data to map each exercise to its reps and corresponding weights.
      * @param user The user whose workout data is being processed.
      */
-    private fun processUserData(user: User) {
+    private fun processUserData() {
         // Temporary mutable map
         val tempMap = mutableMapOf<String, MutableMap<Int, Int>>()
 
         // Iterate through each workout using WorkoutWorker
-        for ((workoutID, workout) in workoutWorker.usersWorkouts) {
+        for ((_, workout) in workoutWorker.usersWorkouts) {
             for ((exerciseID, workoutExercise) in workout.workoutExercises) {
                 val exerciseName = workoutExercise.exerciseName
                 val reps = workoutExercise.sets.values.mapNotNull { it.reps }.maxOrNull() ?: 0
@@ -111,17 +109,13 @@ class RecordsFragment : Fragment() {
 
         // Assign the processed map to the class variable
         exerciseWeightsMap = tempMap
-
-        // Log the exerciseWeightsMap for debugging
-        Log.d("RecordsFragment", "Exercise Weights Map: $exerciseWeightsMap")
     }
 
     /**
      * Determines the highest number of reps achieved across all exercises using WorkoutWorker.
-     * @param user The user whose workout data is being analyzed.
      * @return The highest number of reps achieved.
      */
-    private fun getGlobalMaxRepCount(user: User): Int {
+    private fun getGlobalMaxRepCount(): Int {
         var maxRep = 0
         for ((_, workout) in workoutWorker.usersWorkouts) {
             for ((_, workoutExercise) in workout.workoutExercises) {
@@ -157,6 +151,11 @@ class RecordsFragment : Fragment() {
                 val displayText = if (weight != null) "$weight kg" else "---"
                 tableData.add(TableCell(CellType.DATA, displayText))
             }
+        }
+
+        //if a user has sets but no reps. display a message
+        if (maxRM == 0) {
+            tableData.add(TableCell(CellType.LABEL, "No Reps Recorded"))
         }
 
         return tableData
