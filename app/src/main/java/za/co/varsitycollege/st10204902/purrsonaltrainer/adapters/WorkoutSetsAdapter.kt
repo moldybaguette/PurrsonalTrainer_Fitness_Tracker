@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
@@ -27,6 +28,7 @@ class WorkoutSetsAdapter(
         val previousWeight = itemView.findViewById<TextView>(R.id.previousWeight)
         val weightInput = itemView.findViewById<EditText>(R.id.weightInput)
         val repsInput = itemView.findViewById<EditText>(R.id.repsInput)
+        val doneCheckbox = itemView.findViewById<CheckBox>(R.id.doneCheckbox)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkoutSetsViewHolder
@@ -59,6 +61,11 @@ class WorkoutSetsAdapter(
             {
                 holder.setType.adapter = SetTypeSpinnerAdapter(context, listOf(SetType.NORMAL, SetType.WARMUP, SetType.FAILURE, SetType.DROP))
             }
+        }
+        // checkbox
+        if (set.completed)
+        {
+            holder.doneCheckbox.isChecked = true
         }
         // previousWeight
         // weightInput
@@ -111,6 +118,14 @@ class WorkoutSetsAdapter(
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 Log.d("RoutineSetsAdapter", "Nothing selected")
+            }
+        }
+
+        holder.doneCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                set.completed = true
+            } else {
+                set.completed = false
             }
         }
     }
