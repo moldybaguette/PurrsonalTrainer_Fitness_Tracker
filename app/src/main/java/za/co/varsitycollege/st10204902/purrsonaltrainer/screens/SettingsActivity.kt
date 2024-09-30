@@ -58,7 +58,7 @@ class SettingsActivity : AppCompatActivity() {
             //navigateTo(this, CatSettingsActivity::class.java, null)
         }
 
-        binding.statisticsButton.setOnClickListener(){
+        binding.statisticsButton.setOnClickListener() {
             soundManager.playSound()
             val originalBackgroundStatistics = binding.statisticsButton.background
             binding.statisticsButton.setBackgroundResource(R.drawable.svg_purple_bblbtn_clicked)
@@ -67,11 +67,10 @@ class SettingsActivity : AppCompatActivity() {
             Handler(Looper.getMainLooper()).postDelayed({
                 binding.statisticsButton.background = originalBackgroundStatistics
             }, 400)
-            navigateTo(this, AccountDetailsActivity::class.java, null)
-        }
+
             navigateTo(this, BreakdownActivity::class.java, null)
         }
-
+    }
 
 
     override fun onBackPressed() {
