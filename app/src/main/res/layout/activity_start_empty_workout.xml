@@ -36,8 +36,6 @@
                 android:fontFamily="@font/knicknack_black"
                 android:textSize="57sp"
                 android:gravity="center"
-                app:startColor="#F2CB56"
-                app:endColor="#ED750C"
                 app:strokeColor="@color/default_stroke_color"
                 app:strokeWidth="15dp"/>
 

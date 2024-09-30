@@ -23,7 +23,8 @@ class RoutineConverter {
         val workoutExercises = routine.exercises
         val durationSeconds = 0
         val date = Date()
-        val workout = UserWorkout(workoutID, name, workoutExercises, durationSeconds, date)
+        val color = routine.color
+        val workout = UserWorkout(workoutID, name, workoutExercises, durationSeconds, date, 0, color)
         return workout
     }
 }
