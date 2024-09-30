@@ -35,9 +35,8 @@ class Validator {
      * @return `true` if the password meets the complexity requirements, `false` otherwise.
      */
     fun validatePasswordComplexity(password: String): Boolean {
-        val passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=])(?=\\S+\$).{8,}\$".toRegex()
-        //return passwordPattern.matches(password)
-        return true
+        val passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{8,}\$".toRegex()
+        return passwordPattern.matches(password)
     }
 
     /**
