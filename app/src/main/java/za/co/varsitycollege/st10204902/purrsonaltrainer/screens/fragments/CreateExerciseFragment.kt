@@ -110,7 +110,7 @@ class CreateExerciseFragment : Fragment() {
             CreateExerciseFragment().apply {
                 arguments = Bundle().apply {
                     if (categoryName != null) {
-                        putString("catagoryID", categoryName)
+                        putString("category", categoryName)
                     }
                     if (exerciseID != null) {
                         putString("exerciseID", exerciseID)

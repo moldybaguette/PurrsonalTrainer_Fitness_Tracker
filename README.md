@@ -9,7 +9,6 @@ Purrsonal Trainer is a pawsome and interactive fitness tracker designed to help 
   - [Usage](#usage)
   - [Features](#features)
   - [Configuration](#configuration)
-  - [Deployment](#deployment)
   - [Credits](#credits)
   - [Testing](#testing)
   - [Style Guide](#style-guide)
@@ -34,12 +33,16 @@ Purrsonal Trainer is a pawsome and interactive fitness tracker designed to help 
 
 ## Features
 
-List the core features of the project.
-![Sign in page](image-1.png)
+Users Have the option to sign in with google SSO
 
 ![User can sign in with SSO](image-2.png)
 
+Users can view their previous workouts at a glance in the home page
+
 ![Home page displays previous workouts](image-3.png)
+
+The routines page lets you save custom workout routines that can be started at any time!
+you can also modify these routines on the fly.
 
 ![routines page lets you save custom routines](image-4.png)
 
@@ -49,23 +52,34 @@ List the core features of the project.
 
 The app has multi-language support and can be used in Afrikaans by changing your devices language settings
 
-## Deployment
-
-Instructions on how to deploy the project to a live or production environment.
-
 ## Credits
 
 This project would never have been possible without our legendary project manager Anneme Holzhausen who also designed the entire UI!
 
 Testing was implemented by the formidable Nicholas Meyer who had to deal with all but untestable code. He also took on implementing the settings page as well as the graph and RM section.
 
-speaking of untestable code was the backend UserManager that allows the app to interface seamlessly with Firebase Realtime database and was implemented by Michael French (and other than being difficult to test didn't break once throughout the project!)
+Speaking of untestable code was the backend UserManager that allows the app to interface seamlessly with Firebase Realtime database and was implemented by Michael French (and other than being difficult to test didn't break once throughout the project!)
 
 login and registration as well as middleware was tackled by the dedicated efforts of Jasper Van Niekerk.
 
 And finally, the man holding the entire fort together the true Renaissance man Joshua "joshy squashy" Harvey took on the tasks that no one else could handle.
 
 ## Testing
+
+We have used GitHub actions to automate testing of some of our key classes. As of right now, instrumented tests are not implemented as they are not available through a free plan on GitHub actions or via Firebase Labs. These unit tests do test key functionalities of the app such as the Validator class and WorkoutWorker class.
+
+Our action flow runs on trigger whenever there is a push or successful pull request on dev or main. The following unit test job occurs on that trigger.
+
+The first section includes setting up the workflow by checking out our repository, installing JDK 17 and installing the Android SDK. (Step 1 - 3)
+
+The next section includes adding the platform tools required for the app, checking our cache for gradle and android dependencies. Then enabling the gradle daemon and downloading dependencies. (Step 4-9)
+
+After all setups are complete, the project is built with gradle. The unit tests are run and the results are uploaded as a unit test artifact to our app/build/test-results folder. (Step 10-13)
+
+After the tests have passed or failed, a test reporting plugin is used to generate easy to read test summaries that state which tests passed or failed and any other important information. (Step 14)
+
+It is also important to note that pull requests from dev on to main will never be allowed if tests fail. This prevents us from putting bad production code in a final submission.
+![alt text](<Screenshot 2024-09-30 at 15.42.26.png>)
 
 Automated testing using github actions runs whenever something is pushed to main
 ![alt text](image.png)
