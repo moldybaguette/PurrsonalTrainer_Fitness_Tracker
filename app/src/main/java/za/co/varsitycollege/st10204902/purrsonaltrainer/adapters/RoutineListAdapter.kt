@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -77,6 +78,7 @@ class RoutineListAdapter(
 
         // Routine title
         holder.routineTitle.text = routine.name
+        this.setTitleColor(routine.color, holder.routineTitle)
         holder.routineExerciseView.layoutManager = LinearLayoutManager(context)
         holder.routineExerciseView.adapter = RoutineExerciseListAdapter(routine.exercises.values.toList(), context)
 
@@ -86,6 +88,20 @@ class RoutineListAdapter(
             val bundle = Bundle()
             bundle.putString("routineID", routine.routineID)
             navigateTo(context, MadeRoutineActivity::class.java, bundle)
+        }
+    }
+
+    private fun setTitleColor(color: String, title: TextView)
+    {
+        when (color)
+        {
+            "blue" -> title.setTextColor(ContextCompat.getColor(context, R.color.blue_end))
+            "red" -> title.setTextColor(ContextCompat.getColor(context, R.color.red_end))
+            "orange" -> title.setTextColor(ContextCompat.getColor(context, R.color.orange_end))
+            "yellow" -> title.setTextColor(ContextCompat.getColor(context, R.color.yellow_end))
+            "green" -> title.setTextColor(ContextCompat.getColor(context, R.color.green_end))
+            "purple" -> title.setTextColor(ContextCompat.getColor(context, R.color.purple_end))
+            else -> title.setTextColor(ContextCompat.getColor(context, R.color.sso_gradient_end)) // make grey
         }
     }
 
