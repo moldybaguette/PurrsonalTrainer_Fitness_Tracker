@@ -55,6 +55,7 @@ open class CreateRoutineExercisesAdapter(
         val adapter = RoutineSetsAdapter(setsList, context)
         holder.routineSets.adapter = adapter
         holder.routineSets.layoutManager = LinearLayoutManager(context)
+        holder.routineSets.isNestedScrollingEnabled = false
 
         // Add set Onclick
         holder.addSetButton.setOnClickListener {

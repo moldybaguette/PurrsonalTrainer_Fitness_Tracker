@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +23,9 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.screens.workout_activiti
 
 class RoutinesFragment : Fragment(), OnRoutineItemClickListener {
 
+    private lateinit var routinesRecyclerView: RecyclerView
+    private lateinit var topSection: LinearLayout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -32,6 +37,12 @@ class RoutinesFragment : Fragment(), OnRoutineItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_routines, container, false)
+
+        topSection = view.findViewById(R.id.topSection)
+        routinesRecyclerView = view.findViewById(R.id.routinesRecyclerView)
+
+        applyFloatUpAnimation(topSection)
+        applyFloatUpAnimation(routinesRecyclerView)
 
         try {
             if (UserManager.user != null && UserManager.user!!.userRoutines.isNotEmpty()) {
@@ -96,5 +107,12 @@ class RoutinesFragment : Fragment(), OnRoutineItemClickListener {
 
     override fun onItemClick(routine: UserRoutine) {
         TODO("Not yet implemented")
+    }
+
+    private fun applyFloatUpAnimation(view: View?) {
+        view?.let {
+            val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.float_up)
+            it.startAnimation(animation)
+        }
     }
 }
