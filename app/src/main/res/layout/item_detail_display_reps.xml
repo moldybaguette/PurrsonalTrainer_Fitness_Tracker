@@ -6,7 +6,8 @@
     android:orientation="horizontal"
     android:layout_gravity="center_vertical">
 
-    <Spinner
+
+<Spinner
         android:id="@+id/setType"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
