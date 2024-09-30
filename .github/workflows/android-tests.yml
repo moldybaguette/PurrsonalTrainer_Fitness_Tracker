@@ -1,0 +1,108 @@
+name: Android CI - Unit Tests
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+
+# Define permissions to allow creating check runs
+permissions:
+  actions: read
+  contents: read
+  checks: write
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up JDK 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # Step 3: Set up Android SDK
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+        with:
+          api-level: 33
+          target: google_apis
+          components: platform-tools,build-tools-33.0.0
+
+      # Step 4: Add platform tools to PATH
+      - name: Add platform tools to PATH
+        run: echo "${ANDROID_SDK_ROOT}/platform-tools" >> $GITHUB_PATH
+
+      # Step 5: Cache Gradle dependencies
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper/
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # Step 6: Cache Android SDK
+      - name: Cache Android SDK
+        uses: actions/cache@v3
+        with:
+          path: $ANDROID_SDK_ROOT
+          key: ${{ runner.os }}-android-sdk
+          restore-keys: |
+            ${{ runner.os }}-android-sdk-
+
+      # Step 7: Create Gradle Directory
+      - name: Create Gradle Directory
+        run: mkdir -p ~/.gradle
+
+      # Step 8: Enable Gradle Daemon
+      - name: Enable Gradle Daemon
+        run: echo "org.gradle.daemon=true" >> ~/.gradle/gradle.properties
+
+      # Step 9: Download dependencies
+      - name: Download Dependencies
+        run: ./gradlew dependencies
+
+      # Step 10: Build the project
+      - name: Build with Gradle
+        run: ./gradlew assembleDebug
+
+      # Step 11: Run Unit Tests
+      - name: Run Unit Tests
+        run: ./gradlew testDebugUnitTest
+
+      # Step 12: List Unit Test Results (for debugging)
+      - name: List Unit Test Results
+        run: ls -la app/build/test-results/testDebugUnitTest/
+
+      # Step 13: Upload Unit Test Artifacts
+      - name: Upload Unit Test Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: unit-test-artifacts
+          path: |
+            app/build/test-results/testDebugUnitTest/
+            app/build/reports/tests/testDebugUnitTest/index.html
+
+      # Step 14: Publish Unit Test Results with dorny/test-reporter@v1
+      - name: Publish Unit Test Results
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Unit Tests
+          path: app/build/test-results/testDebugUnitTest/*.xml
+          reporter: java-junit
+          list-tests: all
+          fail-on-error: true
