@@ -40,4 +40,40 @@ class ValidatorTest {
         val validator = Validator()
         assertFalse(validator.validateStartEndTime("09:00", "09:00"))
     }
+
+    @Test
+    fun validatePasswordComplexity_withNoDigit_returnsFalse() {
+        val validator = Validator()
+        assertFalse(validator.validatePasswordComplexity("Valid@abc"))
+    }
+
+    @Test
+    fun validatePasswordComplexity_withNoLowercase_returnsFalse() {
+        val validator = Validator()
+        assertFalse(validator.validatePasswordComplexity("VALID@123"))
+    }
+
+    @Test
+    fun validatePasswordComplexity_withNoUppercase_returnsFalse() {
+        val validator = Validator()
+        assertFalse(validator.validatePasswordComplexity("valid@123"))
+    }
+
+    @Test
+    fun validatePasswordComplexity_withNoSpecialCharacter_returnsFalse() {
+        val validator = Validator()
+        assertFalse(validator.validatePasswordComplexity("Valid123"))
+    }
+
+    @Test
+    fun validatePasswordComplexity_withLessThanEightCharacters_returnsFalse() {
+        val validator = Validator()
+        assertFalse(validator.validatePasswordComplexity("Val@1"))
+    }
+
+    @Test
+    fun validatePasswordComplexity_withWhitespace_returnsFalse() {
+        val validator = Validator()
+        assertFalse(validator.validatePasswordComplexity("Valid 123"))
+    }
 }
