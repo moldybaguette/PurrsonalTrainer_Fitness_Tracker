@@ -261,11 +261,11 @@ object UserManager {
      */
     fun resetWorkoutInProgress() {
         if (!userIsLoggedIn()) {
+            Log.e("UserManager.resetWorkoutInProgress", "User is not logged in")
+        } else {
             _userFlow.update { user ->
                 user?.copy(workoutInProgress = "")
             }
-        } else {
-            Log.e("UserManager.resetWorkoutInProgress", "User is not logged in")
         }
     }
 
