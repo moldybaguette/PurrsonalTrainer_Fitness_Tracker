@@ -49,6 +49,7 @@ data class User(
     val experiencePoints: String = "",
     val backgroundURI: String = "",
     val catURI: String = "",
+    val workoutInProgress: String = "",
     val userRoutines: Map<String, UserRoutine> = emptyMap(),
     val userWorkouts: Map<String, UserWorkout> = emptyMap(),
     val userExercises: Map<String, Exercise> = emptyMap(),
