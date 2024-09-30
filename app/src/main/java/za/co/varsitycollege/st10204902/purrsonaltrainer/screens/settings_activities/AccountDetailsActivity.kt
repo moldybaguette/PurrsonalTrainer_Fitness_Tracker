@@ -78,7 +78,7 @@ class AccountDetailsActivity : AppCompatActivity(),
         }
         binding.logOutButton.setOnClickListener {
             soundManager.playSound()
-            binding.logOutButton.setBackgroundResource(R.drawable.svg_blue_bblbtn_clicked)
+            binding.logOutButton.setBackgroundResource(R.drawable.svg_blue_bblbltn_clicked)
             auth.signOut()
             navigateTo(this, MainActivity::class.java, null)
         }
