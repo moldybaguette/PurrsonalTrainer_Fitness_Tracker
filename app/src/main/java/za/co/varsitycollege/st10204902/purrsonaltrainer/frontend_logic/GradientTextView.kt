@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.graphics.Shader
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import za.co.varsitycollege.st10204902.purrsonaltrainer.R
 
 /**
@@ -19,9 +20,9 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.R
  * @param defStyleAttr An attribute in the current theme that contains a reference to a style resource that supplies default values for the view.
  */
 class GradientTextView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    private val context: Context,
+    private val attrs: AttributeSet? = null,
+    private val defStyleAttr: Int = 0
 ) : AppCompatTextView(context, attrs, defStyleAttr) {
 
     // Initialize paint objects
@@ -40,6 +41,42 @@ class GradientTextView @JvmOverloads constructor(
             try {
                 startColor = getColor(R.styleable.GradientTextView_startColor, context.getColor(R.color.default_start_color)) // Set default color of the start of the gradient
                 endColor = getColor(R.styleable.GradientTextView_endColor, context.getColor(R.color.default_end_color)) // Set default color of the end of the gradient
+                strokeColor = getColor(R.styleable.GradientTextView_strokeColor, context.getColor(R.color.default_stroke_color)) // Set default color of the stroke
+                strokeWidth = getDimension(R.styleable.GradientTextView_strokeWidth, 30f)
+            } finally {
+                recycle()
+            }
+        }
+
+        // Initialize paint
+        val shader = LinearGradient(
+            0f, 0f, 0f, textSize,
+            intArrayOf(startColor, endColor),
+            floatArrayOf(0.50f, 1.0f),
+            Shader.TileMode.CLAMP
+        )
+        paint.shader = shader
+
+        // Initialize stroke paint
+        strokePaint.style = Paint.Style.STROKE
+        strokePaint.strokeWidth = strokeWidth // Set stroke width
+        strokePaint.color = strokeColor
+        strokePaint.isAntiAlias = true
+
+        // Set padding to accommodate the stroke
+        setPadding(strokeWidth.toInt(), strokeWidth.toInt(), strokeWidth.toInt(), strokeWidth.toInt())
+    }
+
+    fun reInitialiseComponent(startColourIn: Int, endColourIn: Int)
+    {
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.GradientTextView,
+            0, 0
+        ).apply {
+            try {
+                startColor = getColor(R.styleable.GradientTextView_startColor, context.getColor(startColourIn)) // Set default color of the start of the gradient
+                endColor = getColor(R.styleable.GradientTextView_endColor, context.getColor(endColourIn)) // Set default color of the end of the gradient
                 strokeColor = getColor(R.styleable.GradientTextView_strokeColor, context.getColor(R.color.default_stroke_color)) // Set default color of the stroke
                 strokeWidth = getDimension(R.styleable.GradientTextView_strokeWidth, 30f)
             } finally {

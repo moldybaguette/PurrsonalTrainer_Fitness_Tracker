@@ -25,8 +25,10 @@ import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineBuilder
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.RoutineConverter
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.SlideUpPopup
 import za.co.varsitycollege.st10204902.purrsonaltrainer.services.navigateTo
+import java.text.SimpleDateFormat
 import java.time.Duration
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
@@ -34,7 +36,6 @@ import java.util.Locale
 class StartEmptyWorkoutActivity : AppCompatActivity(), ExerciseAddedListener, OnSetsUpdatedListener {
     private lateinit var binding: ActivityStartEmptyWorkoutBinding
     private lateinit var exercisesRecyclerView: RecyclerView
-    private lateinit var workoutStartTime: LocalDateTime
     var boundWorkout: UserWorkout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,8 +69,10 @@ class StartEmptyWorkoutActivity : AppCompatActivity(), ExerciseAddedListener, On
                 workoutID = boundWorkout!!.workoutID,
                 workoutExercises = RoutineBuilder.exercises,
                 date = boundWorkout!!.date,
-                name = binding.workoutTitle.text.toString(),
-                durationSeconds = calculateWorkoutDuration())
+                name = getWorkoutTitle(),
+                durationSeconds = calculateWorkoutDuration(),
+                bodyWeight = getBodyWeight(),
+                color = boundWorkout!!.color)
 
             UserManager.updateUserWorkout(boundWorkout!!.workoutID, newWorkout)
 
@@ -89,6 +92,7 @@ class StartEmptyWorkoutActivity : AppCompatActivity(), ExerciseAddedListener, On
         if (boundWorkout!!.durationSeconds == 0)
         {
             val now = LocalDateTime.now()
+            val workoutStartTime = convertDateToLocalDateTime(boundWorkout!!.date)
             val duration = Duration.between(workoutStartTime, now)
             return duration.seconds.toInt()
         }
@@ -142,24 +146,75 @@ class StartEmptyWorkoutActivity : AppCompatActivity(), ExerciseAddedListener, On
     {
         if (boundWorkout != null)
         {
-            binding.workoutTitle.text = boundWorkout!!.name
-            // TODO: Add the color when Michael does that
-
-            val detailsComponent = binding.detailsComponent
-
-            // If the workout has already taken place
-            if (boundWorkout!!.durationSeconds > 0)
+            // Title
+            if (boundWorkout!!.name.isNotEmpty())
             {
-
+                binding.workoutTitle.text = boundWorkout!!.name
             }
             else
             {
-                // Workout StartTime
-                val startDate = LocalDateTime.now()
-                detailsComponent.workoutStartTime.text = formatWorkoutTime(startDate)
-                this.workoutStartTime = startDate
-                // Workout BodyWeight
+                binding.workoutTitle.text = "Empty Workout"
             }
+            setTitleColor(boundWorkout!!.color)
+
+            // Details
+            val detailsComponent = binding.detailsComponent
+            var startDate = LocalDateTime.now()
+            var bodyWeight = "--"
+            var endDate = "--"
+
+            // if the workout has already taken place
+            if (boundWorkout!!.durationSeconds > 0)
+            {
+                startDate = convertDateToLocalDateTime(boundWorkout!!.date)
+                val calculatedEndDate = startDate.plusSeconds(boundWorkout!!.durationSeconds.toLong())
+                endDate = formatWorkoutTime(calculatedEndDate)
+                bodyWeight = "${boundWorkout!!.bodyWeight}kg"
+            }
+            // Setting UI text
+            detailsComponent.workoutStartTime.text = formatWorkoutTime(startDate)
+            detailsComponent.workoutEndTime.text = endDate
+            detailsComponent.workoutBodyWeight.setText(bodyWeight)
+        }
+    }
+
+    private fun getBodyWeight() : Int
+    {
+        val bodyWeightText = binding.detailsComponent.workoutBodyWeight.text.toString()
+
+        // Remove any non-digit characters and extract the integer part
+        val weight = bodyWeightText.replace("[^\\d]".toRegex(), "")
+
+        return weight.toIntOrNull() ?: 0  // Return 0 if parsing fails
+    }
+
+    private fun getWorkoutTitle() : String
+    {
+        if (boundWorkout!!.name.isEmpty())
+        {
+            val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            return formatter.format(boundWorkout!!.date)
+        }
+        return boundWorkout!!.name
+    }
+
+    private fun convertDateToLocalDateTime(date: Date): LocalDateTime {
+        return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault())
+    }
+
+    private fun setTitleColor(color: String)
+    {
+        val title = binding.workoutTitle
+
+        when (color)
+        {
+            "blue" -> title.reInitialiseComponent(R.color.blue_start, R.color.blue_end)
+            "red" -> title.reInitialiseComponent(R.color.red_start, R.color.red_end)
+            "orange" -> title.reInitialiseComponent(R.color.orange_start, R.color.orange_end)
+            "yellow" -> title.reInitialiseComponent(R.color.yellow_start, R.color.yellow_end)
+            "green" -> title.reInitialiseComponent(R.color.green_start, R.color.green_end)
+            "purple" -> title.reInitialiseComponent(R.color.purple_start, R.color.purple_end)
+            else -> {title.reInitialiseComponent(R.color.orange_start, R.color.orange_end)} // set to orange
         }
     }
 
